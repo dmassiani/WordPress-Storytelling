@@ -6,8 +6,7 @@ class MacroContentHammer__getEditor
     {
     	$content = '';
 		ob_start();
-		$settings = array( 'tinymce' => true );
-        wp_editor( $content, 'mysecondeditor', $settings );
+        wp_editor( $content, 'mysecondeditor' );
 		echo ob_get_clean();
     }
 

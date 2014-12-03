@@ -16,7 +16,7 @@ Text Domain: macrocontenthammer
 // Folder name
 define ( 'MCH_VERSION', '3.5' );
 define ( 'MCH_OPTION',  'simple-taxonomy' );
-define ( 'MCH_FOLDER',  'simple-taxonomy' );
+define ( 'MCH_FOLDER',  'micro-templates' );
 
 define ( 'MCH_URL', plugins_url('', __FILE__) );
 define ( 'MCH_DIR', dirname(__FILE__) );
@@ -63,11 +63,31 @@ class MacroContentHammer__Plugin
 
     }
 
+    public function MacroContentHammer__registerTemplates(){
+ /*
+ * @param string $file            Path to the file.
+ * @param array  $default_headers List of headers, in the format array('HeaderKey' => 'Header Name').
+ * @param string $context         Optional. If specified adds filter hook "extra_{$context}_headers".
+ *                                Default empty.
+ */
+// function get_file_data( $file, $default_headers, $context = '' ) {
+
+ 		// use file data to get name and template
+		 $folder = get_template_directory() . '/' . MCH_FOLDER;
+		 
+		 $defaultHeader = array('TemplateName' => 'Template Name');
+
+		 $default = get_file_data( $folder . '/' . 'default.php',  $defaultHeader );
+		 print_r($default);
+
+    }
+
     public function init(){
 
     	// add register plugins
     	$this->MacroContentHammer__registerPlugins();
     	$this->MacroContentHammer__registerAjax();
+    	$this->MacroContentHammer__registerTemplates();
 
     	// add content (button)
         new MacroContentHammer__addButton();
