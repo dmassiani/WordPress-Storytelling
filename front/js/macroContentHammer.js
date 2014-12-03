@@ -4,6 +4,8 @@
 		
 		e.preventDefault();
 
+			// mon sélecteur
+			var myeditor = "mysecondeditor";
 
 			var data = {
 				'action': 'MacroContentHammer__getNewMacro'
@@ -14,23 +16,31 @@
 		    	// on insere le form juste avant le contenu
 		    	$(response).insertBefore('#mch__init');
 
-				// // //init quicktags
-	   //          quicktags({id : 'editorcontentid'});
+		    	// console.log(tinymce);
 
-				// //init tinymce
-	   //          tinymce.init(tinyMCEPreInit.mceInit['editorcontentid']);
+	   			// window.onpageload = true;
 
-		   		window.setTimeout(function() {
-		   			window.tinyMCE.dom.Event.domLoaded = true;
-				    tinyMCE.init(tinyMCEPreInit.mceInit['mysecondeditor']);
-				    try { quicktags( tinyMCEPreInit.qtInit['mysecondeditor'] ); } catch(e){}
+		    	window.setTimeout(function() {
 
-				}, 1000);
+		    		// on modifie la config initiale WP en appliquant le nouvel id de l'éditeur
+					tinyMCEPreInit.mceInit[ 'content' ].selector = '#' + myeditor;
+					tinyMCEPreInit.qtInit[ 'content' ].id = myeditor;
 
+
+					tinymce.init(tinyMCEPreInit.mceInit[ 'content' ]);
+
+			
+					quicktags( tinyMCEPreInit.qtInit[ 'content' ] );
+
+
+					window.wpActiveEditor = myeditor;
+
+		    	},100);
 
 
 		    });
 
+		return false;
 
 	});
 
