@@ -31,88 +31,176 @@ function initMacroContentHammer() {
 
 class MacroContentHammer__Plugin
 {
+
+	// =============================================
+	// templates is for register all templates available
+	// =============================================
+
+	public $templates = [];
+
+	// ==================================================
+	// include all php needed
+	// ==================================================
+
     public function __construct()
     {
 
-        include_once MCH_DIR . '/core/inc/addContent.php';
-        include_once MCH_DIR . '/core/inc/getEditor.php';
+
+        include_once MCH_DIR . '/core/inc/mch__database.php';
+        include_once MCH_DIR . '/core/inc/mch__interfaceConstructor.php';
+        include_once MCH_DIR . '/core/inc/mch__getEditor.php';
+        include_once MCH_DIR . '/core/inc/mch__ajax.php';
+
+        // $templates = [];
+		// global $templates;
 
 		add_action('init', array($this, 'init'), 1);
     }
 
+    // ============================================================
+    // Register JS plugins
+    // ============================================================
+
     public function MacroContentHammer__registerPlugins(){
-		// register acf scripts
+		// register js
+		wp_enqueue_media();
 		$scripts = array();
+
 		$scripts[] = array(
 			'handle'	=> 'macroContentHammer',
-			'src'		=> MCH_URL . '/front/js/macroContentHammer.js',
+			'src'		=> MCH_URL . '/front/js/MacroContentHammer.js',
 			'deps'		=> array('jquery')
 		);
-		
-		
+
 		foreach( $scripts as $script )
 		{
 			wp_enqueue_script( $script['handle'], $script['src'], $script['deps'] );
 		}
     }
 
+    // ============================================================
+    // Register CSS Styles
+    // ============================================================
+
+    public function MacroContentHammer__registerStyles(){
+		// register styles
+		$styles = array();
+		
+		$styles[] = array(
+			'handle'	=> 'macroContentHammer',
+			'src'		=> MCH_URL . '/front/css/MacroContentHammer.css'
+		);
+		
+		foreach( $styles as $style )
+		{
+			wp_enqueue_style( $style['handle'], $style['src'] );
+		}
+    }
+
+    // ============================================================
+    // Register Ajax
+    // ============================================================
+
     public function MacroContentHammer__registerAjax(){
 
 		add_action("wp_ajax_MacroContentHammer__getNewMacro", "MacroContentHammer__getNewMacro");
 		add_action("wp_ajax_nopriv_MacroContentHammer__getNewMacro", "MacroContentHammer__getNewMacro");
 
+		add_action("wp_ajax_MacroContentHammer__getTotalMchPost", "MacroContentHammer__getTotalMchPost");
+		add_action("wp_ajax_nopriv_MacroContentHammer__getTotalMchPost", "MacroContentHammer__getTotalMchPost");
+
     }
+
+    // ============================================================
+    // Load Templates
+    // ============================================================
 
     public function MacroContentHammer__registerTemplates(){
- /*
- * @param string $file            Path to the file.
- * @param array  $default_headers List of headers, in the format array('HeaderKey' => 'Header Name').
- * @param string $context         Optional. If specified adds filter hook "extra_{$context}_headers".
- *                                Default empty.
- */
-// function get_file_data( $file, $default_headers, $context = '' ) {
 
- 		// use file data to get name and template
-		 $folder = get_template_directory() . '/' . MCH_FOLDER;
+		// use file data to get name and template
+		$folder = get_template_directory() . '/' . MCH_FOLDER;
+		$listFiles = scandir( $folder );
+
+		$defaultHeader = array(
+			'TemplateName' => 'Template Name', 
+			'Structure' => 'Structure', 
+			'Description' => 'Description'
+		);
+
+		foreach ($listFiles as &$value) {
+			$file_parts = pathinfo( $value );
+
+
+			if( $file_parts['extension'] === "php" ){
+
+				$default = get_file_data( $folder . '/' . $value,  $defaultHeader );
+
+				$tJson = array(					
+					'name'			=> 		$default[ 'TemplateName' ], 
+					'description'	=> 		$default[ 'Description' ],
+					'structure'		=> 		$default[ 'Structure' ]
+				);
+
+				// echo json_encode( $tJson );
+				$this->templates[] = json_encode( $tJson );
+
+			}
+
+		}
 		 
-		 $defaultHeader = array('TemplateName' => 'Template Name');
-
-		 $default = get_file_data( $folder . '/' . 'default.php',  $defaultHeader );
-		 print_r($default);
+    	return $this->templates;
 
     }
+
+    public function MacroContentHammer__templateCountElement( $tmpl ){
+
+    	// INUSED
+
+		$folder = get_template_directory() . '/' . MCH_FOLDER;
+
+		$default = get_file_data( $folder . '/' . $tmpl .'.php',  $defaultHeader );
+
+		$structure = explode(',', $default[ 'Structure' ]);
+
+		return count( $structure );
+
+    }
+
+    // ============================================================
+    // Init MCH
+    // ============================================================
 
     public function init(){
 
     	// add register plugins
     	$this->MacroContentHammer__registerPlugins();
+    	$this->MacroContentHammer__registerStyles();
     	$this->MacroContentHammer__registerAjax();
-    	$this->MacroContentHammer__registerTemplates();
 
     	// add content (button)
-        new MacroContentHammer__addButton();
+        $interface = new MacroContentHammer__interface();
+
+        // init database
+        $database = new MacroContentHammer__database();
 
     }
 }
 
-function MacroContentHammer__getNewMacro(){
-    new MacroContentHammer__getEditor();
-}
 
 function MacroContentHammer__CanTouchThis()
 {
-	global $canttouchthis;
+	global $cantouchthis;
 	
-	if( !isset($canttouchthis) )
+	if( !isset($cantouchthis) )
 	{
-		$canttouchthis = new MacroContentHammer__Plugin();
+		$cantouchthis = new MacroContentHammer__Plugin();
 	}
 	
-	return $canttouchthis;
+	return $cantouchthis;
 }
 
 
 // initialize
-MacroContentHammer__CanTouchThis();
+$cantouchthis = MacroContentHammer__CanTouchThis();
 
 
