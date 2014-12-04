@@ -86,6 +86,7 @@
 		structure.replace(/ /g,'');
 		var structureArray = structure.split(',');
 		var contentLength = structureArray.length;
+    	var file_frame;
 
 		var data = {
 			'action': 'MacroContentHammer__getNewMacro',
@@ -163,6 +164,7 @@
 					}
 
 					n__element++;
+					// $('.meta-box-sortables').sortable();
 					
 				}
 
@@ -191,7 +193,21 @@
 
 	});
 
-    var file_frame;
 
+	$(document).on('click', '.postbox .handlediv.mch', function(){
+
+		var postbox = $(this).closest('.postbox');
+		
+		if( postbox.hasClass('closed') )
+		{
+			postbox.removeClass('closed');
+		}
+		else
+		{
+			postbox.addClass('closed');
+		}
+		
+	});
+    
 
 })(jQuery);

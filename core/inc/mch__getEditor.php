@@ -2,7 +2,6 @@
 class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
 {
 
-
 	public function getNewContent( $tmpl__name, $structure, $n__element ){
 
 		// on récupère la liste des contenus et on génére un nouveau MCH post
@@ -15,11 +14,10 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
 
 		$structureArray = explode(',', urldecode($structure) );
 
-
 		?>
-        <div id="mch__container--template" class="meta-box-sortables ui-sortable">
-            <div id="mch__rapper--macro" class="postbox ">
-                <div class="handlediv" title="Cliquer pour inverser."><br></div>
+        <div id="mch__container--template--<?=$nEditeur?>" class="meta-box-sortables ui-sortable">
+            <div id="mch__rapper--macro" class="postbox mch">
+                <div class="handlediv mch" title="Cliquer pour inverser."><br></div>
                 <h3 class="hndle">
                     <span>
                     	Macro Template : <?=$tmpl__name?>
@@ -28,6 +26,8 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
                 <div class="inside">
 
 				<?php
+
+				wp_nonce_field( basename( __FILE__ ), 'mch_nonce' );
 
 				foreach ($structureArray as $element) {
 
@@ -86,7 +86,9 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
     public function getNewImage( $name ){
 
     	?>
-		    <input id="<?=$name?>" class="upload_image_button button" type="button" value="Upload Image" />
+    		<div class="mch__image--container">
+		    	<input id="<?=$name?>" class="upload_image_button button" type="button" value="Upload Image" />
+    		</div>
     	<?php
 
     }

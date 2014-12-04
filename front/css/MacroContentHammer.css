@@ -19,3 +19,24 @@
 	text-decoration: none;	
 	display: block;
 }
+#mch__selector ol li a h4{
+	margin: 0;
+}
+
+/* delete handling move on sortable */
+.js .postbox.mch .hndle{
+	cursor: auto;
+}
+
+.mch__editeur--container{
+	padding: 10px 0;
+}
+
+.mch__image--container{
+	width: 99%;
+	margin: 20px 0;
+	text-align: center;
+	border: 4px dotted #ECECEC;
+	padding: 20px 0;
+	border-radius: 9px;
+}
