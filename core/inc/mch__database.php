@@ -13,19 +13,25 @@ class MacroContentHammer__database extends MacroContentHammer__Plugin
 	public function init()
 	{        
 
-		// create MCH taxonomy
 
+		// MCH__content is custom post type for post
+		// MCH__parent is register in MCH__content with post parent
+		// MCH__groupe is meta for groupe of mch__content
+
+		// create MCH taxonomy
 
 		register_post_type( $this->name ,
 			array(
 				'labels' => array(
-				'name' => __( 'Mch__content' ),
-				'singular_name' => __( 'Mch__content' )
+				'name' => __( 'MCH__content' ),
+				'singular_name' => __( 'MCH__content' )
 			),
 			'public' => false,
 			'has_archive' => false,
 			)
 		);
+
+		// register taxonomy
 
 
 	}

@@ -29,7 +29,7 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
 
 					<?php
 
-					wp_nonce_field( basename( __FILE__ ), 'mch_nonce' );
+					wp_nonce_field( basename( __FILE__ ), 'macrocontenthammer__nonce' );
 
 					foreach ($structureArray as $element) {
 
@@ -39,13 +39,13 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
 
 						if( trim($element) === 'content' ){
 
-							$this->getNewEditor( $new__editor );
+							$this->getNewEditor( $new__editor, $tmpl__name );
 
 						}
 
 						if( trim($element) === 'image' ){
 
-							$this->getNewImage( $new__editor );
+							$this->getNewImage( $new__editor, $tmpl__name );
 
 						}
 
@@ -63,7 +63,7 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
 
 	}
 
-    public function getNewEditor( $name )
+    public function getNewEditor( $name, $tmpl__name )
     {
 
     	$content = '';
@@ -72,6 +72,7 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
 
     		<div class="mch__editeur--container">
 			<input type="hidden" name="mch__post__[]" value="<?=$name?>">
+			<input type="hidden" name="mch__template__[]" value="<?=$tmpl__name?>">
 
     		<?php
 
@@ -87,11 +88,12 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
  
     }
 
-    public function getNewImage( $name ){
+    public function getNewImage( $name, $tmpl__name ){
 
     	?>
     		<div class="mch__image--container">
     			<input type="hidden" name="mch__post__[]" value="<?=$name?>">
+    			<input type="hidden" name="mch__template__[]" value="<?=$tmpl__name?>">
 		    	<input id="<?=$name?>" class="upload_image_button button" type="button" value="Upload Image" />
     		</div>
     	<?php

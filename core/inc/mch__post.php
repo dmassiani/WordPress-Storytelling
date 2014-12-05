@@ -29,56 +29,83 @@
  */
 function myplugin_save_meta_box_data( $post_id ) {
 
-	// /*
-	//  * We need to verify this came from our screen and with proper authorization,
-	//  * because the save_post action can be triggered at other times.
-	//  */
 
-	// // Check if our nonce is set.
-	// if ( ! isset( $_POST['myplugin_meta_box_nonce'] ) ) {
-	// 	return;
-	// }
+	$mch__posts 		= $_POST['mch__post__[]'];
+	$mch__templates 	= $_POST['mch__template__[]'];
 
-	// // Verify that the nonce is valid.
-	// if ( ! wp_verify_nonce( $_POST['myplugin_meta_box_nonce'], 'myplugin_meta_box' ) ) {
-	// 	return;
-	// }
+	if( isset( $mch__posts ) && count( $mch__posts ) != 0 ){
 
-	// // If this is an autosave, our form has not been submitted, so we don't want to do anything.
-	// if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-	// 	return;
-	// }
+		// on a du post alors on y va :)
+		// on boucle sur les mch__post
+		foreach ($mch__posts as $key => $mch__post) {
 
-	// // Check the user's permissions.
-	// if ( isset( $_POST['post_type'] ) && 'page' == $_POST['post_type'] ) {
+			// Check if our nonce is set.
+			if ( ! isset( $_POST['macrocontenthammer__nonce'] ) ) {
+				return;
+			}
+			// If this is an autosave, our form has not been submitted, so we don't want to do anything.
+			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+				return;
+			}
 
-	// 	if ( ! current_user_can( 'edit_page', $post_id ) ) {
-	// 		return;
-	// 	}
+			// Check the user's permissions.
+			if ( isset( $_POST['post_type'] ) && 'page' == $_POST['post_type'] ) {
 
-	// } else {
+				if ( ! current_user_can( 'edit_page', $post_id ) ) {
+					return;
+				}
 
-	// 	if ( ! current_user_can( 'edit_post', $post_id ) ) {
-	// 		return;
-	// 	}
-	// }
+			} else {
 
-	// /* OK, it's safe for us to save the data now. */
-	
-	// // Make sure that it is set.
-	// if ( ! isset( $_POST['myplugin_new_field'] ) ) {
-	// 	return;
-	// }
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					return;
+				}
+			}
+			
 
-	// // Sanitize user input.
-	// $my_data = sanitize_text_field( $_POST['myplugin_new_field'] );
-
-	// // Update the meta field in the database.
+			// post name == $mch_post
+			// post value content = $_POST[ $mch_post ]
+				$mch__post__content = sanitize_text_field( $_POST[ $mch_post ] );
+			// post template
+				$mch__post__template = sanitize_text_field( $mch__templates[ $key ] );
 
 
-	// all post are on this : mch__post__[]
-	// and for all value have an input !
+			// ok, everything is right 
 
-	$content = wpautop( $_POST['mch__editor__1'], $br = 1 );
-	update_post_meta( $post_id, '_my_meta_value_key', $content );
+				// Sanitize user input.
+
+				// all post are on this : mch__post__[]
+				// and for all value have an input !
+
+				// pour toutes les entrées
+					// on test si c'est un update
+						// si c'est un update je dois avoir l'id dans les hidden
+
+// les editeurs sont dans l'ordre grace à mch__editeur__NUMBER
+
+						// si ce n'est pas un update
+							// on capte le status du post parent
+				$status = get_post_status( $post_id );
+							// on ajoute une entrée, son parent, son meta groupe
+
+				$mch__newpost = array(
+				  //'ID'              => [ <post id> ] // Are you updating an existing post?
+				  'post_content'  	=> $mch__post__content // The full text of the post.
+				  ,'post_status'    => $status
+				  ,'post_type'      => 'MCH__content'
+				  ,'ping_status'    => 'closed' // Pingbacks or trackbacks allowed. Default is the option 'default_ping_status'.
+				  ,'post_parent'    => $post_id
+				  ,'comment_status' => 'closed' // Default is the option 'default_comment_status', or 'closed'.
+				  // ,'tax_input'      => [ array( <taxonomy> => <array | string> ) ] // For custom taxonomies. Default empty.
+				);  
+
+				// wp_set_object_terms($mch__newpost->ID, 'cars', 'types', true);
+				update_post_meta( $mch__newpost->ID, 'template', $mch__post__template );
+
+
+
+		}
+	}
+
+
 }
