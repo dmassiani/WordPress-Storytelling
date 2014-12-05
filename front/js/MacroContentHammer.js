@@ -100,7 +100,7 @@
 	    $.post('/wp-admin/admin-ajax.php', data, function(response) {
 
 	    	// on insere le form juste avant le contenu
-	    	$(response).insertBefore( '#mch__container' );
+	    	$(response).insertBefore( '#postbox-container-2' );
 
 	    	window.setTimeout(function() {
 
@@ -181,7 +181,7 @@
 	// ================================
 
 	$(document).on('click', '#mch__selector a', function( e ){
-		
+
 		e.preventDefault();
 
 		var tmpl = $(this).data('name');

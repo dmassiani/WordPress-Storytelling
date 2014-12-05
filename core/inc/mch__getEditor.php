@@ -15,46 +15,49 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
 		$structureArray = explode(',', urldecode($structure) );
 
 		?>
-        <div id="mch__container--template--<?=$nEditeur?>" class="meta-box-sortables ui-sortable">
-            <div id="mch__rapper--macro" class="postbox mch">
-                <div class="handlediv mch" title="Cliquer pour inverser."><br></div>
-                <h3 class="hndle">
-                    <span>
-                    	Macro Template : <?=$tmpl__name?>
-                    </span>
-                </h3>
-                <div class="inside">
+		<div id="postbox-container-1<?=$nEditeur?>" class="postbox-container">
+			
+	        <div id="mch__container--template--<?=$nEditeur?>" class="meta-box-sortables ui-sortable">
+	            <div id="mch__rapper--macro" class="postbox mch closed">
+	                <div class="handlediv mch" title="Cliquer pour inverser."><br></div>
+	                <h3 class="hndle">
+	                    <span>
+	                    	Macro Template : <?=$tmpl__name?>
+	                    </span>
+	                </h3>
+	                <div class="inside">
 
-				<?php
+					<?php
 
-				wp_nonce_field( basename( __FILE__ ), 'mch_nonce' );
+					wp_nonce_field( basename( __FILE__ ), 'mch_nonce' );
 
-				foreach ($structureArray as $element) {
+					foreach ($structureArray as $element) {
 
-					$idNewEditor = $nEditeur + $nPost;
-					$new__editor = "mch__editor__" . $idNewEditor;	
-					
+						$idNewEditor = $nEditeur + $nPost;
+						$new__editor = "mch__editor__" . $idNewEditor;	
+						
 
-					if( trim($element) === 'content' ){
+						if( trim($element) === 'content' ){
 
-						$this->getNewEditor( $new__editor );
+							$this->getNewEditor( $new__editor );
+
+						}
+
+						if( trim($element) === 'image' ){
+
+							$this->getNewImage( $new__editor );
+
+						}
+
+						$nEditeur++;
 
 					}
 
-					if( trim($element) === 'image' ){
+					?>
 
-						$this->getNewImage( $new__editor );
-
-					}
-
-					$nEditeur++;
-
-				}
-
-				?>
-
-                </div>
-            </div>
+	                </div>
+	            </div>
+	        </div>
         </div>
 		<?php
 
@@ -68,6 +71,7 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
     		?>
 
     		<div class="mch__editeur--container">
+			<input type="hidden" name="mch__post__[]" value="<?=$name?>">
 
     		<?php
 
@@ -87,6 +91,7 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
 
     	?>
     		<div class="mch__image--container">
+    			<input type="hidden" name="mch__post__[]" value="<?=$name?>">
 		    	<input id="<?=$name?>" class="upload_image_button button" type="button" value="Upload Image" />
     		</div>
     	<?php

@@ -3,67 +3,48 @@ class MacroContentHammer__interface extends MacroContentHammer__Plugin
 {
     public function __construct()
     {
-        add_action( 'edit_page_form', array($this, 'init') );
+
+        add_action( 'add_meta_boxes', array($this, 'mch__addMetaBox__Sidebar') );
     }
 
-    public function init()
-    {
+    public function mch__addMetaBox__Sidebar(){
+        $screens = array( 'post', 'page' );
 
-        // add button
-        // add selector with registered template
+        foreach ( $screens as $screen ) {
 
+            add_meta_box(
+                'mch__selector',
+                __( 'Ajouter un macro contenu', 'myplugin_textdomain' ),
+                array($this, 'mch__addMetaBox__Sidebar__callback'),
+                $screen,
+                'side',
+                'core'
+            );
+        }
+    }
+
+    public function mch__addMetaBox__Sidebar__callback(){
+
+            $templates = parent::MacroContentHammer__registerTemplates();
+
+            // on parcourt les templates et on les affiche
+
+            foreach ($templates as &$template) {
+                $template = json_decode($template);
         ?>
 
-        <div id="mch__container" class="meta-box-sortables ui-sortable">
-            <div id="mch__rapper" class="postbox ">
-                <div class="handlediv" title="Cliquer pour inverser."><br></div>
-                <h3 class="hndle">
-                    <span>
-                       A traduire :: Ajouter une section macro contenu
-                    </span>
-                </h3>
-                <div class="inside">
-                
-
-
-                    <div id="mch__selector">
-                        <ol>
-
-                    <?php
-
-                        $templates = parent::MacroContentHammer__registerTemplates();
-
-                        // on parcourt les templates et on les affiche
-
-                        foreach ($templates as &$template) {
-                            $template = json_decode($template);
-                    ?>
-
-                            <li>
-                                <a href="#" data-name="<?=$template->name?>" data-structure="<?=$template->structure?>">
-                                    <h4><?=$template->name?></h4>
-                                    <p>
-                                        <?=$template->description?>
-                                    </p>
-                                </a>
-                            </li>
-
-                    <?php
-                        }
-                    ?>
-
-                        </ol>
-                        <div class="clear">
-                    </div>
-
-
-                
-                </div>
-            </div>
-        </div>
+                <li>
+                    <a href="#" data-name="<?=$template->name?>" data-structure="<?=$template->structure?>">
+                        <h4><?=$template->name?></h4>
+                        <p>
+                            <?=$template->description?>
+                        </p>
+                    </a>
+                </li>
 
         <?php
- 
+            }
+
     }
 
 }
