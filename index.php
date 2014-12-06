@@ -26,8 +26,7 @@ add_action( 'plugins_loaded', 'initMacroContentHammer' );
 function initMacroContentHammer() {
 	global $MCHammer;
 	// Load translations
-	add_action( 'save_post', 'myplugin_save_meta_box_data' );
-	add_action( 'edit_post', 'myplugin_save_meta_box_data' );
+	add_action( 'save_post', 'Macrocontenthammer__savedata' );
 	load_plugin_textdomain ( 'macro-content-hammer', false, basename(rtrim(dirname(__FILE__), '/')) . '/core/languages' );
 }
 

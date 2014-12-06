@@ -29,7 +29,7 @@ class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
 
 					<?php
 
-					wp_nonce_field( basename( __FILE__ ), 'macrocontenthammer__nonce' );
+					wp_nonce_field( 'mch__editor', 'macrocontenthammer__nonce' );
 
 					foreach ($structureArray as $element) {
 

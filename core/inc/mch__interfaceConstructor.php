@@ -20,7 +20,19 @@ class MacroContentHammer__interface extends MacroContentHammer__Plugin
                 'side',
                 'core'
             );
+
+            // add_meta_box(
+            //     'mch__selector',
+            //     __( 'Macro content', 'myplugin_textdomain' ),
+            //     array($this, 'mch__addMetaBox__Content__callback'),
+            //     $screen,
+            //     'normal',
+            //     'core'
+            // );
+            // echo 'mop';
+
         }
+
     }
 
     public function mch__addMetaBox__Sidebar__callback(){
@@ -44,6 +56,10 @@ class MacroContentHammer__interface extends MacroContentHammer__Plugin
 
         <?php
             }
+
+    }
+
+    public function mch__addMetaBox__Content__callback(){
 
     }
 

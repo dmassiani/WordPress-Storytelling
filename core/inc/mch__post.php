@@ -27,82 +27,88 @@
  *
  * @param int $post_id The ID of the post being saved.
  */
-function myplugin_save_meta_box_data( $post_id ) {
+function Macrocontenthammer__savedata( $post_id ) {
 
 
-	$mch__posts 		= $_POST['mch__post__[]'];
-	$mch__templates 	= $_POST['mch__template__[]'];
+	$mch__posts 		= $_POST['mch__post__'];
+	$mch__templates 	= $_POST['mch__template__'];
+	$user_ID 			= get_current_user_id();
+
+	// Check if our nonce is set.
+	if ( ! isset( $_POST['macrocontenthammer__nonce'] ) ) {
+		return;
+	}
+
+	// Verify that the nonce is valid.
+	if ( ! wp_verify_nonce( $_POST['macrocontenthammer__nonce'], 'mch__editor' ) ) {
+		return;
+	}
+
+	// If this is an autosave, our form has not been submitted, so we don't want to do anything.
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+
+	// Check the user's permissions.
+	if ( isset( $_POST['post_type'] ) && 'page' == $_POST['post_type'] ) {
+
+		if ( ! current_user_can( 'edit_page', $post_id ) ) {
+			return;
+		}
+
+	} else {
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+	}
 
 	if( isset( $mch__posts ) && count( $mch__posts ) != 0 ){
 
 		// on a du post alors on y va :)
 		// on boucle sur les mch__post
 		foreach ($mch__posts as $key => $mch__post) {
-
-			// Check if our nonce is set.
-			if ( ! isset( $_POST['macrocontenthammer__nonce'] ) ) {
-				return;
-			}
-			// If this is an autosave, our form has not been submitted, so we don't want to do anything.
-			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-				return;
-			}
-
-			// Check the user's permissions.
-			if ( isset( $_POST['post_type'] ) && 'page' == $_POST['post_type'] ) {
-
-				if ( ! current_user_can( 'edit_page', $post_id ) ) {
-					return;
-				}
-
-			} else {
-
-				if ( ! current_user_can( 'edit_post', $post_id ) ) {
-					return;
-				}
-			}
 			
 
-			// post name == $mch_post
-			// post value content = $_POST[ $mch_post ]
-				$mch__post__content = sanitize_text_field( $_POST[ $mch_post ] );
-			// post template
-				$mch__post__template = sanitize_text_field( $mch__templates[ $key ] );
+				$termid = get_post_meta($post_id, '_termid', true);
+				if ($termid != '') {
+				// it's a new record
+					$update = false;
+				} else {
+				// it's an existing record
+					$update = true;
+				}
 
 
-			// ok, everything is right 
-
-				// Sanitize user input.
-
-				// all post are on this : mch__post__[]
-				// and for all value have an input !
-
-				// pour toutes les entrées
-					// on test si c'est un update
-						// si c'est un update je dois avoir l'id dans les hidden
-
-// les editeurs sont dans l'ordre grace à mch__editeur__NUMBER
-
-						// si ce n'est pas un update
-							// on capte le status du post parent
 				$status = get_post_status( $post_id );
 							// on ajoute une entrée, son parent, son meta groupe
 
 				$mch__newpost = array(
-				  //'ID'              => [ <post id> ] // Are you updating an existing post?
-				  'post_content'  	=> $mch__post__content // The full text of the post.
-				  ,'post_status'    => $status
-				  ,'post_type'      => 'MCH__content'
-				  ,'ping_status'    => 'closed' // Pingbacks or trackbacks allowed. Default is the option 'default_ping_status'.
-				  ,'post_parent'    => $post_id
-				  ,'comment_status' => 'closed' // Default is the option 'default_comment_status', or 'closed'.
-				  // ,'tax_input'      => [ array( <taxonomy> => <array | string> ) ] // For custom taxonomies. Default empty.
-				);  
-
-				// wp_set_object_terms($mch__newpost->ID, 'cars', 'types', true);
-				update_post_meta( $mch__newpost->ID, 'template', $mch__post__template );
+					'post_title'		=> 'mch title'
+				  	,'post_content'  	=> $_POST[ $mch__post ] // The full text of the post.
+				  	,'post_status'    	=> $status
+				  	,'post_type'      	=> 'MCH__content'
+				  	,'ping_status'    	=> 'closed' 
+				  	,'post_parent'    	=> $post_id
+				  	,'post_author'		=> $user_ID
+				  	,'comment_status' 	=> 'closed'
+				);
 
 
+				if( $update === true ){
+					// on retrouve le content lié
+					// puis array_push( $mch__newpost, 'ID' => $idoufnd );
+				}
+
+				// on supprime le hook pour éviter l'effet inception
+				remove_action( 'save_post', 'Macrocontenthammer__savedata' );
+
+				$post__mch = wp_insert_post( $mch__newpost );
+				add_post_meta( $post__mch, 'template', $mch__post__template, true ) || update_post_meta( $mch__newpost->ID, 'template', $mch__post__template );
+
+				// on retabli le hook sur le save post
+				add_action( 'save_post', 'Macrocontenthammer__savedata' );
 
 		}
 	}
