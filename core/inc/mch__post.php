@@ -12,6 +12,7 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 
 		$mch__posts 		= $_POST['mch__post__'];
 		$mch__templates 	= $_POST['mch__template__'];
+		$mch__types 	= $_POST['mch__type__'];
 		$user_ID 			= get_current_user_id();
 
 		// Check if our nonce is set.
@@ -86,8 +87,10 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 
 					$post__mch = wp_insert_post( $mch__newpost );
 					$mch__post__template = $mch__templates[ $key ];
+					$mch__post__type = $mch__types[ $key ];
 					
 					add_post_meta( $post__mch, 'template', $mch__post__template, true ) || update_post_meta( $mch__newpost->ID, 'template', $mch__post__template );
+					add_post_meta( $post__mch, 'type', $mch__post__type, true ) || update_post_meta( $mch__newpost->ID, 'type', $mch__post__type );
 
 					// on retabli le hook sur le save post
 					add_action( 'save_post', array( $this, 'Macrocontenthammer__savedata' ) );

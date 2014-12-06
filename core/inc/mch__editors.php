@@ -72,6 +72,7 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
     		<div class="mch__editeur--container">
 			<input type="hidden" name="mch__post__[]" value="<?=$name?>">
 			<input type="hidden" name="mch__template__[]" value="<?=$tmpl__name?>">
+			<input type="hidden" name="mch__type__[]" value="content">
 
     		<?php
 
@@ -93,6 +94,7 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
     		<div class="mch__image--container">
     			<input type="hidden" name="mch__post__[]" value="<?=$name?>">
     			<input type="hidden" name="mch__template__[]" value="<?=$tmpl__name?>">
+    			<input type="hidden" name="mch__type" value="image">
 		    	<input id="<?=$name?>" class="upload_image_button button" type="button" value="Upload Image" />
     		</div>
     	<?php

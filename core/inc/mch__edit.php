@@ -9,12 +9,39 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 		add_action( 'edit_form_after_editor', array( $this, 'Macrocontenthammer__getdata' ) );
 	}
 
+	public function openMetabox( $tmpl__name ){
+		?>
+		<div id="postbox-container-1<?=$nEditeur?>" class="postbox-container">
+			
+	        <div id="mch__container--template--<?=$nEditeur?>" class="meta-box-sortables ui-sortable">
+	            <div id="mch__rapper--macro" class="postbox mch closed">
+	                <div class="handlediv mch" title="Cliquer pour inverser."><br></div>
+	                <h3 class="hndle">
+	                    <span>
+	                    	Macro Template : <?=$tmpl__name?>
+	                    </span>
+	                </h3>
+	                <div class="inside">
+
+					<?php
+
+					wp_nonce_field( 'mch__editor', 'macrocontenthammer__nonce' );
+	}
+
+	public function closeMetabox(){
+
+	}
+
 	public function Macrocontenthammer__getdata( $post ) {
 		
 
 		// metabox represente les metabox par groupe de template
 		$metabox = [];
+		$metabox_contenu = [];
+
 		$n__element = 0;
+		$start__box = 1000;
+		$n__element__box = 1 + $start__box;
 
 		$args = array(
 			'post_type'  	=> 'MCH__content'
@@ -30,32 +57,76 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
         $templates = Parent::MacroContentHammer__register__templates();
 
         
-        echo 'get data';
+        // echo 'get data';
 
 		if ( $mch_query->have_posts() ) :
-			// $mch_query->the_post();
+			
+			// on ouvre la metabox
+			// $this->openMetabox();
+
+			$i = 0;
+
 			while ( $mch_query->have_posts() ) : $mch_query->the_post();
 
+				// $new__editor = "mch__editor__" . $n__element;
 
 				$template = get_post_meta( $mch_query->post->ID, 'template', true );
-				echo 'get content' . $template;
+				$type = get_post_meta( $mch_query->post->ID, 'type', true );
+				// echo 'get content' . $template;
+
+				if( $i === 0 ){
+					$template__cache = $template;
+				}
+
+				if( $template__cache != $template ):
+					// on a changé de template
+						// on incremente le nombre de box
+						// $n__element__box++;
+					// on ferme la metabox
+					// $this->closeMetabox();
+					// on ouvre une metabox
+					// $this->openMetabox();
+
+					// on ajoute $metabox_contenu à metabox
+
+					$metabox[] = $metabox_contenu;
+
+					// on reset metabox_contenu
+
+					$metabox_contenu = [];
+				else:
+					// on ajoute le contenu à la metabox contenu
+					$metabox_contenu[] = array(
+						'type' 		=>  $type,
+						'content'	=>	$mch_query->post->post_content
+					);
+
+				endif;
+
+				$template__cache = $template;
 				// echo 'Je suis le tezmplate ' . $template;
 
-				// print_r($mch_query->posts);
+				// print_r($mch_query->post->post_content);
 
         		// $structure = Parent::MacroContentHammer__get__template__structure( $template );
 				// $structure = json_decode($templates[ $template ]);
 
 				// print_r($structure);
 	        	// $editeur->getNewContent( $template, $structure, $n__element );
-	        	// $n__element++;
+	        	$n__element++;
+	        	$i++;
 
 
 				// on a un type de contenu
 
         	endwhile;
 
+        	// on ferme la metabox
+			// $this->closeMetabox();
+
 		endif;
+
+		print_r($metabox);
 
 
 		/*
