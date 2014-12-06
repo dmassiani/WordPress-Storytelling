@@ -31,8 +31,6 @@ class MacroContentHammer__database extends MacroContentHammer__Plugin
 			)
 		);
 
-		// register taxonomy
-
 
 	}
 
