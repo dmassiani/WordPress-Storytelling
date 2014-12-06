@@ -39,6 +39,13 @@ class MacroContentHammer__kickstarter
 	// =============================================
 
 	public $templates = [];
+	
+    public $mch__ajax;
+    public $mch__metabox;
+    public $mch__database;
+    public $mch__post;
+    public $mch__edit;
+
 
 	// ==================================================
 	// include all php needed
@@ -173,15 +180,15 @@ class MacroContentHammer__kickstarter
     	// =================================================
 
     	// init ajax
-        $ajax = new MacroContentHammer__ajax();
+        $this->mch__ajax = new MacroContentHammer__ajax();
     	// init metabox selector
-        $interface = new MacroContentHammer__metabox();
+        $this->mch__metabox = new MacroContentHammer__metabox();
         // init database
-        $database = new MacroContentHammer__database();
+        $this->mch__database = new MacroContentHammer__database();
         // init post
-        $database = new MacroContentHammer__post();
+        $this->mch__post = new MacroContentHammer__post();
         // init edit
-        $database = new MacroContentHammer__edit();
+        $this->mch__edit = new MacroContentHammer__edit();
 
     }
 
