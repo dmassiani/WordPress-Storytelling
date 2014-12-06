@@ -15,7 +15,7 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 		$structureArray = explode(',', urldecode($structure) );
 
 		?>
-		<div id="postbox-container-1<?=$nEditeur?>" class="postbox-container">
+		<div id="postbox-container-1<?=$nEditeur?>" class="postbox-container mch-container">
 			
 	        <div id="mch__container--template--<?=$nEditeur?>" class="meta-box-sortables ui-sortable">
 	            <div id="mch__rapper--macro" class="postbox mch closed">

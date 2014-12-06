@@ -40,3 +40,7 @@
 	padding: 20px 0;
 	border-radius: 9px;
 }
+
+#post-body-content .mch-container:nth-child(0n+1){
+	margin-top: 20px;
+}

@@ -59,7 +59,10 @@
 	    $.post('/wp-admin/admin-ajax.php', data, function(response) {
 
 	    	// on insere le form juste avant le contenu
-	    	$(response).insertBefore( '#postbox-container-2' );
+
+	    	// $(response).append( '#postbox-container-1' );
+	    	console.log(response);
+	    	$( '#post-body-content' ).append( response );
 
 	    	window.setTimeout(function() {
 

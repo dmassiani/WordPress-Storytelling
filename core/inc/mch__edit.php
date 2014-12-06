@@ -6,13 +6,13 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 	public function __construct(){
 		// edit_post is hook for edit
 		// add_action( 'edit_form_after_editor', array( $this, 'Macrocontenthammer__getdata' ) );
-		add_action( 'edit_form_advanced', array( $this, 'Macrocontenthammer__getdata' ) );
-		add_action( 'edit_page_form', array( $this, 'Macrocontenthammer__getdata' ) );
+		add_action( 'edit_form_after_editor', array( $this, 'Macrocontenthammer__getdata' ) );
+		// add_action( 'edit_page_form', array( $this, 'Macrocontenthammer__getdata' ) );
 	}
 
 	public function openMetabox( $tmpl__name, $n__metabox ){
 		?>
-		<div id="postbox-container-1<?=$n__metabox?>" class="postbox-container">
+		<div id="postbox-container-1<?=$n__metabox?>" class="postbox-container mch-container">
 			
 	        <div id="mch__container--template--<?=$n__metabox?>" class="meta-box-sortables ui-sortable">
 	            <div id="mch__rapper--macro" class="postbox mch closed">
@@ -76,19 +76,25 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 
 
 				$template = get_post_meta( $mch_query->post->ID, 'template', true );
-
 				$type = get_post_meta( $mch_query->post->ID, 'type', true );
-				// echo 'get content' . $template;
+
 
 				if( $i === 0 ){
+
 					$template__cache = $template;
-					array_push( $metabox, array('template' => $template, 'metabox' => array()));
 					$key = $i;
+
+					$metabox[$key]['template'] = $template;
+
 				}
 
 				if( $template__cache != $template ):
-					array_push( $metabox[$key]['metabox'], $metabox_contenu);
+
+					// array_push( $metabox[$key]['metabox'], $metabox_contenu);
+					$metabox[$key]['metabox'] = $metabox_contenu;
+
 					$metabox_contenu = [];
+
 				else:
 					$metabox_contenu[] = array(
 						'type' 		=>  $type,
@@ -105,9 +111,13 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 
 		endif;
 
-		array_push( $metabox, array('template' => $template, 'metabox' => $metabox_contenu));
+		// array_push( $metabox, array('template' => $template, 'metabox' => array()));
+		$metabox[$key+1]['template'] = $template;
+		$metabox[$key+1]['metabox'] = $metabox_contenu;
 
 		$editeur = new MacroContentHammer__editors();
+
+		// print_r($metabox);
 
 		foreach ($metabox as $key => $box) {
 
@@ -121,26 +131,27 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 			foreach ( $box['metabox'] as $el_key => $element) {
 				// print_r($element);
 
-				foreach ( $element as $sub_key => $content__type) {
+					$name__editor = "mch__editor__" . (($el_key+1000) * ($key+1));
 
-					$name__editor = "mch__editor__" . $sub_key;
+					// echo $content__type['type'];
 
-					switch ( $content__type['type'] ) {
+					switch ( $element['type'] ) {
 						case 'image':
 							// echo "image";
-							$editeur->getNewEditor( $name__editor , $template, 'ouhou' );
+							$editeur->getNewImage( $name__editor , $template, $element['content'] );
 							break;
 
 						case 'content':
 							// echo "content";
-							$editeur->getNewImage( $name__editor , $template, 'ouhou' );
+							$editeur->getNewEditor( $name__editor , $template, $element['content'] );
 							break;
 
 						default:
-							echo "defaut : content";
+							$editeur->getNewEditor( $name__editor , $template, $element['content'] );
+							// echo "defaut : content";
 
 					}
-				}
+
 
 			}
 

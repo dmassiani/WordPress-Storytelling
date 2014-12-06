@@ -12,7 +12,7 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 
 		$mch__posts 		= $_POST['mch__post__'];
 		$mch__templates 	= $_POST['mch__template__'];
-		$mch__types 	= $_POST['mch__type__'];
+		$mch__types 		= $_POST['mch__type__'];
 		$user_ID 			= get_current_user_id();
 
 		// Check if our nonce is set.
