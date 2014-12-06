@@ -53,6 +53,7 @@ class MacroContentHammer__kickstarter
         include_once MCH_DIR . '/core/inc/mch__editors.php';
         include_once MCH_DIR . '/core/inc/mch__ajax.php';
         include_once MCH_DIR . '/core/inc/mch__post.php';
+        include_once MCH_DIR . '/core/inc/mch__edit.php';
 
 		add_action('init', array($this, 'init'), 1);
 		
@@ -137,6 +138,17 @@ class MacroContentHammer__kickstarter
 
     }
 
+    public function MacroContentHammer__get__template__structure( $name ){
+    	$folder = get_template_directory() . '/' . MCH_FOLDER;
+		$defaultHeader = array(
+			'TemplateName' => 'Template Name', 
+			'Structure' => 'Structure', 
+			'Description' => 'Description'
+		);
+    	$default = get_file_data( $folder . '/' . $name  . '.php',  $defaultHeader );
+    	return $default[ 'Structure' ];
+    }
+
 
     // ============================================================
     // Init MCH
@@ -168,6 +180,8 @@ class MacroContentHammer__kickstarter
         $database = new MacroContentHammer__database();
         // init post
         $database = new MacroContentHammer__post();
+        // init edit
+        $database = new MacroContentHammer__edit();
 
     }
 

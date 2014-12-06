@@ -39,13 +39,13 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 
 						if( trim($element) === 'content' ){
 
-							$this->getNewEditor( $new__editor, $tmpl__name );
+							$this->getNewEditor( $new__editor, $tmpl__name, '' );
 
 						}
 
 						if( trim($element) === 'image' ){
 
-							$this->getNewImage( $new__editor, $tmpl__name );
+							$this->getNewImage( $new__editor, $tmpl__name, '' );
 
 						}
 
@@ -63,10 +63,9 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 
 	}
 
-    public function getNewEditor( $name, $tmpl__name )
+    public function getNewEditor( $name, $tmpl__name, $content )
     {
 
-    	$content = '';
 
     		?>
 
@@ -88,7 +87,7 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
  
     }
 
-    public function getNewImage( $name, $tmpl__name ){
+    public function getNewImage( $name, $tmpl__name, $content ){
 
     	?>
     		<div class="mch__image--container">

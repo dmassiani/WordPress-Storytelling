@@ -82,13 +82,15 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 					}
 
 					// on supprime le hook pour éviter l'effet inception
-					remove_action( 'save_post', 'Macrocontenthammer__savedata' );
+					remove_action( 'save_post', array( $this, 'Macrocontenthammer__savedata' ) );
 
 					$post__mch = wp_insert_post( $mch__newpost );
+					$mch__post__template = $mch__templates[ $key ];
+					
 					add_post_meta( $post__mch, 'template', $mch__post__template, true ) || update_post_meta( $mch__newpost->ID, 'template', $mch__post__template );
 
 					// on retabli le hook sur le save post
-					add_action( 'save_post', 'Macrocontenthammer__savedata' );
+					add_action( 'save_post', array( $this, 'Macrocontenthammer__savedata' ) );
 
 			}
 		}
