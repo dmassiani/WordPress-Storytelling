@@ -1,5 +1,5 @@
 <?php
-class MacroContentHammer__database extends MacroContentHammer__Plugin
+class MacroContentHammer__database extends MacroContentHammer__kickstarter
 {
 
 	public $name = "mch__content";

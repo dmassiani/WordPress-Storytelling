@@ -1,5 +1,5 @@
 <?php
-class MacroContentHammer__getEditor extends MacroContentHammer__Plugin
+class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 {
 
 	public function getNewContent( $tmpl__name, $structure, $n__element ){

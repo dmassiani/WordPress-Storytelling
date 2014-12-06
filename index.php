@@ -14,7 +14,7 @@ Text Domain: macrocontenthammer
 */
 
 // Folder name
-define ( 'MCH_VERSION', '3.5' );
+define ( 'MCH_VERSION', '1.0' );
 define ( 'MCH_OPTION',  'simple-taxonomy' );
 define ( 'MCH_FOLDER',  'micro-templates' );
 
@@ -26,11 +26,12 @@ add_action( 'plugins_loaded', 'initMacroContentHammer' );
 function initMacroContentHammer() {
 	global $MCHammer;
 	// Load translations
-	add_action( 'save_post', 'Macrocontenthammer__savedata' );
 	load_plugin_textdomain ( 'macro-content-hammer', false, basename(rtrim(dirname(__FILE__), '/')) . '/core/languages' );
 }
 
-class MacroContentHammer__Plugin
+
+
+class MacroContentHammer__kickstarter
 {
 
 	// =============================================
@@ -48,22 +49,20 @@ class MacroContentHammer__Plugin
 
 
         include_once MCH_DIR . '/core/inc/mch__database.php';
-        include_once MCH_DIR . '/core/inc/mch__interfaceConstructor.php';
-        include_once MCH_DIR . '/core/inc/mch__getEditor.php';
+        include_once MCH_DIR . '/core/inc/mch__metabox.php';
+        include_once MCH_DIR . '/core/inc/mch__editors.php';
         include_once MCH_DIR . '/core/inc/mch__ajax.php';
         include_once MCH_DIR . '/core/inc/mch__post.php';
 
-        // $templates = [];
-		// global $templates;
-
 		add_action('init', array($this, 'init'), 1);
+		
     }
 
     // ============================================================
     // Register JS plugins
     // ============================================================
 
-    public function MacroContentHammer__registerPlugins(){
+    public function MacroContentHammer__register__plugins(){
 		// register javascript 
 		$scripts = array();
 
@@ -83,7 +82,7 @@ class MacroContentHammer__Plugin
     // Register CSS Styles
     // ============================================================
 
-    public function MacroContentHammer__registerStyles(){
+    public function MacroContentHammer__register__styles(){
 		// register styles
 		$styles = array();
 		
@@ -99,24 +98,10 @@ class MacroContentHammer__Plugin
     }
 
     // ============================================================
-    // Register Ajax
-    // ============================================================
-
-    public function MacroContentHammer__registerAjax(){
-
-		add_action("wp_ajax_MacroContentHammer__getNewMacro", "MacroContentHammer__getNewMacro");
-		add_action("wp_ajax_nopriv_MacroContentHammer__getNewMacro", "MacroContentHammer__getNewMacro");
-
-		add_action("wp_ajax_MacroContentHammer__getTotalMchPost", "MacroContentHammer__getTotalMchPost");
-		add_action("wp_ajax_nopriv_MacroContentHammer__getTotalMchPost", "MacroContentHammer__getTotalMchPost");
-
-    }
-
-    // ============================================================
     // Load Templates
     // ============================================================
 
-    public function MacroContentHammer__registerTemplates(){
+    public function MacroContentHammer__register__templates(){
 
 		// use file data to get name and template
 		$folder = get_template_directory() . '/' . MCH_FOLDER;
@@ -152,20 +137,6 @@ class MacroContentHammer__Plugin
 
     }
 
-    public function MacroContentHammer__templateCountElement( $tmpl ){
-
-    	// INUSED
-
-		$folder = get_template_directory() . '/' . MCH_FOLDER;
-
-		$default = get_file_data( $folder . '/' . $tmpl .'.php',  $defaultHeader );
-
-		$structure = explode(',', $default[ 'Structure' ]);
-
-		return count( $structure );
-
-    }
-
 
     // ============================================================
     // Init MCH
@@ -173,16 +144,30 @@ class MacroContentHammer__Plugin
 
     public function init(){
 
-    	// add register plugins
-    	$this->MacroContentHammer__registerPlugins();
-    	$this->MacroContentHammer__registerStyles();
-    	$this->MacroContentHammer__registerAjax();
 
-    	// add content (button)
-        $interface = new MacroContentHammer__interface();
+    	// ===================================================
+    	// 
+    	// add register plugins and styles
+    	// 
+    	// ===================================================
 
+    	$this->MacroContentHammer__register__plugins();
+    	$this->MacroContentHammer__register__styles();
+
+    	// =================================================
+    	//
+    	// instanciation
+    	//
+    	// =================================================
+
+    	// init ajax
+        $ajax = new MacroContentHammer__ajax();
+    	// init metabox selector
+        $interface = new MacroContentHammer__metabox();
         // init database
         $database = new MacroContentHammer__database();
+        // init post
+        $database = new MacroContentHammer__post();
 
     }
 
@@ -195,7 +180,7 @@ function MacroContentHammer__CanTouchThis()
 	
 	if( !isset($cantouchthis) )
 	{
-		$cantouchthis = new MacroContentHammer__Plugin();
+		$cantouchthis = new MacroContentHammer__kickstarter();
 	}
 	
 	return $cantouchthis;

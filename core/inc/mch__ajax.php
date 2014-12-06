@@ -1,33 +1,43 @@
 <?php
 
-// total__mch__content
+class MacroContentHammer__ajax extends MacroContentHammer__kickstarter
+{
 
-// ===================================================================
-// fonction qui retourne le nombre de post mch__content
-// ===================================================================
-
-function MacroContentHammer__getTotalMchPost(){
-
-	// getNewContent( $editor__name, $tmpl__name );
-    $db = new MacroContentHammer__database();
-    // $editeur->getNewEditor( $editor__name );
-    echo $db->total__mch__content();
-
-}
+    public function __construct(){
+        add_action("wp_ajax_MacroContentHammer__getNewMacro", array( $this, "MacroContentHammer__getNewMacro") );
+        add_action("wp_ajax_nopriv_MacroContentHammer__getNewMacro", array( $this, "MacroContentHammer__getNewMacro") );
+    }
 
 
-// ===================================================================
-// fonction qui retourne l'editeur wordpress !
-// ===================================================================
+    // ===================================================================
+    // fonction qui retourne le nombre de post mch__content
+    // ===================================================================
 
-function MacroContentHammer__getNewMacro(){
+    public function MacroContentHammer__getTotalMchPost(){
 
-	$tmpl__name = $_POST['tmpl'];
-	$structure = $_POST['structure'];
-	$n__element = $_POST['n__element'];
+    	// getNewContent( $editor__name, $tmpl__name );
+        $db = new MacroContentHammer__database();
+        // $editeur->getNewEditor( $editor__name );
+        echo $db->total__mch__content();
 
-    $editeur = new MacroContentHammer__getEditor();
-    // $editeur->getNewEditor( $editor__name );
-    $editeur->getNewContent( $tmpl__name, $structure, $n__element );
+    }
+
+
+    // ===================================================================
+    // fonction qui retourne l'editeur wordpress !
+    // ===================================================================
+
+    public function MacroContentHammer__getNewMacro(){
+
+    	$tmpl__name = $_POST['tmpl'];
+    	$structure = $_POST['structure'];
+    	$n__element = $_POST['n__element'];
+
+        $editeur = new MacroContentHammer__editors();
+        // $editeur->getNewEditor( $editor__name );
+        $editeur->getNewContent( $tmpl__name, $structure, $n__element );
+
+    }
+
 
 }

@@ -1,9 +1,8 @@
 <?php
-class MacroContentHammer__interface extends MacroContentHammer__Plugin
+class MacroContentHammer__metabox extends MacroContentHammer__kickstarter
 {
     public function __construct()
     {
-
         add_action( 'add_meta_boxes', array($this, 'mch__addMetaBox__Sidebar') );
     }
 
@@ -37,7 +36,7 @@ class MacroContentHammer__interface extends MacroContentHammer__Plugin
 
     public function mch__addMetaBox__Sidebar__callback(){
 
-            $templates = parent::MacroContentHammer__registerTemplates();
+            $templates = parent::MacroContentHammer__register__templates();
 
             // on parcourt les templates et on les affiche
 
