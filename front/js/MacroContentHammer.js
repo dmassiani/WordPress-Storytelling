@@ -5,7 +5,12 @@
 
 	var n__element 		= 0;
 	var n__post 		= 0;
-	getTotalMCHPost();
+
+	var n__metabox 		= 0;
+	var n__element 		= 0;
+
+	getMetaboxs();
+	getElements();
 
 	// ================================
 	// get total post of mch
@@ -17,6 +22,8 @@
 			'action': 'MacroContentHammer__getTotalMchPost'
 		};
 
+		// nombre total d'element enregistrer an base
+
 	    $.post('/wp-admin/admin-ajax.php', data, function(response) {
 	    	
 	    	// on insere le form juste avant le contenu
@@ -26,6 +33,15 @@
 
 	    });
 	    
+	}
+
+	function getMetaboxs(){
+		// retourne le nombre d'elements disponibles dans la page
+		n__metabox = $('.mch-container').length;
+	}
+	function getElements(){
+		// retourne le nombre d'elements disponibles dans la page
+		n__element = $('.mch__element').length;
 	}
 
 	// ================================
@@ -47,37 +63,53 @@
 		var contentLength = structureArray.length;
     	var file_frame;
 
+    	// var n__elements = parseInt(n__element + nElements)
+
+    	// console.log(n__elements);
+
 		var data = {
 			'action': 'MacroContentHammer__getNewMacro',
 			'tmpl' : tmpl,
 			'structure': encodeURIComponent(structure),
-			'n__element': n__element
+			'n__element': n__element,
+			'n__metabox': n__metabox
 		};
 
-		// alert(encodeURIComponent(structure));
+
+		// alert(n__metabox);
 
 	    $.post('/wp-admin/admin-ajax.php', data, function(response) {
 
 	    	// on insere le form juste avant le contenu
 
 	    	// $(response).append( '#postbox-container-1' );
-	    	console.log(response);
-	    	
+	    	// console.log(response);
+				// close all editor : open the new editor
+			// $('.mch-container .postbox.mch').not('.closed').addClass('closed');
+
 	    	$( '#post-body-content' ).append( response );
 
 	    	window.setTimeout(function() {
 
+				var idNewEditor = n__element + 1 + ( 1000 * n__metabox );
+
+				if( n__element === 0 )$('.mch-container').first().addClass('mch-first');
 
 	    		// pour chaque structure de type content, on init un tinymce
 	    		for (index = 0; index < contentLength; ++index) {
 
-					var idNewEditor = parseInt(n__element) + parseInt(n__post);
-					var new__editor = "mch__editor__" + idNewEditor;
+
+	    			var new__editor = "mch__editor__" + parseInt( parseInt( ( n__metabox + 1 ) * 1000 ) + parseInt( index + 1 ) );
+					// var new__editor = "mch__editor__" + idNewEditor;
+					// console.log(n__metabox, index, new__editor);
 	    		
 	    			// alert(structureArray[ index ]);
 	    			// alert($.trim(structureArray[ index ]));
 
 	    			// seulement si l'index de la structure est un contenu de type content
+
+	    			// console.log(structureArray);
+
 					if( $.trim(structureArray[ index ]) === "content" ){
 
 			    		// on modifie la config initiale WP en appliquant le nouvel id de l'éditeur
@@ -85,8 +117,6 @@
 						tinyMCEPreInit.qtInit[ 'content' ].id = new__editor;
 						tinymce.init(tinyMCEPreInit.mceInit[ 'content' ]);
 						quicktags( tinyMCEPreInit.qtInit[ 'content' ] );
-
-						// alert('init editeur ' + new__editor );
 
 					}
 
@@ -126,7 +156,7 @@
 					    });
 					}
 
-					n__element++;
+					idNewEditor++;
 					// $('.meta-box-sortables').sortable();
 					
 				}
@@ -149,6 +179,9 @@
 
 		var tmpl = $(this).data('name');
 		var structure = $(this).data('structure');
+		
+		getElements();
+		getMetaboxs();
 
 		getTemplate( tmpl, structure, n__element );
 

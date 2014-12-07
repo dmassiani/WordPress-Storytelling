@@ -13,6 +13,8 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 		$mch__posts 		= $_POST['mch__post__'];
 		$mch__templates 	= $_POST['mch__template__'];
 		$mch__types 		= $_POST['mch__type__'];
+		$mch__metabox 		= $_POST['metabox__id'];
+
 		$user_ID 			= get_current_user_id();
 
 		// Check if our nonce is set.
@@ -47,23 +49,38 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 
 		if( isset( $mch__posts ) && count( $mch__posts ) != 0 ){
 
+			$termid = get_post_meta($post_id, '_termid', true);
+			if ($termid != '') {
+			// it's a new record
+				$update = false;
+			} else {
+			// it's an existing record
+				$update = true;
+			}
+
+			if( $update === true ){
+				$args = array(
+					'post_type'  	=> 'MCH__content'
+					,'order_by'		=> 'ID'
+					,'order'		=> 'ASC'
+					,'post_parent'	=> $post_id
+					,'meta_key'		=> 'template'
+				);
+				$mch_query = new WP_Query( $args );
+				// print_r($mch_query);
+			}else{
+				echo 'false';
+			}
+
+
+
 			// on a du post alors on y va :)
 			// on boucle sur les mch__post
 			foreach ($mch__posts as $key => $mch__post) {
 				
 
-					$termid = get_post_meta($post_id, '_termid', true);
-					if ($termid != '') {
-					// it's a new record
-						$update = false;
-					} else {
-					// it's an existing record
-						$update = true;
-					}
-
-
 					$status = get_post_status( $post_id );
-								// on ajoute une entrée, son parent, son meta groupe
+					// on ajoute une entrée, son parent, son meta groupe
 
 					$mch__newpost = array(
 						'post_title'		=> 'mch title'
@@ -77,23 +94,39 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 					);
 
 
-					if( $update === true ){
-						// on retrouve le content lié
-						// puis array_push( $mch__newpost, 'ID' => $idoufnd );
-					}
 
-					// on supprime le hook pour éviter l'effet inception
+
+
 					remove_action( 'save_post', array( $this, 'Macrocontenthammer__savedata' ) );
 
-					$post__mch = wp_insert_post( $mch__newpost );
-					$mch__post__template = $mch__templates[ $key ];
-					$mch__post__type = $mch__types[ $key ];
-					
-					add_post_meta( $post__mch, 'template', $mch__post__template, true ) || update_post_meta( $mch__newpost->ID, 'template', $mch__post__template );
-					add_post_meta( $post__mch, 'type', $mch__post__type, true ) || update_post_meta( $mch__newpost->ID, 'type', $mch__post__type );
+
+
+
+							if( $update === false ){
+								echo 'false';
+								// on retrouve le content lié
+
+								// puis array_push( $mch__newpost, 'ID' => $idoufnd );
+								//$mch_newpost['ID'] = 
+							}else{
+
+								$post__mch = wp_insert_post( $mch__newpost );
+
+								$mch__post__template = $mch__templates[ $key ];
+								$mch__post__type = $mch__types[ $key ];
+								$mch__post__metabox = $mch__metabox[ $key ];
+								
+								add_post_meta( $post__mch, 'template', $mch__post__template, true ) || update_post_meta( $mch__newpost->ID, 'template', $mch__post__template );
+								add_post_meta( $post__mch, 'type', $mch__post__type, true ) || update_post_meta( $mch__newpost->ID, 'type', $mch__post__type );
+								add_post_meta( $post__mch, 'metabox', $mch__post__metabox, true ) || update_post_meta( $mch__newpost->ID, 'type', $mch__post__metabox );
+
+							}
+
 
 					// on retabli le hook sur le save post
 					add_action( 'save_post', array( $this, 'Macrocontenthammer__savedata' ) );
+
+
 
 			}
 		}

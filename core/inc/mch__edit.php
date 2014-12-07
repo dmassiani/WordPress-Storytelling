@@ -11,8 +11,12 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 	}
 
 	public function openMetabox( $tmpl__name, $n__metabox ){
+		$first = '';
+		if( $n__metabox === 0 )$first = ' mch-first';
 		?>
-		<div id="postbox-container-1<?=$n__metabox?>" class="postbox-container mch-container">
+
+
+		<div id="postbox-container-1<?=$n__metabox?>" class="postbox-container mch-container<?=$first?>">
 			
 	        <div id="mch__container--template--<?=$n__metabox?>" class="meta-box-sortables ui-sortable">
 	            <div id="mch__rapper--macro" class="postbox mch closed">
@@ -39,7 +43,7 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 	}
 
 	public function Macrocontenthammer__getdata( $post ) {
-		
+
 
 		// metabox represente les metabox par groupe de template
 		$metabox = [];
@@ -59,14 +63,14 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 		$mch_query = new WP_Query( $args );
 
 		// echo $mch_query->found_posts;
-        $editeur = new MacroContentHammer__editors();
+        // $editeur = new MacroContentHammer__editors();
         $templates = Parent::MacroContentHammer__register__templates();
 
         
         // echo 'get data';
 
 		if ( $mch_query->have_posts() ) :
-			
+
 			// on ouvre la metabox
 			// $this->openMetabox();
 
@@ -78,6 +82,8 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 				$template = get_post_meta( $mch_query->post->ID, 'template', true );
 				$type = get_post_meta( $mch_query->post->ID, 'type', true );
 
+				// nombre de contenu du template :
+				
 
 				if( $i === 0 ){
 
@@ -108,57 +114,57 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 
         	endwhile;
 
+			// array_push( $metabox, array('template' => $template, 'metabox' => array()));
+			$metabox[$key+1]['template'] = $template;
+			$metabox[$key+1]['metabox'] = $metabox_contenu;
 
-		endif;
+			$editeur = new MacroContentHammer__editors();
 
-		// array_push( $metabox, array('template' => $template, 'metabox' => array()));
-		$metabox[$key+1]['template'] = $template;
-		$metabox[$key+1]['metabox'] = $metabox_contenu;
+			// print_r($metabox);
 
-		$editeur = new MacroContentHammer__editors();
+			foreach ($metabox as $key => $box) {
 
-		// print_r($metabox);
+				// chaque itération repésente une metabox
+				$template = $box['template'];
 
-		foreach ($metabox as $key => $box) {
+				// print_r($metabox[ $key ]['template']);
 
-			// chaque itération repésente une metabox
-			$template = $box['template'];
+				$this->openMetaBox( $template, $key );
 
-			// print_r($metabox[ $key ]['template']);
+				foreach ( $box['metabox'] as $el_key => $element) {
+					// print_r($element);
 
-			$this->openMetaBox( $template, $key );
+						$name__editor = "mch__editor__" . (($el_key+1000) * ($key+1));
 
-			foreach ( $box['metabox'] as $el_key => $element) {
-				// print_r($element);
+						// echo $content__type['type'];
 
-					$name__editor = "mch__editor__" . (($el_key+1000) * ($key+1));
+						switch ( $element['type'] ) {
+							case 'image':
+								// echo "image";
+								$editeur->getNewImage( $name__editor , $template, $element['content'] );
+								break;
 
-					// echo $content__type['type'];
+							case 'content':
+								// echo "content";
+								$editeur->getNewEditor( $name__editor , $template, $element['content'] );
+								break;
 
-					switch ( $element['type'] ) {
-						case 'image':
-							// echo "image";
-							$editeur->getNewImage( $name__editor , $template, $element['content'] );
-							break;
+							default:
+								$editeur->getNewEditor( $name__editor , $template, $element['content'] );
+								// echo "defaut : content";
 
-						case 'content':
-							// echo "content";
-							$editeur->getNewEditor( $name__editor , $template, $element['content'] );
-							break;
+						}
 
-						default:
-							$editeur->getNewEditor( $name__editor , $template, $element['content'] );
-							// echo "defaut : content";
 
-					}
+				}
+
+				$this->closeMetaBox();
 
 
 			}
 
-			$this->closeMetaBox();
 
-
-		}
+		endif;
 
 	}
 

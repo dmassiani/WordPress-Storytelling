@@ -9,6 +9,24 @@ class MacroContentHammer__metabox extends MacroContentHammer__kickstarter
     public function mch__addMetaBox__Sidebar(){
         $screens = array( 'post', 'page' );
 
+        $args = array(
+            'public'   => true,
+            '_builtin' => false
+        );
+
+        $output = 'objects'; // names or objects
+
+        $post_types = get_post_types( $args, $output );
+
+        // print_r($post_types);
+
+
+        foreach ( $post_types  as $post_type ) {
+
+            $screens[] = $post_type->name;
+
+        }
+
         foreach ( $screens as $screen ) {
 
             add_meta_box(
@@ -19,16 +37,6 @@ class MacroContentHammer__metabox extends MacroContentHammer__kickstarter
                 'side',
                 'core'
             );
-
-            // add_meta_box(
-            //     'mch__selector',
-            //     __( 'Macro content', 'myplugin_textdomain' ),
-            //     array($this, 'mch__addMetaBox__Content__callback'),
-            //     $screen,
-            //     'normal',
-            //     'core'
-            // );
-            // echo 'mop';
 
         }
 

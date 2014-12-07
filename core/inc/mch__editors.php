@@ -2,11 +2,14 @@
 class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 {
 
-	public function getNewContent( $tmpl__name, $structure, $n__element ){
+	public $metabox__id = 1000;
+	public $element__id = 1;
+
+	public function getNewContent( $tmpl__name, $structure, $n__element, $n__metabox ){
 
 		// on récupère la liste des contenus et on génére un nouveau MCH post
 
-		$nEditeur = $n__element+1;
+		$this->metabox__id = $this->metabox__id * ( $n__metabox + 1 );
 
 		// $db = new MacroContentHammer__database();
 		// $nPost = $db->total__mch__content();
@@ -15,9 +18,9 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 		$structureArray = explode(',', urldecode($structure) );
 
 		?>
-		<div id="postbox-container-1<?=$nEditeur?>" class="postbox-container mch-container">
+		<div id="postbox-container-<?=$this->metabox__id?>" class="postbox-container mch-container">
 			
-	        <div id="mch__container--template--<?=$nEditeur?>" class="meta-box-sortables ui-sortable">
+	        <div id="mch__container--template--<?=$this->metabox__id?>" class="meta-box-sortables ui-sortable">
 	            <div id="mch__rapper--macro" class="postbox mch closed">
 	                <div class="handlediv mch" title="Cliquer pour inverser."><br></div>
 	                <h3 class="hndle">
@@ -31,10 +34,10 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 
 					wp_nonce_field( 'mch__editor', 'macrocontenthammer__nonce' );
 
-					foreach ($structureArray as $element) {
+					foreach ($structureArray as $key => $element) {
 
-						$idNewEditor = $nEditeur;
-						$new__editor = "mch__editor__" . $idNewEditor;	
+						$this->element__id = $this->metabox__id + ( $key + 1 );
+						$new__editor = "mch__editor__" . $this->element__id;	
 						
 
 						if( trim($element) === 'content' ){
@@ -48,8 +51,6 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 							$this->getNewImage( $new__editor, $tmpl__name, '' );
 
 						}
-
-						$nEditeur++;
 
 					}
 
@@ -69,10 +70,11 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 
     		?>
 
-    		<div class="mch__editeur--container">
+    		<div class="mch__editeur--container mch__element">
 			<input type="hidden" name="mch__post__[]" value="<?=$name?>">
 			<input type="hidden" name="mch__template__[]" value="<?=$tmpl__name?>">
 			<input type="hidden" name="mch__type__[]" value="content">
+    		<input type="hidden" name="metabox__id[]" value="<?=$this->metabox__id?>">
 
     		<?php
 
@@ -91,10 +93,11 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
     public function getNewImage( $name, $tmpl__name, $content ){
 
     	?>
-    		<div class="mch__image--container">
+    		<div class="mch__image--container mch__element">
     			<input type="hidden" name="mch__post__[]" value="<?=$name?>">
     			<input type="hidden" name="mch__template__[]" value="<?=$tmpl__name?>">
     			<input type="hidden" name="mch__type__[]" value="image">
+    			<input type="hidden" name="metabox__id" value="<?=$this->metabox__id?>">
 		    	<input id="<?=$name?>" class="upload_image_button button" type="button" value="Upload Image" />
     		</div>
     	<?php

@@ -41,6 +41,6 @@
 	border-radius: 9px;
 }
 
-#post-body-content .mch-container:nth-child(0n+1){
+.mch-first{
 	margin-top: 20px;
 }
