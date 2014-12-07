@@ -8,8 +8,8 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 
 		$nEditeur = $n__element+1;
 
-		$db = new MacroContentHammer__database();
-		$nPost = $db->total__mch__content();
+		// $db = new MacroContentHammer__database();
+		// $nPost = $db->total__mch__content();
 
 
 		$structureArray = explode(',', urldecode($structure) );
@@ -33,7 +33,7 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 
 					foreach ($structureArray as $element) {
 
-						$idNewEditor = $nEditeur + $nPost;
+						$idNewEditor = $nEditeur;
 						$new__editor = "mch__editor__" . $idNewEditor;	
 						
 

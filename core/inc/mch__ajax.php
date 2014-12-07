@@ -3,6 +3,10 @@
 class MacroContentHammer__ajax extends MacroContentHammer__kickstarter
 {
 
+
+    // best tricks ever : die()
+
+
     public function __construct(){
         add_action("wp_ajax_MacroContentHammer__getNewMacro", array( $this, "MacroContentHammer__getNewMacro") );
         add_action("wp_ajax_nopriv_MacroContentHammer__getNewMacro", array( $this, "MacroContentHammer__getNewMacro") );
@@ -19,6 +23,7 @@ class MacroContentHammer__ajax extends MacroContentHammer__kickstarter
         $db = new MacroContentHammer__database();
         // $editeur->getNewEditor( $editor__name );
         echo $db->total__mch__content();
+        die();
 
     }
 
@@ -36,6 +41,7 @@ class MacroContentHammer__ajax extends MacroContentHammer__kickstarter
         $editeur = new MacroContentHammer__editors();
         // $editeur->getNewEditor( $editor__name );
         $editeur->getNewContent( $tmpl__name, $structure, $n__element );
+        die();
 
     }
 

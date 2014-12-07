@@ -2,7 +2,7 @@
 class MacroContentHammer__database extends MacroContentHammer__kickstarter
 {
 
-	public $name = "mch__content";
+	public $name = "MCH__content";
 
 	public function __construct()
 	{
@@ -23,8 +23,8 @@ class MacroContentHammer__database extends MacroContentHammer__kickstarter
 		register_post_type( $this->name ,
 			array(
 				'labels' => array(
-				'name' => __( 'MCH__content' ),
-				'singular_name' => __( 'MCH__content' )
+				'name' => __( $this->name ),
+				'singular_name' => __( $this->name )
 			),
 			'public' => false,
 			'has_archive' => false,
@@ -34,10 +34,21 @@ class MacroContentHammer__database extends MacroContentHammer__kickstarter
 
 	}
 
-	public function total__mch__content(){
+	public function total__mch__content( $post_ID ){
+
+		$args = array(
+			'post_type'  	=> 'MCH__content'
+			,'order_by'		=> 'ID'
+			,'order'		=> 'ASC'
+			,'post_parent'	=> $post_ID
+			,'meta_key'		=> 'template'
+		);
+		$mch_query = new WP_Query( $args );
+
+		echo $mch_query->found_posts;
 
 		// return total content for attributing new editor ID
-		$count_posts = wp_count_posts( $this->name );
+		// var_dump( wp_count_posts( $this->name ) );
 
 	}
 

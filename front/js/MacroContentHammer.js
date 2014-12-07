@@ -62,6 +62,7 @@
 
 	    	// $(response).append( '#postbox-container-1' );
 	    	console.log(response);
+	    	
 	    	$( '#post-body-content' ).append( response );
 
 	    	window.setTimeout(function() {
