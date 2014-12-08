@@ -25,15 +25,17 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 			$mch__templates 	= $_POST['mch__template__'];
 			$mch__types 		= $_POST['mch__type__'];
 			$mch__metabox 		= $_POST['metabox__id'];
-
-			if( isset( $_POST['mch__ID'] ) ){
-				log_it('post exist');
-				$mch__ID = $_POST['mch__ID'];
-			}else{
-				log_it('post desotnexist');
-			}
+			$mch__images 		= $_POST['mch__image__id'];
 
 			$user_ID 			= get_current_user_id();
+
+			if( isset( $_POST['mch__ID'] ) ){
+				// log_it('post exist');
+				$mch__ID = $_POST['mch__ID'];
+			}else{
+				// log_it('post desotnexist');
+			}
+
 
 			// Check if our nonce is set.
 			if ( ! isset( $_POST['macrocontenthammer__nonce'] ) ) {
@@ -67,6 +69,8 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 
 			if( isset( $mch__posts ) && count( $mch__posts ) != 0 ){
 
+				// log_it($mch__posts);
+
 				// on a du post alors on y va :)
 				// on boucle sur les mch__post
 				foreach ($mch__posts as $key => $mch__post) {
@@ -76,11 +80,8 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 						$update = false;
 						// on ajoute une entrée, son parent, son meta groupe
 
-						if( empty( $_POST[ $mch__post ] ) )$_POST[ $mch__post ]='';
-
 						$mch__newpost = array(
 							'post_title'		=> 'mch title'
-						  	,'post_content'  	=> $_POST[ $mch__post ] // The full text of the post.
 						  	,'post_status'    	=> $status
 						  	,'post_type'      	=> 'MCH__content'
 						  	,'ping_status'    	=> 'closed' 
@@ -90,23 +91,37 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 						);
 
 
+						// Gestion du contenu en fonction du type
+						// s'il n'y a pas de contenu
+						if( empty( $_POST[ $mch__post ] ) )$_POST[ $mch__post ]='';
 
-						if( !empty( $mch__ID[ $key ] ) ){
-							log_it('key exist');
-							$mch__newpost['ID'] = $mch__ID[ $key ];
-							$update = true;
-							add_post_meta( $post_id, 'debug', $mch__ID[ $key ], true ) || 
-							update_post_meta( $post_id, 'debug', $mch__ID[ $key ] );
-						}else{
-							log_it('key doesnt exist');
+						// gestion du contenu en fonction du type
+						switch ( $mch__types[ $key ] ) {
+							case 'image':
+								$mch__newpost['post_content'] = $mch__images[ $key ];
+								break;
+
+							case 'editeur':
+								$mch__newpost['post_content'] = $_POST[ $mch__post ];
+								break;
+
 						}
 
-						log_it($mch__newpost);
+
+
+						if( !empty( $mch__ID[ $key ] ) ){
+
+							$mch__newpost['ID'] = $mch__ID[ $key ];
+							$update = true;
+
+						}
+
+						// log_it($mch__newpost);
+
+						// si c'est une image
 
 
 						remove_action( 'save_post', array( $this, 'Macrocontenthammer__savedata' ) );
-
-
 
 
 									$mch__post__template = $mch__templates[ $key ];

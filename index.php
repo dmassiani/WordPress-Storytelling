@@ -71,6 +71,7 @@ class MacroContentHammer__kickstarter
         include_once MCH_DIR . '/core/inc/mch__ajax.php';
         include_once MCH_DIR . '/core/inc/mch__post.php';
         include_once MCH_DIR . '/core/inc/mch__edit.php';
+        include_once MCH_DIR . '/core/inc/mch__remover.php';
 
 		add_action('init', array($this, 'init'), 1);
 		
@@ -172,6 +173,8 @@ class MacroContentHammer__kickstarter
     // ============================================================
 
     public function init(){
+
+		$ajax_nonce = wp_create_nonce( "mch__security" );
 
 
     	// ===================================================

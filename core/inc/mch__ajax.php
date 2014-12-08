@@ -14,8 +14,13 @@ class MacroContentHammer__ajax extends MacroContentHammer__kickstarter
 
 
     public function __construct(){
+
         add_action("wp_ajax_MacroContentHammer__getNewMacro", array( $this, "MacroContentHammer__getNewMacro") );
         add_action("wp_ajax_nopriv_MacroContentHammer__getNewMacro", array( $this, "MacroContentHammer__getNewMacro") );
+
+        add_action("wp_ajax_MacroContentHammer__deleteElements", array( $this, "MacroContentHammer__deleteElements") );
+        add_action("wp_ajax_nopriv_MacroContentHammer__deleteElements", array( $this, "MacroContentHammer__deleteElements") );
+
     }
 
 
@@ -44,10 +49,27 @@ class MacroContentHammer__ajax extends MacroContentHammer__kickstarter
 
         $editeur->template = $_POST['tmpl'];
         $editeur->structure = $_POST['structure'];
-        $editeur->n__element = $_POST['n__element'];
         $editeur->n__metabox = $_POST['n__metabox'];
 
         $editeur->getNewContent();
+
+        die();
+
+    }
+
+    // ===================================================================
+    // delete all element of metabox
+    // ===================================================================
+
+    public function MacroContentHammer__deleteElements(){
+
+        $remover = new MacroContentHammer__remover();
+
+        $remover->elements = $_POST['elements'];
+        // $remover->security = $_POST['security'];
+        echo check_ajax_referer( 'cantouchthis', $_POST['security'] );
+
+        $remover->Macrocontenthammer__remove__elements();
 
         die();
 

@@ -24,6 +24,7 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 		// metabox represente les metabox par groupe de template
 		$metabox = [];
 		$metabox_contenu = [];
+		$metabox__structure = []; // structure ID des elements pour la suppression
 
 		$n__element = 0;
 		$start__box = 1000;
@@ -51,7 +52,7 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 			,'order_by'		=> 'ID'
 			,'order'		=> 'ASC'
 			,'post_parent'	=> $post->ID
-			,'posts_per_page'=>-1
+			,'posts_per_page'=> -1
 			,'meta_key'		=> 'template'
 		);
 		$mch_query = new WP_Query( $args );
@@ -85,11 +86,6 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 				$template = get_post_meta( $mch_query->post->ID, 'template', true );
 				$type = get_post_meta( $mch_query->post->ID, 'type', true );
 				$container = get_post_meta( $mch_query->post->ID, 'container', true );
-				// echo $template;
-				// echo $template;
-
-				// nombre de contenu du template :
-
 
 				if( $i === 0 ){
 
@@ -105,7 +101,6 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 				
 					$tmpl++;
 
-					// array_push( $metabox[$key]['metabox'], $metabox_contenu);
 					$metabox[$tmpl]['template'] = $template;
 					$metabox[$tmpl]['container'] = $container;
 
@@ -150,6 +145,7 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 
 				foreach ( $box['metabox'] as $el_key => $element) {
 
+						$metabox__structure[] = $element['ID'];
 
 						$name__editor = "mch__editor__" . ( $container + $el_key +1);	
 						
@@ -158,8 +154,10 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 						$editeur->name = $name__editor;
 
 
+
 						switch ( $element['type'] ) {
 							case 'image':
+								$editeur->images__id = $element['content'];
 								$editeur->getNewImage();
 								break;
 
@@ -174,7 +172,10 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 
 				}
 
+				$editeur->elementsRemove = implode(',', $metabox__structure);
+				$editeur->postID = $post->ID;
 				$editeur->closeMetaBox();
+				$metabox__structure = [];
 
 
 			}

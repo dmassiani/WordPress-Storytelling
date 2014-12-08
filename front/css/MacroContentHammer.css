@@ -44,3 +44,28 @@
 .mch-first{
 	margin-top: 20px;
 }
+
+.mch__element .mch__imageRemover{
+	display: none;
+}
+.mch__element .mch__imageRemover.show{
+	display: inline;
+}
+.mch__element .upload_image_button.hide{
+	display: none;
+}
+
+/* Remove Element */
+.mch__remove__element{
+	float: right;
+}
+.mch__remove__element .remover a{
+	color: #a00;
+}
+.mch__remove__element .confirm{
+	display: none;
+}
+.mch__remove__element .confirm .delete{
+	color: #a00;
+	padding: 0 10px;
+}
