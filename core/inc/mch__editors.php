@@ -1,4 +1,13 @@
 <?php
+
+
+// ******************************************************
+//
+// Génération des éditeurs par ajax
+//
+// ******************************************************
+
+
 class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 {
 
@@ -64,6 +73,39 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 
 	}
 
+	public function openMetabox( $tmpl__name, $n__metabox ){
+		$first = '';
+		if( $n__metabox === 1000 )$first = ' mch-first';
+		$this->metabox__id = $this->metabox__id * ( $n__metabox + 1 );
+		?>
+
+
+		<div id="postbox-container-<?=$this->metabox__id?>" class="postbox-container mch-container<?=$first?>">
+			
+	        <div id="mch__container--template--<?=$this->metabox__id?>" class="meta-box-sortables ui-sortable">
+	            <div id="mch__rapper--macro" class="postbox mch closed">
+	                <div class="handlediv" title="Cliquer pour inverser."><br></div>
+	                <h3 class="hndle">
+	                    <span>
+	                    	Macro Template : <?=$tmpl__name?>
+	                    </span>
+	                </h3>
+	                <div class="inside">
+
+					<?php
+
+					wp_nonce_field( 'mch__editor', 'macrocontenthammer__nonce' );
+	}
+
+	public function closeMetabox(){
+		?>
+	                </div>
+	            </div>
+	        </div>
+        </div>
+        <?php
+	}
+
     public function getNewEditor( $name, $tmpl__name, $content )
     {
 
@@ -71,13 +113,13 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
     		?>
 
     		<div class="mch__editeur--container mch__element">
-			<input type="hidden" name="mch__post__[]" value="<?=$name?>">
-			<input type="hidden" name="mch__template__[]" value="<?=$tmpl__name?>">
-			<input type="hidden" name="mch__type__[]" value="content">
-    		<input type="hidden" name="metabox__id[]" value="<?=$this->metabox__id?>">
+				<input type="hidden" name="mch__post__[]" value="<?=$name?>">
+				<input type="hidden" name="mch__template__[]" value="<?=$tmpl__name?>">
+				<input type="hidden" name="mch__type__[]" value="content">
+	    		<input type="hidden" name="metabox__id[]" value="<?=$this->metabox__id?>">
 
     		<?php
-
+    		// print_r($name);
 				ob_start();
         		wp_editor( $content, $name );
                 echo ob_get_clean();
@@ -97,7 +139,8 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
     			<input type="hidden" name="mch__post__[]" value="<?=$name?>">
     			<input type="hidden" name="mch__template__[]" value="<?=$tmpl__name?>">
     			<input type="hidden" name="mch__type__[]" value="image">
-    			<input type="hidden" name="metabox__id" value="<?=$this->metabox__id?>">
+    			<input type="hidden" name="metabox__id[]" value="<?=$this->metabox__id?>">
+
 		    	<input id="<?=$name?>" class="upload_image_button button" type="button" value="Upload Image" />
     		</div>
     	<?php

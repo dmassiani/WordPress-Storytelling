@@ -1,5 +1,11 @@
 <?php
 
+// ******************************************************
+//
+// Enregistrement et update d'un post
+//
+// ******************************************************
+
 class MacroContentHammer__post extends MacroContentHammer__kickstarter
 {
 
@@ -58,19 +64,19 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 				$update = true;
 			}
 
-			if( $update === true ){
-				$args = array(
-					'post_type'  	=> 'MCH__content'
-					,'order_by'		=> 'ID'
-					,'order'		=> 'ASC'
-					,'post_parent'	=> $post_id
-					,'meta_key'		=> 'template'
-				);
-				$mch_query = new WP_Query( $args );
-				// print_r($mch_query);
-			}else{
-				echo 'false';
-			}
+			// if( $update === true ){
+			// 	$args = array(
+			// 		'post_type'  	=> 'MCH__content'
+			// 		,'order_by'		=> 'ID'
+			// 		,'order'		=> 'ASC'
+			// 		,'post_parent'	=> $post_id
+			// 		,'meta_key'		=> 'template'
+			// 	);
+			// 	$mch_query = new WP_Query( $args );
+			// 	// print_r($mch_query);
+			// }else{
+			// 	echo 'false';
+			// }
 
 
 
@@ -102,13 +108,13 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 
 
 
-							if( $update === false ){
-								echo 'false';
-								// on retrouve le content lié
+							// if( $update === false ){
+							// 	echo 'false';
+							// 	// on retrouve le content lié
 
-								// puis array_push( $mch__newpost, 'ID' => $idoufnd );
-								//$mch_newpost['ID'] = 
-							}else{
+							// 	// puis array_push( $mch__newpost, 'ID' => $idoufnd );
+							// 	//$mch_newpost['ID'] = 
+							// }else{
 
 								$post__mch = wp_insert_post( $mch__newpost );
 
@@ -118,9 +124,9 @@ class MacroContentHammer__post extends MacroContentHammer__kickstarter
 								
 								add_post_meta( $post__mch, 'template', $mch__post__template, true ) || update_post_meta( $mch__newpost->ID, 'template', $mch__post__template );
 								add_post_meta( $post__mch, 'type', $mch__post__type, true ) || update_post_meta( $mch__newpost->ID, 'type', $mch__post__type );
-								add_post_meta( $post__mch, 'metabox', $mch__post__metabox, true ) || update_post_meta( $mch__newpost->ID, 'type', $mch__post__metabox );
+								add_post_meta( $post__mch, 'container', $mch__post__metabox, true ) || update_post_meta( $mch__newpost->ID, 'container', $mch__post__metabox );
 
-							}
+							// }
 
 
 					// on retabli le hook sur le save post

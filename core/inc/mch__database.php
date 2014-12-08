@@ -40,7 +40,8 @@ class MacroContentHammer__database extends MacroContentHammer__kickstarter
 			'post_type'  	=> 'MCH__content'
 			,'order_by'		=> 'ID'
 			,'order'		=> 'ASC'
-			,'post_parent'	=> $post_ID
+			,'post_parent'	=> $post_ID			
+			,'posts_per_page'=>-1
 			,'meta_key'		=> 'template'
 		);
 		$mch_query = new WP_Query( $args );

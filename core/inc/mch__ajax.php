@@ -1,5 +1,11 @@
 <?php
 
+// ******************************************************
+//
+// Register ajax
+//
+// ******************************************************
+
 class MacroContentHammer__ajax extends MacroContentHammer__kickstarter
 {
 

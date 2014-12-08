@@ -1,5 +1,13 @@
 <?php
 
+
+// ******************************************************
+//
+// Generation des metabox à l'ouverture d'un update de post
+//
+// ******************************************************
+
+
 class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 {
 
@@ -8,38 +16,6 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 		// add_action( 'edit_form_after_editor', array( $this, 'Macrocontenthammer__getdata' ) );
 		add_action( 'edit_form_after_editor', array( $this, 'Macrocontenthammer__getdata' ) );
 		// add_action( 'edit_page_form', array( $this, 'Macrocontenthammer__getdata' ) );
-	}
-
-	public function openMetabox( $tmpl__name, $n__metabox ){
-		$first = '';
-		if( $n__metabox === 0 )$first = ' mch-first';
-		?>
-
-
-		<div id="postbox-container-1<?=$n__metabox?>" class="postbox-container mch-container<?=$first?>">
-			
-	        <div id="mch__container--template--<?=$n__metabox?>" class="meta-box-sortables ui-sortable">
-	            <div id="mch__rapper--macro" class="postbox mch closed">
-	                <div class="handlediv" title="Cliquer pour inverser."><br></div>
-	                <h3 class="hndle">
-	                    <span>
-	                    	Macro Template : <?=$tmpl__name?>
-	                    </span>
-	                </h3>
-	                <div class="inside">
-
-					<?php
-
-					wp_nonce_field( 'mch__editor', 'macrocontenthammer__nonce' );
-	}
-
-	public function closeMetabox(){
-		?>
-	                </div>
-	            </div>
-	        </div>
-        </div>
-        <?php
 	}
 
 	public function Macrocontenthammer__getdata( $post ) {
@@ -53,70 +29,105 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 		$start__box = 1000;
 		$n__element__box = 1 + $start__box;
 
+
+		// ====================================================================
+		//
+		// on récupère les templates disponibles
+		//
+		// ====================================================================
+        $templates = Parent::MacroContentHammer__register__templates();
+
+
+		// ====================================================================
+		//
+		// on récupère tout les post MCH_content avec comme parent le post
+		//
+		// ====================================================================
 		$args = array(
 			'post_type'  	=> 'MCH__content'
 			,'order_by'		=> 'ID'
 			,'order'		=> 'ASC'
 			,'post_parent'	=> $post->ID
+			,'posts_per_page'=>-1
 			,'meta_key'		=> 'template'
 		);
 		$mch_query = new WP_Query( $args );
-
 		// echo $mch_query->found_posts;
-        // $editeur = new MacroContentHammer__editors();
-        $templates = Parent::MacroContentHammer__register__templates();
+		// print_r($mch_query);
 
         
-        // echo 'get data';
-
+		// ====================================================================
+		//
+		// s'il y a des posts
+		//
+		// ====================================================================
 		if ( $mch_query->have_posts() ) :
 
-			// on ouvre la metabox
-			// $this->openMetabox();
 
 			$i = 0;
+			$tmpl = 0;
+
+			// ====================================================================
+			//
+			// pour chaque post
+			//
+			// ====================================================================
+			$previous__container = '';
 
 			while ( $mch_query->have_posts() ) : $mch_query->the_post();
 
 
 				$template = get_post_meta( $mch_query->post->ID, 'template', true );
 				$type = get_post_meta( $mch_query->post->ID, 'type', true );
+				$container = get_post_meta( $mch_query->post->ID, 'container', true );
+				// echo $template;
+				// echo $template;
 
 				// nombre de contenu du template :
-				
+
 
 				if( $i === 0 ){
 
-					$template__cache = $template;
-					$key = $i;
-
-					$metabox[$key]['template'] = $template;
+					$previous__container = $container;
+					$metabox[$tmpl]['template'] = $template;
+					$metabox[$tmpl]['container'] = $container;
 
 				}
 
-				if( $template__cache != $template ):
+				if( $previous__container != $container ):
+
+					$metabox[$tmpl]['metabox'] = $metabox_contenu;
+				
+					$tmpl++;
 
 					// array_push( $metabox[$key]['metabox'], $metabox_contenu);
-					$metabox[$key]['metabox'] = $metabox_contenu;
+					$metabox[$tmpl]['template'] = $template;
+					$metabox[$tmpl]['container'] = $container;
 
 					$metabox_contenu = [];
 
+
 				else:
-					$metabox_contenu[] = array(
-						'type' 		=>  $type,
-						'content'	=>	$mch_query->post->post_content
-					);
+	        		$i++;
 				endif;
 
-				$template__cache = $template;
+
+				$metabox_contenu[] = array(
+					'type' 		=>  $type,
+					'content'	=>	$mch_query->post->post_content
+				);
+
+
+				$previous__container = $container;
+
 	        	$n__element++;
-	        	$i++;
 
         	endwhile;
 
 			// array_push( $metabox, array('template' => $template, 'metabox' => array()));
-			$metabox[$key+1]['template'] = $template;
-			$metabox[$key+1]['metabox'] = $metabox_contenu;
+			$metabox[$tmpl]['template'] = $template;
+			$metabox[$tmpl]['container'] = $container;
+			$metabox[$tmpl]['metabox'] = $metabox_contenu;
 
 			$editeur = new MacroContentHammer__editors();
 
@@ -126,16 +137,21 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 
 				// chaque itération repésente une metabox
 				$template = $box['template'];
+				$container = $box['container'];
 
-				// print_r($metabox[ $key ]['template']);
+				// print_r($metabox[ $key ]['container']);
 
-				$this->openMetaBox( $template, $key );
+				$editeur->openMetaBox( $template, $key );
 
 				foreach ( $box['metabox'] as $el_key => $element) {
 					// print_r($element);
 
-						$name__editor = "mch__editor__" . (($el_key+1000) * ($key+1));
+						// $name__editor = "mch__editor__" . $container;
 
+						// $this->element__id = $container + ( $el_key + 1 );
+
+						$name__editor = "mch__editor__" . ( $container + $el_key +1);	
+						
 						// echo $content__type['type'];
 
 						switch ( $element['type'] ) {
@@ -158,7 +174,7 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 
 				}
 
-				$this->closeMetaBox();
+				$editeur->closeMetaBox();
 
 
 			}
