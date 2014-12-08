@@ -40,13 +40,15 @@ class MacroContentHammer__ajax extends MacroContentHammer__kickstarter
 
     public function MacroContentHammer__getNewMacro(){
 
-    	$tmpl__name = $_POST['tmpl'];
-    	$structure = $_POST['structure'];
-        $n__element = $_POST['n__element'];
-    	$n__metabox = $_POST['n__metabox'];
-
         $editeur = new MacroContentHammer__editors();
-        $editeur->getNewContent( $tmpl__name, $structure, $n__element, $n__metabox );
+
+        $editeur->template = $_POST['tmpl'];
+        $editeur->structure = $_POST['structure'];
+        $editeur->n__element = $_POST['n__element'];
+        $editeur->n__metabox = $_POST['n__metabox'];
+
+        $editeur->getNewContent();
+
         die();
 
     }

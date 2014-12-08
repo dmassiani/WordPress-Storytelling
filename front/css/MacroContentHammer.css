@@ -28,13 +28,13 @@
 	cursor: auto;
 }
 
-.mch__editeur--container{
+.mch__element{
 	padding: 10px 0;
 }
 
-.mch__image--container{
+.mch__element__image{
 	width: 99%;
-	margin: 20px 0;
+	margin: 10px 0;
 	text-align: center;
 	border: 4px dotted #ECECEC;
 	padding: 20px 0;

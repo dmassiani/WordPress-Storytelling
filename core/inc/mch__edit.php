@@ -37,6 +37,9 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 		// ====================================================================
         $templates = Parent::MacroContentHammer__register__templates();
 
+        // on instancie les editeurs et on le passe en mode update
+		$editeur = new MacroContentHammer__editors();
+		$editeur->update = true;
 
 		// ====================================================================
 		//
@@ -73,6 +76,8 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 			//
 			// ====================================================================
 			$previous__container = '';
+			$debug = get_post_meta( $post->ID, 'debug', true );
+			// echo $debug;
 
 			while ( $mch_query->have_posts() ) : $mch_query->the_post();
 
@@ -113,6 +118,7 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 
 
 				$metabox_contenu[] = array(
+					'ID'		=>  $mch_query->post->ID,
 					'type' 		=>  $type,
 					'content'	=>	$mch_query->post->post_content
 				);
@@ -129,8 +135,6 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 			$metabox[$tmpl]['container'] = $container;
 			$metabox[$tmpl]['metabox'] = $metabox_contenu;
 
-			$editeur = new MacroContentHammer__editors();
-
 			// print_r($metabox);
 
 			foreach ($metabox as $key => $box) {
@@ -141,34 +145,30 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 
 				// print_r($metabox[ $key ]['container']);
 
-				$editeur->openMetaBox( $template, $key );
+				$editeur->template = $template;
+				$editeur->openMetaBox( $key );
 
 				foreach ( $box['metabox'] as $el_key => $element) {
-					// print_r($element);
 
-						// $name__editor = "mch__editor__" . $container;
-
-						// $this->element__id = $container + ( $el_key + 1 );
 
 						$name__editor = "mch__editor__" . ( $container + $el_key +1);	
 						
-						// echo $content__type['type'];
+						$editeur->ID = $element['ID'];
+						$editeur->content = $element['content'];
+						$editeur->name = $name__editor;
+
 
 						switch ( $element['type'] ) {
 							case 'image':
-								// echo "image";
-								$editeur->getNewImage( $name__editor , $template, $element['content'] );
+								$editeur->getNewImage();
 								break;
 
-							case 'content':
-								// echo "content";
-								$editeur->getNewEditor( $name__editor , $template, $element['content'] );
+							case 'editeur':
+								$editeur->getNewEditor();
 								break;
 
 							default:
-								$editeur->getNewEditor( $name__editor , $template, $element['content'] );
-								// echo "defaut : content";
-
+								$editeur->getNewEditor();
 						}
 
 

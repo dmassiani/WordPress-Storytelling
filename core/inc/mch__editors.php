@@ -14,17 +14,25 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 	public $metabox__id = 1000;
 	public $element__id = 1;
 
-	public function getNewContent( $tmpl__name, $structure, $n__element, $n__metabox ){
+	// ID est uniquement défini lors d'une mise à jour du champ
+	public $ID;
+
+    public $template;
+    public $structure;
+    public $n__element;
+    public $n__metabox;
+    public $name;
+    public $content;
+    public $type;
+    public $update = false;
+
+	public function getNewContent(){
 
 		// on récupère la liste des contenus et on génére un nouveau MCH post
 
-		$this->metabox__id = $this->metabox__id * ( $n__metabox + 1 );
+		$this->metabox__id = $this->metabox__id * ( $this->n__metabox + 1 );
 
-		// $db = new MacroContentHammer__database();
-		// $nPost = $db->total__mch__content();
-
-
-		$structureArray = explode(',', urldecode($structure) );
+		$structureArray = explode(',', urldecode($this->structure) );
 
 		?>
 		<div id="postbox-container-<?=$this->metabox__id?>" class="postbox-container mch-container">
@@ -34,7 +42,7 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 	                <div class="handlediv mch" title="Cliquer pour inverser."><br></div>
 	                <h3 class="hndle">
 	                    <span>
-	                    	Macro Template : <?=$tmpl__name?>
+	                    	Macro Template : <?=$this->template?>
 	                    </span>
 	                </h3>
 	                <div class="inside">
@@ -47,17 +55,17 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 
 						$this->element__id = $this->metabox__id + ( $key + 1 );
 						$new__editor = "mch__editor__" . $this->element__id;	
-						
+						$this->name = $new__editor;
 
 						if( trim($element) === 'content' ){
 
-							$this->getNewEditor( $new__editor, $tmpl__name, '' );
+							$this->getNewEditor();
 
 						}
 
 						if( trim($element) === 'image' ){
 
-							$this->getNewImage( $new__editor, $tmpl__name, '' );
+							$this->getNewImage();
 
 						}
 
@@ -73,9 +81,9 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 
 	}
 
-	public function openMetabox( $tmpl__name, $n__metabox ){
+	public function openMetabox( $n__metabox ){
 		$first = '';
-		if( $n__metabox === 1000 )$first = ' mch-first';
+		if( $n__metabox === 0 )$first = ' mch-first';
 		$this->metabox__id = $this->metabox__id * ( $n__metabox + 1 );
 		?>
 
@@ -87,7 +95,7 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 	                <div class="handlediv" title="Cliquer pour inverser."><br></div>
 	                <h3 class="hndle">
 	                    <span>
-	                    	Macro Template : <?=$tmpl__name?>
+	                    	Macro Template : <?=$this->template?>
 	                    </span>
 	                </h3>
 	                <div class="inside">
@@ -106,45 +114,51 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
         <?php
 	}
 
-    public function getNewEditor( $name, $tmpl__name, $content )
-    {
-
-
-    		?>
-
-    		<div class="mch__editeur--container mch__element">
-				<input type="hidden" name="mch__post__[]" value="<?=$name?>">
-				<input type="hidden" name="mch__template__[]" value="<?=$tmpl__name?>">
-				<input type="hidden" name="mch__type__[]" value="content">
+	public function openElement(){
+		?>
+    		<div class="mch__element mch__element__<?=$this->type?>">
+				<input type="hidden" name="mch__post__[]" value="<?=$this->name?>">
+				<input type="hidden" name="mch__template__[]" value="<?=$this->template?>">
+				<input type="hidden" name="mch__type__[]" value="<?=$this->type?>">
 	    		<input type="hidden" name="metabox__id[]" value="<?=$this->metabox__id?>">
 
-    		<?php
-    		// print_r($name);
-				ob_start();
-        		wp_editor( $content, $name );
-                echo ob_get_clean();
+	    	<?php
+	    	// pour une mise à jour du champ
+	    	if( $this->update === true ){
+	    		?>
+	    		<input type="hidden" name="mch__ID[]" value="<?=$this->ID?>" />
+	    		<?php
+	    	}
 
-            ?>
+	}
+	public function closeElement(){
+		?>
+		</div>
+		<?php
+	}
 
-            </div>
+    public function getNewEditor()
+    {
+    	$this->type = 'editeur';
+    	$this->openElement();
 
-            <?php
+		ob_start();
+		wp_editor( $this->content, $this->name );
+        echo ob_get_clean();
+
+        $this->closeElement();
  
     }
 
-    public function getNewImage( $name, $tmpl__name, $content ){
+    public function getNewImage(){
 
+    	$this->type = 'image';
+    	$this->openElement();
     	?>
-    		<div class="mch__image--container mch__element">
-    			<input type="hidden" name="mch__post__[]" value="<?=$name?>">
-    			<input type="hidden" name="mch__template__[]" value="<?=$tmpl__name?>">
-    			<input type="hidden" name="mch__type__[]" value="image">
-    			<input type="hidden" name="metabox__id[]" value="<?=$this->metabox__id?>">
-
-		    	<input id="<?=$name?>" class="upload_image_button button" type="button" value="Upload Image" />
-    		</div>
-    	<?php
-
+		<input id="<?=$this->name?>" class="upload_image_button button" type="button" value="Upload Image" />
+		<?php
+		$this->closeElement();
+ 
     }
 
 
