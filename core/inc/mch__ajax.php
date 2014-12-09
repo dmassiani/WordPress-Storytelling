@@ -6,7 +6,7 @@
 //
 // ******************************************************
 
-class MacroContentHammer__ajax extends MacroContentHammer__kickstarter
+class MacroContentHammer__ajax
 {
 
 
@@ -66,8 +66,6 @@ class MacroContentHammer__ajax extends MacroContentHammer__kickstarter
         $remover = new MacroContentHammer__remover();
 
         $remover->elements = $_POST['elements'];
-        // $remover->security = $_POST['security'];
-        echo check_ajax_referer( 'cantouchthis', $_POST['security'] );
 
         $remover->Macrocontenthammer__remove__elements();
 

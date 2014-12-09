@@ -6,7 +6,7 @@
 //
 // ******************************************************
 
-class MacroContentHammer__remover extends MacroContentHammer__kickstarter
+class MacroContentHammer__remover
 {
 
 

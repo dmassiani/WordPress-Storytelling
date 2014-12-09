@@ -9,9 +9,6 @@
 	var n__metabox 		= 0;
 	var n__element 		= 0;
 
-	getMetaboxs();
-	getElements();
-
 	var file_frame;
 
 	// ================================
@@ -40,6 +37,7 @@
 	function getMetaboxs(){
 		// retourne le nombre d'elements disponibles dans la page
 		n__metabox = jQuery('.mch-container').length;
+		console.log('bonjour, jai trouvé ' + n__metabox );
 	}
 	function getElements(){
 		// retourne le nombre d'elements disponibles dans la page
@@ -57,6 +55,7 @@
 		var structureArray = structure.split(',');
 		var contentLength = structureArray.length;
 
+		console.log('jai recompté ' + n__metabox + ' metabox');
 
 		var data = {
 			'action': 'MacroContentHammer__getNewMacro',
@@ -81,7 +80,7 @@
 
 
 	    			var new__editor = "mch__editor__" + parseInt( parseInt( n__metabox * 1000 ) + parseInt( index + 1 ) );
-	    			// console.log(new__editor);
+	    			console.log('je vais créer un nouvel éditeur n ommé ' + new__editor);
 
 					if( $.trim(structureArray[ index ]) === "content" ){
 
@@ -192,11 +191,8 @@
 		var buttonRemove = $(this);
 		var elements = buttonRemove.closest('.mch__remove__element').data('elements')
 
-		var security = $('#cantouchthis').val();
-
 		var data = {
 			'action': 'MacroContentHammer__deleteElements',
-			'securite' : security,
 			'elements': encodeURIComponent(elements)
 		};
 
@@ -208,6 +204,8 @@
 					buttonRemove.closest('.mch-container').remove();
 					// on supprimer aussi tout les editeurs tiny mce
 					$.each( buttonRemove.closest('.mch-container').find('input[name="mch__post__[]"]'), function(e){
+
+						console.log(' tinymce : suppression de lediteur ' + $(this).val());
 
 						tinymce.EditorManager.execCommand('mceRemoveEditor',true, $(this).val() );
 			
@@ -280,5 +278,9 @@
 		
 	});
     
+    $(document).ready(function(){
+		getMetaboxs();
+		getElements();
+    });
 
 })(jQuery);

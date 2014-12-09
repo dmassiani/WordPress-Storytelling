@@ -22,12 +22,6 @@ define ( 'MCH_URL', plugins_url('', __FILE__) );
 define ( 'MCH_DIR', dirname(__FILE__) );
 
 
-add_action( 'plugins_loaded', 'initMacroContentHammer' );
-function initMacroContentHammer() {
-	global $MCHammer;
-	// Load translations
-	load_plugin_textdomain ( 'macro-content-hammer', false, basename(rtrim(dirname(__FILE__), '/')) . '/core/languages' );
-}
 if(!function_exists('log_it')){
  function log_it( $message ) {
    if( WP_DEBUG === true ){
@@ -41,12 +35,10 @@ if(!function_exists('log_it')){
 }
 
 
+if( !class_exists('MacroContentHammer__kickstarter') ):
+
 class MacroContentHammer__kickstarter
 {
-
-	// =============================================
-	// templates is for register all templates available
-	// =============================================
 
 	public $templates = [];
 	
@@ -56,26 +48,83 @@ class MacroContentHammer__kickstarter
     public $mch__post;
     public $mch__edit;
 
+	public $name = "MCH__content";
 
-	// ==================================================
-	// include all php needed
-	// ==================================================
+	public function __construct(){
 
-    public function __construct()
-    {
-
-
-        include_once MCH_DIR . '/core/inc/mch__database.php';
-        include_once MCH_DIR . '/core/inc/mch__metabox.php';
-        include_once MCH_DIR . '/core/inc/mch__editors.php';
-        include_once MCH_DIR . '/core/inc/mch__ajax.php';
-        include_once MCH_DIR . '/core/inc/mch__post.php';
-        include_once MCH_DIR . '/core/inc/mch__edit.php';
-        include_once MCH_DIR . '/core/inc/mch__remover.php';
+		load_textdomain('macrocontenthammmer', MCH_DIR . 'lang/mch-' . get_locale() . '.mo');
 
 		add_action('init', array($this, 'init'), 1);
+
+	}
+
+    public function init(){
+
+		register_post_type( $this->name ,
+			array(
+				'labels' => array(
+				'name' => __( $this->name ),
+				'singular_name' => __( $this->name )
+			),
+			'public' => false,
+			'has_archive' => false,
+			)
+		);
 		
+	    remove_post_type_support( $this->name, 'title' );
+
+    	log_it('init');
+
+    	if ( is_admin() ) {
+
+    		$this->MacroContentHammer__include__admin__class();
+
+    	// ===================================================
+    	// 
+    	// add register plugins and styles
+    	// 
+    	// ===================================================
+
+    		$this->MacroContentHammer__register__plugins();
+    		$this->MacroContentHammer__register__styles();
+
+    	// =================================================
+    	//
+    	// instanciation
+    	//
+    	// =================================================
+
+
+    		// init ajax
+        	$this->mch__ajax = new MacroContentHammer__ajax();
+	    	// init metabox selector
+	        $this->mch__metabox = new MacroContentHammer__metabox();
+	        // init database
+	        $this->mch__database = new MacroContentHammer__database();
+	        // init post
+	        $this->mch__post = new MacroContentHammer__post();
+	        // init edit
+	        $this->mch__edit = new MacroContentHammer__edit();
+	        // init structure
+	        $this->mch__structure = new MacroContentHammer__structure();
+
+	       	add_action( 'save_post', array( $this->mch__post, 'Macrocontenthammer__savedata' ) );
+
+	    }
+
     }
+
+    public function MacroContentHammer__include__admin__class(){
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__database.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__metabox.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__editors.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__ajax.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__post.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__edit.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__remover.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__structure.php';
+    }
+
 
     // ============================================================
     // Register JS plugins
@@ -116,110 +165,22 @@ class MacroContentHammer__kickstarter
 		}
     }
 
-    // ============================================================
-    // Load Templates
-    // ============================================================
-
-    public function MacroContentHammer__register__templates(){
-
-		// use file data to get name and template
-		$folder = get_template_directory() . '/' . MCH_FOLDER;
-		$listFiles = scandir( $folder );
-
-		$defaultHeader = array(
-			'TemplateName' => 'Template Name', 
-			'Structure' => 'Structure', 
-			'Description' => 'Description'
-		);
-
-		foreach ($listFiles as &$value) {
-			$file_parts = pathinfo( $value );
-
-
-			if( $file_parts['extension'] === "php" ){
-
-				$default = get_file_data( $folder . '/' . $value,  $defaultHeader );
-
-				$tJson = array(					
-					'name'			=> 		$default[ 'TemplateName' ], 
-					'description'	=> 		$default[ 'Description' ],
-					'structure'		=> 		$default[ 'Structure' ]
-				);
-
-				$this->templates[] = json_encode( $tJson );
-
-			}
-
-		}
-		 
-    	return $this->templates;
-
-    }
-
-    public function MacroContentHammer__get__template__structure( $name ){
-    	$folder = get_template_directory() . '/' . MCH_FOLDER;
-		$defaultHeader = array(
-			'TemplateName' => 'Template Name', 
-			'Structure' => 'Structure', 
-			'Description' => 'Description'
-		);
-    	$default = get_file_data( $folder . '/' . $name  . '.php',  $defaultHeader );
-    	return $default[ 'Structure' ];
-    }
-
-
-    // ============================================================
-    // Init MCH
-    // ============================================================
-
-    public function init(){
-
-		$ajax_nonce = wp_create_nonce( "mch__security" );
-
-
-    	// ===================================================
-    	// 
-    	// add register plugins and styles
-    	// 
-    	// ===================================================
-
-    	$this->MacroContentHammer__register__plugins();
-    	$this->MacroContentHammer__register__styles();
-
-    	// =================================================
-    	//
-    	// instanciation
-    	//
-    	// =================================================
-
-    	// init ajax
-        $this->mch__ajax = new MacroContentHammer__ajax();
-    	// init metabox selector
-        $this->mch__metabox = new MacroContentHammer__metabox();
-        // init database
-        $this->mch__database = new MacroContentHammer__database();
-        // init post
-        $this->mch__post = new MacroContentHammer__post();
-        // init edit
-        $this->mch__edit = new MacroContentHammer__edit();
-
-    }
-
 }
-
-
-function MacroContentHammer__CanTouchThis()
+function macrocontenthammer()
 {
-	global $cantouchthis;
+	global $macrocontenthammer;
 	
-	if( !isset($cantouchthis) )
+	if( !isset($macrocontenthammer) )
 	{
-		$cantouchthis = new MacroContentHammer__kickstarter();
+		$macrocontenthammer = new MacroContentHammer__kickstarter();
 	}
 	
-	return $cantouchthis;
+	return $macrocontenthammer;
 }
 
 
 // initialize
-$cantouchthis = MacroContentHammer__CanTouchThis();     
+macrocontenthammer();
+
+
+endif; // class_exists check

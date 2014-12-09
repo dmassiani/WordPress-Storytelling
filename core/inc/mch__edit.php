@@ -8,7 +8,7 @@
 // ******************************************************
 
 
-class MacroContentHammer__edit extends MacroContentHammer__kickstarter
+class MacroContentHammer__edit
 {
 
 	public function __construct(){
@@ -36,7 +36,8 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 		// on récupère les templates disponibles
 		//
 		// ====================================================================
-        $templates = Parent::MacroContentHammer__register__templates();
+		$mch_structure = new MacroContentHammer__structure();
+        $templates = $mch_structure->MacroContentHammer__register__templates();
 
         // on instancie les editeurs et on le passe en mode update
 		$editeur = new MacroContentHammer__editors();
@@ -53,7 +54,7 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 			,'order'		=> 'ASC'
 			,'post_parent'	=> $post->ID
 			,'posts_per_page'=> -1
-			,'meta_key'		=> 'template'
+			,'meta_key'		=> 'mch__template'
 		);
 		$mch_query = new WP_Query( $args );
 		// echo $mch_query->found_posts;
@@ -77,15 +78,15 @@ class MacroContentHammer__edit extends MacroContentHammer__kickstarter
 			//
 			// ====================================================================
 			$previous__container = '';
-			$debug = get_post_meta( $post->ID, 'debug', true );
+			// $debug = get_post_meta( $post->ID, 'debug', true );
 			// echo $debug;
 
 			while ( $mch_query->have_posts() ) : $mch_query->the_post();
 
 
-				$template = get_post_meta( $mch_query->post->ID, 'template', true );
-				$type = get_post_meta( $mch_query->post->ID, 'type', true );
-				$container = get_post_meta( $mch_query->post->ID, 'container', true );
+				$template = get_post_meta( $mch_query->post->ID, 'mch__template', true );
+				$type = get_post_meta( $mch_query->post->ID, 'mch__type', true );
+				$container = get_post_meta( $mch_query->post->ID, 'mch__container', true );
 
 				if( $i === 0 ){
 

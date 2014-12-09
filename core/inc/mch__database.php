@@ -1,38 +1,7 @@
 <?php
-class MacroContentHammer__database extends MacroContentHammer__kickstarter
+class MacroContentHammer__database
 {
 
-	public $name = "MCH__content";
-
-	public function __construct()
-	{
-		self::init();
-	}
-
-
-	public function init()
-	{        
-
-
-		// MCH__content is custom post type for post
-		// MCH__parent is register in MCH__content with post parent
-		// MCH__groupe is meta for groupe of mch__content
-
-		// create MCH taxonomy
-
-		register_post_type( $this->name ,
-			array(
-				'labels' => array(
-				'name' => __( $this->name ),
-				'singular_name' => __( $this->name )
-			),
-			'public' => false,
-			'has_archive' => false,
-			)
-		);
-
-
-	}
 
 	public function total__mch__content( $post_ID ){
 
@@ -42,7 +11,7 @@ class MacroContentHammer__database extends MacroContentHammer__kickstarter
 			,'order'		=> 'ASC'
 			,'post_parent'	=> $post_ID			
 			,'posts_per_page'=>-1
-			,'meta_key'		=> 'template'
+			,'meta_key'		=> 'mch__template'
 		);
 		$mch_query = new WP_Query( $args );
 

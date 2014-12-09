@@ -8,7 +8,7 @@
 // ******************************************************
 
 
-class MacroContentHammer__editors extends MacroContentHammer__kickstarter
+class MacroContentHammer__editors
 {
 
 	public $metabox__id = 1000;
@@ -103,7 +103,6 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 
 
 	public function closeMetabox(){
-		$ajax_nonce = wp_create_nonce( "mch__cantouchthis" );
 		?>
 		            	<div class="mch__remove__element" data-elements="<?=$this->elementsRemove?>">
 		            		<ul>
@@ -116,7 +115,6 @@ class MacroContentHammer__editors extends MacroContentHammer__kickstarter
 		            		</ul>
 		            	</div>
 		            	<div class="clear"></div>
-		            	<input type="hidden" name="cantouchthis" id="cantouchthis" value="<?=$ajax_nonce?>" />
 	                </div>
 	            </div>
 	        </div>
