@@ -16,7 +16,6 @@ wordpress créé deux enregistrement, un post de type publish, un autre de type 
 class MacroContentHammer__post
 {
 
-	public $flag;
 
 	function __construct(){
 		// log_it('post init');
@@ -26,14 +25,6 @@ class MacroContentHammer__post
 
 		log_it('save data');
 		// log_it($post_id);
-
-		// log_it(wp_is_post_revision( $post_id ));
-
-		// if( ! ( wp_is_post_revision( $post_id ) && wp_is_post_autosave( $post_id ) ) ) {
-
-			log_it('nouveau post ' . $post_id);
-			// log_it($this->flag);
-			log_it( get_post( $post_id ) );
 
 
 			if( !empty( $_POST['mch__post__'] )
@@ -46,6 +37,8 @@ class MacroContentHammer__post
 				$mch__types 		= $_POST['mch__type__'];
 				$mch__metabox 		= $_POST['metabox__id'];
 				$mch__images 		= $_POST['mch__image__id'];
+
+				// log_it($mch__metabox);
 
 				$user_ID 			= get_current_user_id();
 
@@ -94,24 +87,32 @@ class MacroContentHammer__post
 
 				if( isset( $mch__posts ) && count( $mch__posts ) != 0 ){
 
-					log_it($mch__posts);
+					// log_it($mch__posts);
 							
 					remove_action( 'save_post', array( $this, 'Macrocontenthammer__savedata' ) );
 
 					// on a du post alors on y va :)
 					// on boucle sur les mch__post
-					foreach ($mch__posts as $key => $mch__post) {
-						
 
-							$status = get_post_status( $post_id );
-							$update = false;
+					$update = false;
+					$types = [];
+					$container = '';
+					$container__cache = '';
+					$template = '';
+					$status = get_post_status( $post_id );
+					$i = 0;
+
+					$metas = [];
+
+					foreach ($mch__posts as $key => $mch__post) {
+
+
 							// on ajoute une entrée, son parent, son meta groupe
 
 							$mch__newpost = array(
 							  	'post_status'    	=> $status
 							  	,'post_type'      	=> 'MCH__content'
-							  	,'ping_status'    	=> 'closed' 
-							  	,'post_parent'    	=> $post_id
+							  	,'ping_status'    	=> 'closed'
 							  	,'post_author'		=> $user_ID
 							  	,'comment_status' 	=> 'closed'
 							);
@@ -130,70 +131,84 @@ class MacroContentHammer__post
 								case 'editeur':
 									$mch__newpost['post_content'] = $_POST[ $mch__post ];
 									break;
-
 							}
-
 
 
 							if( !empty( $mch__ID[ $key ] ) ){
 
 								$mch__newpost['ID'] = $mch__ID[ $key ];
-								// log_it($mch__ID[ $key ]);
 								$update = true;
 
 							}
 
-							// log_it($mch__newpost);
+							if( $update === false){
 
-							// si c'est une image
+								// log_it('nouveau');
+								$mch__id = wp_insert_post( $mch__newpost );
 
+							}else{
 
-
-
-										$mch__post__template = $mch__templates[ $key ];
-										$mch__post__type = $mch__types[ $key ];
-										$mch__post__metabox = $mch__metabox[ $key ];
-										
-
-										if( $update === false){
-
-											log_it('nouveau');
-											$post__mch = wp_insert_post( $mch__newpost );
-											// log_it($post__mch);
-											add_post_meta( $post__mch, 'mch__template', $mch__post__template );
-											add_post_meta( $post__mch, 'mch__type', $mch__post__type );
-											add_post_meta( $post__mch, 'mch__container', $mch__post__metabox );
-										
-										}else{
-
-											log_it('update');
-											log_it('ICI NOUVEL ID : ' . $mch__newpost['ID']);
-											$post__mch = wp_update_post( $mch__newpost );
-											update_post_meta( $mch__newpost['ID'], 'mch__template', $mch__post__template );
-											update_post_meta( $mch__newpost['ID'], 'mch__type', $mch__post__type );
-											update_post_meta( $mch__newpost['ID'], 'mch__container', $mch__post__metabox );
-										
-										}
+								// log_it('update');
+								wp_update_post( $mch__newpost );
+								$mch__id = $mch__newpost['ID'];
+							
+							}
 
 
+							// les ID des post de la metabox
+							$template = $mch__templates[ $key ];
+							$container = $mch__metabox[ $key ];
 
+							// log_it($template);
+
+							if( $i === 0 )$container__cache = $container;
+
+							if( (int) $container__cache != (int) $container ){
+
+								// log_it($container);
+								// log_it($container__cache);
+
+								// log_it( $cont)
+								// on change de container donc on ajoute les metas precedent
+								// $i = 0;
+								$metas[] = array( 'template' => $template__cache, 'container' => $container__cache, 'content' => $mch__content );
+
+								log_it($metas);
+								// on vide $types
+								unset($mch__content);
+
+
+							}
+							
+							$mch__content[] = array(
+								'ID' => $mch__id,
+								'type' => $mch__types[ $key ]
+							);
+							
+							$container__cache = $container;
+							$template__cache = $template;
+
+
+							$i++;
 
 
 					}
+
+
+					$metas[] = array( 'template' => $template__cache, 'container' => $container__cache, 'content' => $mch__content );
+					unset($mch__content);
+
+					log_it($metas);
+					// log_it($metas);
+
+					add_post_meta( $post_id, '_mch_content', $metas, true ) || update_post_meta( $post_id, '_mch_content', $metas, true );
 					
-					// on retabli le hook sur le save post
-					add_action( 'save_post', array( $this, 'Macrocontenthammer__savedata' ) );
-					// $this->flag = 'flag exist';
+
 				}
 
 			}// fin d'empty
 	// }
 
-	}
-
-	public function Macrocontenthammer__editdata( $post_id ){
-		// when edit post
-		log_it('update');
 	}
 
 }

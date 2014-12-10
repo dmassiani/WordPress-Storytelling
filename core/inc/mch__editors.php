@@ -81,7 +81,9 @@ class MacroContentHammer__editors
 	public function openMetabox( $n__metabox ){
 		$first = '';
 		if( $n__metabox === 0 )$first = ' mch-first';
-		$this->metabox__id = $this->metabox__id * ( $n__metabox + 1 );
+		$this->metabox__id = 1000 * ( $n__metabox + 1 );
+		log_it($this->metabox__id);
+		log_it($n__metabox);
 		?>
 
 

@@ -66,6 +66,7 @@ class MacroContentHammer__ajax
         $remover = new MacroContentHammer__remover();
 
         $remover->elements = $_POST['elements'];
+        $remover->parent = $_POST['parent'];
 
         $remover->Macrocontenthammer__remove__elements();
 

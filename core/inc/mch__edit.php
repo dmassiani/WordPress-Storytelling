@@ -43,122 +43,47 @@ class MacroContentHammer__edit
 		$editeur = new MacroContentHammer__editors();
 		$editeur->update = true;
 
-		// ====================================================================
-		//
-		// on récupère tout les post MCH_content avec comme parent le post
-		//
-		// ====================================================================
-		$args = array(
-			'post_type'  	=> 'MCH__content'
-			,'order_by'		=> 'ID'
-			,'order'		=> 'ASC'
-			,'post_parent'	=> $post->ID
-			,'posts_per_page'=> -1
-			,'meta_key'		=> 'mch__template'
-		);
-		$mch_query = new WP_Query( $args );
-		// echo $mch_query->found_posts;
-		// print_r($mch_query);
-
-        
-		// ====================================================================
-		//
-		// s'il y a des posts
-		//
-		// ====================================================================
-		if ( $mch_query->have_posts() ) :
+		// on récupère les metas
+		$metas = get_post_meta( $post->ID, '_mch_content', true );
 
 
-			$i = 0;
-			$tmpl = 0;
+		if( ! empty( $metas ) ):
 
-			// ====================================================================
-			//
-			// pour chaque post
-			//
-			// ====================================================================
-			$previous__container = '';
-			// $debug = get_post_meta( $post->ID, 'debug', true );
-			// echo $debug;
-
-			while ( $mch_query->have_posts() ) : $mch_query->the_post();
+			// for each metas
+			foreach ($metas as $key => $metabox):
 
 
-				$template = get_post_meta( $mch_query->post->ID, 'mch__template', true );
-				$type = get_post_meta( $mch_query->post->ID, 'mch__type', true );
-				$container = get_post_meta( $mch_query->post->ID, 'mch__container', true );
-
-				if( $i === 0 ){
-
-					$previous__container = $container;
-					$metabox[$tmpl]['template'] = $template;
-					$metabox[$tmpl]['container'] = $container;
-
-				}
-
-				if( $previous__container != $container ):
-
-					$metabox[$tmpl]['metabox'] = $metabox_contenu;
-				
-					$tmpl++;
-
-					$metabox[$tmpl]['template'] = $template;
-					$metabox[$tmpl]['container'] = $container;
-
-					$metabox_contenu = [];
+				// container management
+				$template = $metas[ $key ]['template'];
+				$container = $metas[ $key ]['container'];
+				$contents = $metas[ $key ]['content'];
 
 
-				else:
-	        		$i++;
-				endif;
-
-
-				$metabox_contenu[] = array(
-					'ID'		=>  $mch_query->post->ID,
-					'type' 		=>  $type,
-					'content'	=>	$mch_query->post->post_content
-				);
-
-
-				$previous__container = $container;
-
-	        	$n__element++;
-
-        	endwhile;
-
-			// array_push( $metabox, array('template' => $template, 'metabox' => array()));
-			$metabox[$tmpl]['template'] = $template;
-			$metabox[$tmpl]['container'] = $container;
-			$metabox[$tmpl]['metabox'] = $metabox_contenu;
-
-			// print_r($metabox);
-
-			foreach ($metabox as $key => $box) {
-
-				// chaque itération repésente une metabox
-				$template = $box['template'];
-				$container = $box['container'];
-
-				// print_r($metabox[ $key ]['container']);
-
+				// metabox ouverture
 				$editeur->template = $template;
+				$editeur->postID = $post->ID;
 				$editeur->openMetaBox( $key );
+				
 
-				foreach ( $box['metabox'] as $el_key => $element) {
+					foreach ($contents as $i => $content):
 
-						$metabox__structure[] = $element['ID'];
+						// on retrouve le post
+						$mch__post = get_post( $content['ID'] );
+						// log_it($mch__post);
 
-						$name__editor = "mch__editor__" . ( $container + $el_key +1);	
+						$metabox__structure[] = $mch__post->ID;
+
+						$name__editor = "mch__editor__" . ( $container + $i +1);
 						
-						$editeur->ID = $element['ID'];
-						$editeur->content = $element['content'];
+						$editeur->ID = $mch__post->ID;
+						$editeur->content = $mch__post->post_content;
 						$editeur->name = $name__editor;
 
+						// log_it($mch__post->ID);
 
-
-						switch ( $element['type'] ) {
+						switch ( $content['type'] ) {
 							case 'image':
-								$editeur->images__id = $element['content'];
+								$editeur->images__id = $editeur->content;
 								$editeur->getNewImage();
 								break;
 
@@ -170,17 +95,15 @@ class MacroContentHammer__edit
 								$editeur->getNewEditor();
 						}
 
+					endforeach;
 
-				}
 
 				$editeur->elementsRemove = implode(',', $metabox__structure);
-				$editeur->postID = $post->ID;
-				$editeur->closeMetaBox();
 				$metabox__structure = [];
 
+				$editeur->closeMetaBox();
 
-			}
-
+			endforeach;
 
 		endif;
 

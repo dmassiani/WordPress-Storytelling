@@ -193,7 +193,8 @@
 
 		var data = {
 			'action': 'MacroContentHammer__deleteElements',
-			'elements': encodeURIComponent(elements)
+			'elements': encodeURIComponent(elements),
+			'parent': jQuery('#post_ID').val()
 		};
 
 		if( elements != '' ){
