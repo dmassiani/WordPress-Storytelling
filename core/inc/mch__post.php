@@ -23,7 +23,7 @@ class MacroContentHammer__post
 
 	public function Macrocontenthammer__savedata( $post_id ) {
 
-		log_it('save data');
+		// log_it('save data');
 		// log_it($post_id);
 
 
@@ -37,17 +37,11 @@ class MacroContentHammer__post
 				$mch__types 		= $_POST['mch__type__'];
 				$mch__metabox 		= $_POST['metabox__id'];
 				$mch__images 		= $_POST['mch__image__id'];
+				$mch__ID 			= $_POST['mch__ID'];
 
-				// log_it($mch__metabox);
 
 				$user_ID 			= get_current_user_id();
 
-				if( isset( $_POST['mch__ID'] ) ){
-					// log_it('post exist');
-					$mch__ID = $_POST['mch__ID'];
-				}else{
-					// log_it('post desotnexist');
-				}
 
 				if ( false !== wp_is_post_revision( $post_id ) )
 				        return;
@@ -94,7 +88,9 @@ class MacroContentHammer__post
 					// on a du post alors on y va :)
 					// on boucle sur les mch__post
 
-					$update = false;
+					$update__content = false;
+					$update__meta = true;
+
 					$types = [];
 					$container = '';
 					$container__cache = '';
@@ -106,6 +102,7 @@ class MacroContentHammer__post
 
 					foreach ($mch__posts as $key => $mch__post) {
 
+							$update__content = false;
 
 							// on ajoute une entrée, son parent, son meta groupe
 
@@ -133,18 +130,26 @@ class MacroContentHammer__post
 									break;
 							}
 
+							// log_it($mch__ID[ $key ]);
 
-							if( !empty( $mch__ID[ $key ] ) ){
+							if( !empty( trim($mch__ID[ $key ]) ) ){
 
 								$mch__newpost['ID'] = $mch__ID[ $key ];
-								$update = true;
+								$update__content = true;
 
+								// log_it('cest un update');
+
+							}else{
+								// log_it('ce nest pas un update');
 							}
 
-							if( $update === false){
+
+
+							if( $update__content === false){
 
 								// log_it('nouveau');
 								$mch__id = wp_insert_post( $mch__newpost );
+								$update__meta = true;
 
 							}else{
 
@@ -159,8 +164,6 @@ class MacroContentHammer__post
 							$template = $mch__templates[ $key ];
 							$container = $mch__metabox[ $key ];
 
-							// log_it($template);
-
 							if( $i === 0 )$container__cache = $container;
 
 							if( (int) $container__cache != (int) $container ){
@@ -173,13 +176,13 @@ class MacroContentHammer__post
 								// $i = 0;
 								$metas[] = array( 'template' => $template__cache, 'container' => $container__cache, 'content' => $mch__content );
 
-								log_it($metas);
+								// log_it($metas);
 								// on vide $types
 								unset($mch__content);
 
 
 							}
-							
+
 							$mch__content[] = array(
 								'ID' => $mch__id,
 								'type' => $mch__types[ $key ]
@@ -198,11 +201,14 @@ class MacroContentHammer__post
 					$metas[] = array( 'template' => $template__cache, 'container' => $container__cache, 'content' => $mch__content );
 					unset($mch__content);
 
-					log_it($metas);
 					// log_it($metas);
 
-					add_post_meta( $post_id, '_mch_content', $metas, true ) || update_post_meta( $post_id, '_mch_content', $metas, true );
-					
+					if( $update__meta === true ):
+						// il y a eu un nouvel enregistrement
+						update_post_meta( $post_id, '_mch_content', $metas );
+					else:
+						add_post_meta( $post_id, '_mch_content', $metas, true );
+					endif;
 
 				}
 

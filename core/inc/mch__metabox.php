@@ -49,12 +49,20 @@ class MacroContentHammer__metabox
 
             // on parcourt les templates et on les affiche
 
+
             foreach ($templates as &$template) {
+
                 $template = json_decode($template);
+
+                $elements = [];
+                foreach( $template->elements as $key => $element ):
+                    $elements[] = $element->type;
+                endforeach;
+                $structure = implode(',', $elements);
         ?>
 
                 <li>
-                    <a href="#" data-name="<?=$template->name?>" data-structure="<?=$template->structure?>">
+                    <a href="#" data-name="<?=$template->name?>" data-structure="<?=$structure?>">
                         <h4><?=$template->name?></h4>
                         <p>
                             <?=$template->description?>

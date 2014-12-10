@@ -3,8 +3,8 @@
  * @package Macro Content Hammer
  */
 /*
-Plugin Name: Macro Content Hammer
-Plugin URI: http://macrocontenthammer.com/
+Plugin Name: Story Telling
+Plugin URI: http://storytelling.io/
 Description: Used by millions, Akismet is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>. It keeps your site protected from spam even while you sleep. To get started: 1) Click the "Activate" link to the left of this description, 2) <a href="http://akismet.com/get/">Sign up for an Akismet API key</a>, and 3) Go to your Akismet configuration page, and save your API key.
 Version: 1.0
 Author: David Massiani
@@ -47,6 +47,8 @@ class MacroContentHammer__kickstarter
     public $mch__database;
     public $mch__post;
     public $mch__edit;
+    public $mch__structure;
+    public $mch__utility;
 
 	public $name = "MCH__content";
 
@@ -73,7 +75,10 @@ class MacroContentHammer__kickstarter
 		
 	    remove_post_type_support( $this->name, 'title' );
 
-    	log_it('init');
+    	// log_it('init');
+
+    	$this->MacroContentHammer__include__front__class();
+    	$this->mch__content = new MacroContentHammer__content();
 
     	if ( is_admin() ) {
 
@@ -107,6 +112,8 @@ class MacroContentHammer__kickstarter
 	        $this->mch__edit = new MacroContentHammer__edit();
 	        // init structure
 	        $this->mch__structure = new MacroContentHammer__structure();
+	        // init structure
+	        $this->mch__utility = new MacroContentHammer__utility();
 
 	       	add_action( 'save_post', array( $this->mch__post, 'Macrocontenthammer__savedata' ) );
 
@@ -123,6 +130,10 @@ class MacroContentHammer__kickstarter
 		include_once plugin_dir_path(__FILE__). '/core/inc/mch__edit.php';
 		include_once plugin_dir_path(__FILE__). '/core/inc/mch__remover.php';
 		include_once plugin_dir_path(__FILE__). '/core/inc/mch__structure.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__utility.php';
+    }
+    public function MacroContentHammer__include__front__class(){
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__content.php';
     }
 
 

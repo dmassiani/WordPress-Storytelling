@@ -33,6 +33,9 @@ class MacroContentHammer__editors
 
 		// on récupère la liste des contenus et on génére un nouveau MCH post
 
+		log_it('metabox ' . $this->n__metabox);
+		if( $this->n__metabox != 0 )$this->update = true;
+
 		$this->metabox__id = $this->metabox__id * ( $this->n__metabox + 1 );
 
 		$structureArray = explode(',', urldecode($this->structure) );
@@ -60,7 +63,7 @@ class MacroContentHammer__editors
 						$new__editor = "mch__editor__" . $this->element__id;	
 						$this->name = $new__editor;
 
-						if( trim($element) === 'content' ){
+						if( trim($element) === 'editeur' ){
 
 							$this->getNewEditor();
 
@@ -82,8 +85,8 @@ class MacroContentHammer__editors
 		$first = '';
 		if( $n__metabox === 0 )$first = ' mch-first';
 		$this->metabox__id = 1000 * ( $n__metabox + 1 );
-		log_it($this->metabox__id);
-		log_it($n__metabox);
+		// log_it($this->metabox__id);
+		// log_it($n__metabox);
 		?>
 
 
@@ -138,6 +141,10 @@ class MacroContentHammer__editors
 	    	if( $this->update === true ){
 	    		?>
 	    		<input type="hidden" name="mch__ID[]" value="<?=$this->ID?>" />
+	    		<?php
+	    	}else{
+	    		?>
+	    		<input type="hidden" name="mch__ID[]" />
 	    		<?php
 	    	}
 

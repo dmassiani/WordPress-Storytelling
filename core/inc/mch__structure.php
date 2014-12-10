@@ -31,13 +31,27 @@ class MacroContentHammer__structure
 
 			if( $file_parts['extension'] === "php" ){
 
+				$utility = new MacroContentHammer__utility();
 				$default = get_file_data( $folder . '/' . $value,  $defaultHeader );
+				$jsons 	 = $utility->get_file_data( $folder . '/' . $value,  $defaultHeader );
+
+				// log_it( $jsons[0]->element );
+				// var_dump($jsons);
+
+				$elements = [];
+				foreach( $jsons as $key => $json ):
+
+						$elements[] = json_decode($json);
+
+				endforeach;
+
 
 				$tJson = array(					
 					'name'			=> 		$default[ 'TemplateName' ], 
 					'description'	=> 		$default[ 'Description' ],
-					'structure'		=> 		$default[ 'Structure' ]
+					'elements' 		=> 		$elements
 				);
+
 
 				$this->templates[] = json_encode( $tJson );
 

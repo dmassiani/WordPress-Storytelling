@@ -76,6 +76,13 @@ class MacroContentHammer__remover
 
 		// log_it($remover__key);
 		unset($metas[$remover__key]);
+		$metas = array_values($metas);
+		foreach ($metas as $key_metabox => $metabox):
+			$metas[$key_metabox]['container'] = ( $key_metabox + 1 ) * 1000;
+		endforeach;
+
+		// pour chaque meta on reinitialise le code metabox
+
 		// on update les metas
 		update_post_meta( $post__id, '_mch_content', $metas );
 

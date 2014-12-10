@@ -36,8 +36,10 @@ class MacroContentHammer__edit
 		// on récupère les templates disponibles
 		//
 		// ====================================================================
-		$mch_structure = new MacroContentHammer__structure();
-        $templates = $mch_structure->MacroContentHammer__register__templates();
+		// $mch_structure = new MacroContentHammer__structure();
+  //       $templates = $mch_structure->MacroContentHammer__register__templates();
+
+        // log_it( $templates );
 
         // on instancie les editeurs et on le passe en mode update
 		$editeur = new MacroContentHammer__editors();
@@ -46,6 +48,7 @@ class MacroContentHammer__edit
 		// on récupère les metas
 		$metas = get_post_meta( $post->ID, '_mch_content', true );
 
+		// log_it($metas);
 
 		if( ! empty( $metas ) ):
 
@@ -74,6 +77,7 @@ class MacroContentHammer__edit
 						$metabox__structure[] = $mch__post->ID;
 
 						$name__editor = "mch__editor__" . ( $container + $i +1);
+						// log_it($name__editor);
 						
 						$editeur->ID = $mch__post->ID;
 						$editeur->content = $mch__post->post_content;

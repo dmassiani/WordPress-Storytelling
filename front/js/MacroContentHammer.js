@@ -82,7 +82,7 @@
 	    			var new__editor = "mch__editor__" + parseInt( parseInt( n__metabox * 1000 ) + parseInt( index + 1 ) );
 	    			console.log('je vais créer un nouvel éditeur n ommé ' + new__editor);
 
-					if( $.trim(structureArray[ index ]) === "content" ){
+					if( $.trim(structureArray[ index ]) === "editeur" ){
 
 			    		// on test si l'editeur a déja été instancié
 			    		instance = false;
