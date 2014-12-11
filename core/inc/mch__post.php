@@ -30,11 +30,13 @@ class MacroContentHammer__post
 			if( !empty( $_POST['mch__post__'] )
 			&& !empty( $_POST['mch__template__'] )
 			&& !empty( $_POST['mch__type__'] )
+			&& !empty( $_POST['mch__slug__'] )
 			&& !empty( $_POST['metabox__id'] )){
 
 				$mch__posts 		= $_POST['mch__post__'];
 				$mch__templates 	= $_POST['mch__template__'];
 				$mch__types 		= $_POST['mch__type__'];
+				$mch__slugs 		= $_POST['mch__slug__'];
 				$mch__metabox 		= $_POST['metabox__id'];
 				$mch__images 		= $_POST['mch__image__id'];
 				$mch__ID 			= $_POST['mch__ID'];
@@ -185,7 +187,8 @@ class MacroContentHammer__post
 
 							$mch__content[] = array(
 								'ID' => $mch__id,
-								'type' => $mch__types[ $key ]
+								'type' => $mch__types[ $key ],
+								'slug' => $mch__slugs[ $key ]
 							);
 							
 							$container__cache = $container;

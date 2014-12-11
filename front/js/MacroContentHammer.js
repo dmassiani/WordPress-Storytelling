@@ -49,18 +49,19 @@
 	// ================================
 
 
-	function getTemplate( tmpl, structure ){
+	function getTemplate( tmpl, structure, slugs ){
 
 		structure.replace(/ /g,'');
 		var structureArray = structure.split(',');
 		var contentLength = structureArray.length;
 
-		console.log('jai recompté ' + n__metabox + ' metabox');
+		// console.log('jai recompté ' + n__metabox + ' metabox');
 
 		var data = {
 			'action': 'MacroContentHammer__getNewMacro',
 			'tmpl' : tmpl,
 			'structure': encodeURIComponent(structure),
+			'slugs': encodeURIComponent(slugs),
 			'n__metabox': n__metabox
 		};
 
@@ -80,7 +81,7 @@
 
 
 	    			var new__editor = "mch__editor__" + parseInt( parseInt( n__metabox * 1000 ) + parseInt( index + 1 ) );
-	    			console.log('je vais créer un nouvel éditeur n ommé ' + new__editor);
+	    			// console.log('je vais créer un nouvel éditeur n ommé ' + new__editor);
 
 					if( $.trim(structureArray[ index ]) === "editeur" ){
 
@@ -256,8 +257,9 @@
 
 		var tmpl = $(this).data('name');
 		var structure = $(this).data('structure');
+		var slugs = $(this).data('slugs');
 
-		getTemplate( tmpl, structure );
+		getTemplate( tmpl, structure, slugs );
 
 		return false;
 

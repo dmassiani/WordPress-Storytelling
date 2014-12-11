@@ -49,6 +49,7 @@ class MacroContentHammer__ajax
 
         $editeur->template = $_POST['tmpl'];
         $editeur->structure = $_POST['structure'];
+        $editeur->slugs = $_POST['slugs'];
         $editeur->n__metabox = $_POST['n__metabox'];
 
         $editeur->getNewContent();

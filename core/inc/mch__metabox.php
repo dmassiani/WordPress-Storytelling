@@ -59,10 +59,17 @@ class MacroContentHammer__metabox
                     $elements[] = $element->type;
                 endforeach;
                 $structure = implode(',', $elements);
+
+                $elements = [];
+                foreach( $template->elements as $key => $element ):
+                    $elements[] = $element->slug;
+                endforeach;
+                $slugs = implode(',', $elements);
+
         ?>
 
                 <li>
-                    <a href="#" data-name="<?=$template->name?>" data-structure="<?=$structure?>">
+                    <a href="#" data-name="<?=$template->name?>" data-structure="<?=$structure?>" data-slugs="<?=$slugs?>">
                         <h4><?=$template->name?></h4>
                         <p>
                             <?=$template->description?>

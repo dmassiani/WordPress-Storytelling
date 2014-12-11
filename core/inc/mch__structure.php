@@ -6,8 +6,15 @@
 //
 // ******************************************************
 
-class MacroContentHammer__structure
+class MacroContentHammer__structure extends MacroContentHammer__kickstarter
 {
+
+	public function __construct(){
+
+		// $realTemplates = $this->MacroContentHammer__realTemplates();
+		// return $realTemplates;
+
+	}
 
     // ============================================================
     // Load Templates
@@ -35,9 +42,6 @@ class MacroContentHammer__structure
 				$default = get_file_data( $folder . '/' . $value,  $defaultHeader );
 				$jsons 	 = $utility->get_file_data( $folder . '/' . $value,  $defaultHeader );
 
-				// log_it( $jsons[0]->element );
-				// var_dump($jsons);
-
 				$elements = [];
 				foreach( $jsons as $key => $json ):
 
@@ -60,6 +64,28 @@ class MacroContentHammer__structure
 		}
 		 
     	return $this->templates;
+
+    }
+
+    public function MacroContentHammer__realTemplates(){
+
+    	$templates = $this->MacroContentHammer__register__templates();
+        
+        $elements = [];
+
+        foreach ($templates as $template):
+        	// pour chaque macro template
+
+            $template = json_decode($template);
+
+        	$name = sanitize_title( $template->name );
+        	$elements[ $name ] = (array) $template->elements;
+
+
+        endforeach;
+
+        return $elements;
+        // Parent::mch__templates = $elements;
 
     }
 

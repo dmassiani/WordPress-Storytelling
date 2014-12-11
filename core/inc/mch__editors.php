@@ -24,6 +24,7 @@ class MacroContentHammer__editors
     public $name;
     public $content;
     public $type;
+    public $slug;
     public $update = false;
     public $images__id;
     public $elementsRemove;
@@ -33,12 +34,13 @@ class MacroContentHammer__editors
 
 		// on récupère la liste des contenus et on génére un nouveau MCH post
 
-		log_it('metabox ' . $this->n__metabox);
+		// log_it('metabox ' . $this->n__metabox);
 		if( $this->n__metabox != 0 )$this->update = true;
 
 		$this->metabox__id = $this->metabox__id * ( $this->n__metabox + 1 );
 
 		$structureArray = explode(',', urldecode($this->structure) );
+		$slugsArray = explode(',', urldecode($this->slugs) );
 
 		?>
 		<div id="postbox-container-<?=$this->metabox__id?>" class="postbox-container mch-container">
@@ -62,6 +64,7 @@ class MacroContentHammer__editors
 						$this->element__id = $this->metabox__id + ( $key + 1 );
 						$new__editor = "mch__editor__" . $this->element__id;	
 						$this->name = $new__editor;
+						$this->slug = $slugsArray[ $key ];
 
 						if( trim($element) === 'editeur' ){
 
@@ -133,6 +136,7 @@ class MacroContentHammer__editors
 				<input type="hidden" name="mch__post__[]" value="<?=$this->name?>">
 				<input type="hidden" name="mch__template__[]" value="<?=$this->template?>">
 				<input type="hidden" name="mch__type__[]" value="<?=$this->type?>">
+				<input type="hidden" name="mch__slug__[]" value="<?=$this->slug?>">
 	    		<input type="hidden" name="metabox__id[]" value="<?=$this->metabox__id?>">
 				<input type="hidden" name="mch__image__id[]" class="mch__image__id" value="<?=$this->images__id?>" />
 

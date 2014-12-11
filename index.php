@@ -16,10 +16,11 @@ Text Domain: macrocontenthammer
 // Folder name
 define ( 'MCH_VERSION', '1.0' );
 define ( 'MCH_OPTION',  'simple-taxonomy' );
-define ( 'MCH_FOLDER',  'micro-templates' );
+define ( 'MCH_FOLDER',  'wp-storytelling' );
 
 define ( 'MCH_URL', plugins_url('', __FILE__) );
 define ( 'MCH_DIR', dirname(__FILE__) );
+
 
 
 if(!function_exists('log_it')){
@@ -51,6 +52,7 @@ class MacroContentHammer__kickstarter
     public $mch__utility;
 
 	public $name = "MCH__content";
+	public $mch__templates;
 
 	public function __construct(){
 
@@ -77,10 +79,18 @@ class MacroContentHammer__kickstarter
 
     	// log_it('init');
 
-    	$this->MacroContentHammer__include__front__class();
-    	$this->mch__content = new MacroContentHammer__content();
 
-    	if ( is_admin() ) {
+    	$this->MacroContentHammer__include__front__class();
+
+
+    	if ( !is_admin() ) {
+
+	        // init structure
+	        $get__templates = new MacroContentHammer__structure();
+	        $this->mch__structure = $get__templates->MacroContentHammer__realTemplates();
+	        // log_it($this->mch__structure);
+
+    	}else{
 
     		$this->MacroContentHammer__include__admin__class();
 
@@ -110,10 +120,6 @@ class MacroContentHammer__kickstarter
 	        $this->mch__post = new MacroContentHammer__post();
 	        // init edit
 	        $this->mch__edit = new MacroContentHammer__edit();
-	        // init structure
-	        $this->mch__structure = new MacroContentHammer__structure();
-	        // init structure
-	        $this->mch__utility = new MacroContentHammer__utility();
 
 	       	add_action( 'save_post', array( $this->mch__post, 'Macrocontenthammer__savedata' ) );
 
@@ -129,11 +135,11 @@ class MacroContentHammer__kickstarter
 		include_once plugin_dir_path(__FILE__). '/core/inc/mch__post.php';
 		include_once plugin_dir_path(__FILE__). '/core/inc/mch__edit.php';
 		include_once plugin_dir_path(__FILE__). '/core/inc/mch__remover.php';
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__structure.php';
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__utility.php';
     }
     public function MacroContentHammer__include__front__class(){
 		include_once plugin_dir_path(__FILE__). '/core/inc/mch__content.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__utility.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/mch__structure.php';
     }
 
 

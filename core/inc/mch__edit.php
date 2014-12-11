@@ -82,6 +82,7 @@ class MacroContentHammer__edit
 						$editeur->ID = $mch__post->ID;
 						$editeur->content = $mch__post->post_content;
 						$editeur->name = $name__editor;
+						$editeur->slug = $content['slug'];
 
 						// log_it($mch__post->ID);
 
