@@ -119,10 +119,27 @@ class Storytelling__kickstarter
 	        $this->story__edit = new Storytelling__edit();
 
 	       	add_action( 'save_post', array( $this->story__post, 'Storytelling__savedata' ) );
+	       	add_action( 'admin_footer', array( $this, 'Storytelling__removePageTemplate'), 10);
 
 	    }
 
     }
+
+    // remove storytelling template from template selector.
+
+	public function Storytelling__removePageTemplate() {
+	    global $pagenow;
+	    if ( in_array( $pagenow, array( 'post-new.php', 'post.php') ) && get_post_type() == 'page' ) { ?>
+	        <script type="text/javascript">
+	            (function($){
+	                $(document).ready(function(){
+	                    $('#page_template option[value^="storytelling"]').remove();
+	                })
+	            })(jQuery)
+	        </script>
+	    <?php 
+	    }
+	}
 
     public function Storytelling__include__admin__class(){
 		include_once plugin_dir_path(__FILE__). '/core/inc/story__database.php';
