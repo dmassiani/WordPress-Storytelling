@@ -8,7 +8,7 @@
 // ******************************************************
 
 
-class MacroContentHammer__editors
+class Storytelling__editors
 {
 
 	public $metabox__id = 1000;
@@ -32,7 +32,7 @@ class MacroContentHammer__editors
 
 	public function getNewContent(){
 
-		// on récupère la liste des contenus et on génére un nouveau MCH post
+		// on récupère la liste des contenus et on génére un nouveau story post
 
 		// log_it('metabox ' . $this->n__metabox);
 		if( $this->n__metabox != 0 )$this->update = true;
@@ -43,26 +43,26 @@ class MacroContentHammer__editors
 		$slugsArray = explode(',', urldecode($this->slugs) );
 
 		?>
-		<div id="postbox-container-<?=$this->metabox__id?>" class="postbox-container mch-container">
+		<div id="postbox-container-<?=$this->metabox__id?>" class="postbox-container story-container">
 			
-	        <div id="mch__container--template--<?=$this->metabox__id?>" class="meta-box-sortables">
-	            <div id="mch__rapper--macro" class="postbox mch closed">
-	                <div class="handlediv mch" title="Cliquer pour inverser."><br></div>
+	        <div id="story__container--template--<?=$this->metabox__id?>" class="meta-box-sortables">
+	            <div id="story__rapper--macro" class="postbox story closed">
+	                <div class="handlediv story" title="Cliquer pour inverser."><br></div>
 	                <h3 class="hndle">
 	                    <span>
-	                    	Macro Template : <?=$this->template?>
+	                    	<?php _e('Story Telling') ?> : <?=$this->template?>
 	                    </span>
 	                </h3>
 	                <div class="inside">
 
 					<?php
 					
-					wp_nonce_field( 'mch__editor', 'macrocontenthammer__nonce' );
+					wp_nonce_field( 'story__editor', 'macrocontenthammer__nonce' );
 
 					foreach ($structureArray as $key => $element) {
 
 						$this->element__id = $this->metabox__id + ( $key + 1 );
-						$new__editor = "mch__editor__" . $this->element__id;	
+						$new__editor = "story__editor__" . $this->element__id;	
 						$this->name = $new__editor;
 						$this->slug = $slugsArray[ $key ];
 
@@ -86,33 +86,32 @@ class MacroContentHammer__editors
 
 	public function openMetabox( $n__metabox ){
 		$first = '';
-		if( $n__metabox === 0 )$first = ' mch-first';
+		if( $n__metabox === 0 )$first = ' story-first';
 		$this->metabox__id = 1000 * ( $n__metabox + 1 );
-		// log_it($this->metabox__id);
-		// log_it($n__metabox);
+
 		?>
 
 
-		<div id="postbox-container-<?=$this->metabox__id?>" class="postbox-container mch-container<?=$first?>">
+		<div id="postbox-container-<?=$this->metabox__id?>" class="postbox-container story-container<?=$first?>">
 			
-	        <div id="mch__container--template--<?=$this->metabox__id?>" class="meta-box-sortables">
-	            <div id="mch__rapper--macro" class="postbox mch closed">
+	        <div id="story__container--template--<?=$this->metabox__id?>" class="meta-box-sortables">
+	            <div id="story__rapper--macro" class="postbox story closed">
 	                <div class="handlediv" title="Cliquer pour inverser."><br></div>
 	                <h3 class="hndle">
 	                    <span>
-	                    	Macro Template : <?=$this->template?>
+	                    	<?php _e('Story Telling') ?> : <?=$this->template?>
 	                    </span>
 	                </h3>
 	                <div class="inside">
 					<?php
-					wp_nonce_field( 'mch__editor', 'macrocontenthammer__nonce' );
+					wp_nonce_field( 'story__editor', 'macrocontenthammer__nonce' );
 	}
 
 
 
 	public function closeMetabox(){
 		?>
-		            	<div class="mch__remove__element" data-elements="<?=$this->elementsRemove?>">
+		            	<div class="story__remove__element" data-elements="<?=$this->elementsRemove?>">
 		            		<ul>
 		            			<li class="remover"><a href="#" class="submitdelete deletion"><?=_e('Remove')?></a></li>
 		            			<li class="confirm">
@@ -132,23 +131,23 @@ class MacroContentHammer__editors
 
 	public function openElement(){
 		?>
-    		<div class="mch__element mch__element__<?=$this->type?>">
-				<input type="hidden" name="mch__post__[]" value="<?=$this->name?>">
-				<input type="hidden" name="mch__template__[]" value="<?=$this->template?>">
-				<input type="hidden" name="mch__type__[]" value="<?=$this->type?>">
-				<input type="hidden" name="mch__slug__[]" value="<?=$this->slug?>">
+    		<div class="story__element story__element__<?=$this->type?>">
+				<input type="hidden" name="story__post__[]" value="<?=$this->name?>">
+				<input type="hidden" name="story__template__[]" value="<?=$this->template?>">
+				<input type="hidden" name="story__type__[]" value="<?=$this->type?>">
+				<input type="hidden" name="story__slug__[]" value="<?=$this->slug?>">
 	    		<input type="hidden" name="metabox__id[]" value="<?=$this->metabox__id?>">
-				<input type="hidden" name="mch__image__id[]" class="mch__image__id" value="<?=$this->images__id?>" />
+				<input type="hidden" name="story__image__id[]" class="story__image__id" value="<?=$this->images__id?>" />
 
 	    	<?php
 	    	// pour une mise à jour du champ
 	    	if( $this->update === true ){
 	    		?>
-	    		<input type="hidden" name="mch__ID[]" value="<?=$this->ID?>" />
+	    		<input type="hidden" name="story__ID[]" value="<?=$this->ID?>" />
 	    		<?php
 	    	}else{
 	    		?>
-	    		<input type="hidden" name="mch__ID[]" />
+	    		<input type="hidden" name="story__ID[]" />
 	    		<?php
 	    	}
 
@@ -188,7 +187,7 @@ class MacroContentHammer__editors
     	?>
 		<input data-upload_image="<?=_e('Meta content Image')?>" data-upload_image_button="<?=_e('Select Image')?>" id="<?=$this->name?>" class="upload_image_button button<?=$hideUploader?>" type="button" value="Upload Image" />
 		<div>
-			<a href="#" class="mch__imageRemover<?=$showRemover?>"><?php _e( 'Remove Image', 'macrocontenthammer' ) ?></a>
+			<a href="#" class="story__imageRemover<?=$showRemover?>"><?php _e( 'Remove Image', 'macrocontenthammer' ) ?></a>
 		</div>
 		<?php
 		$this->closeElement();

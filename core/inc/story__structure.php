@@ -6,13 +6,11 @@
 //
 // ******************************************************
 
-class MacroContentHammer__structure extends MacroContentHammer__kickstarter
+class Storytelling__structure extends Storytelling__kickstarter
 {
 
 	public function __construct(){
 
-		// $realTemplates = $this->MacroContentHammer__realTemplates();
-		// return $realTemplates;
 
 	}
 
@@ -20,10 +18,10 @@ class MacroContentHammer__structure extends MacroContentHammer__kickstarter
     // Load Templates
     // ============================================================
 
-    public function MacroContentHammer__register__templates(){
+    public function Storytelling__register__templates(){
 
 		// use file data to get name and template
-		$folder = get_template_directory() . '/' . MCH_FOLDER;
+		$folder = get_template_directory() . '/' . STORY_FOLDER;
 		$listFiles = scandir( $folder );
 
 		$defaultHeader = array(
@@ -38,7 +36,7 @@ class MacroContentHammer__structure extends MacroContentHammer__kickstarter
 
 			if( $file_parts['extension'] === "php" ){
 
-				$utility = new MacroContentHammer__utility();
+				$utility = new Storytelling__utility();
 				$default = get_file_data( $folder . '/' . $value,  $defaultHeader );
 				$jsons 	 = $utility->get_file_data( $folder . '/' . $value,  $defaultHeader );
 
@@ -67,9 +65,9 @@ class MacroContentHammer__structure extends MacroContentHammer__kickstarter
 
     }
 
-    public function MacroContentHammer__realTemplates(){
+    public function Storytelling__realTemplates(){
 
-    	$templates = $this->MacroContentHammer__register__templates();
+    	$templates = $this->Storytelling__register__templates();
         
         $elements = [];
 
@@ -89,8 +87,8 @@ class MacroContentHammer__structure extends MacroContentHammer__kickstarter
 
     }
 
-    public function MacroContentHammer__get__template__structure( $name ){
-    	$folder = get_template_directory() . '/' . MCH_FOLDER;
+    public function Storytelling__get__template__structure( $name ){
+    	$folder = get_template_directory() . '/' . STORY_FOLDER;
 		$defaultHeader = array(
 			'TemplateName' => 'Template Name', 
 			'Structure' => 'Structure', 

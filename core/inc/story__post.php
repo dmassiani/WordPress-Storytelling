@@ -13,7 +13,7 @@ wordpress créé deux enregistrement, un post de type publish, un autre de type 
 
 */
 
-class MacroContentHammer__post
+class Storytelling__post
 {
 
 
@@ -21,25 +21,22 @@ class MacroContentHammer__post
 		// log_it('post init');
 	}
 
-	public function Macrocontenthammer__savedata( $post_id ) {
-
-		// log_it('save data');
-		// log_it($post_id);
+	public function Storytelling__savedata( $post_id ) {
 
 
-			if( !empty( $_POST['mch__post__'] )
-			&& !empty( $_POST['mch__template__'] )
-			&& !empty( $_POST['mch__type__'] )
-			&& !empty( $_POST['mch__slug__'] )
+			if( !empty( $_POST['story__post__'] )
+			&& !empty( $_POST['story__template__'] )
+			&& !empty( $_POST['story__type__'] )
+			&& !empty( $_POST['story__slug__'] )
 			&& !empty( $_POST['metabox__id'] )){
 
-				$mch__posts 		= $_POST['mch__post__'];
-				$mch__templates 	= $_POST['mch__template__'];
-				$mch__types 		= $_POST['mch__type__'];
-				$mch__slugs 		= $_POST['mch__slug__'];
-				$mch__metabox 		= $_POST['metabox__id'];
-				$mch__images 		= $_POST['mch__image__id'];
-				$mch__ID 			= $_POST['mch__ID'];
+				$story__posts 		= $_POST['story__post__'];
+				$story__templates 	= $_POST['story__template__'];
+				$story__types 		= $_POST['story__type__'];
+				$story__slugs 		= $_POST['story__slug__'];
+				$story__metabox 		= $_POST['metabox__id'];
+				$story__images 		= $_POST['story__image__id'];
+				$story__ID 			= $_POST['story__ID'];
 
 
 				$user_ID 			= get_current_user_id();
@@ -57,7 +54,7 @@ class MacroContentHammer__post
 				}
 
 				// Verify that the nonce is valid.
-				if ( ! wp_verify_nonce( $_POST['macrocontenthammer__nonce'], 'mch__editor' ) ) {
+				if ( ! wp_verify_nonce( $_POST['macrocontenthammer__nonce'], 'story__editor' ) ) {
 					return;
 				}
 
@@ -81,14 +78,14 @@ class MacroContentHammer__post
 					}
 				}
 
-				if( isset( $mch__posts ) && count( $mch__posts ) != 0 ){
+				if( isset( $story__posts ) && count( $story__posts ) != 0 ){
 
-					// log_it($mch__posts);
+					// log_it($story__posts);
 							
-					remove_action( 'save_post', array( $this, 'Macrocontenthammer__savedata' ) );
+					remove_action( 'save_post', array( $this, 'Storytelling__savedata' ) );
 
 					// on a du post alors on y va :)
-					// on boucle sur les mch__post
+					// on boucle sur les story__post
 
 					$update__content = false;
 					$update__meta = true;
@@ -102,15 +99,15 @@ class MacroContentHammer__post
 
 					$metas = [];
 
-					foreach ($mch__posts as $key => $mch__post) {
+					foreach ($story__posts as $key => $story__post) {
 
 							$update__content = false;
 
 							// on ajoute une entrée, son parent, son meta groupe
 
-							$mch__newpost = array(
+							$story__newpost = array(
 							  	'post_status'    	=> $status
-							  	,'post_type'      	=> 'MCH__content'
+							  	,'post_type'      	=> 'STORY__content'
 							  	,'ping_status'    	=> 'closed'
 							  	,'post_author'		=> $user_ID
 							  	,'comment_status' 	=> 'closed'
@@ -119,24 +116,24 @@ class MacroContentHammer__post
 
 							// Gestion du contenu en fonction du type
 							// s'il n'y a pas de contenu
-							if( empty( $_POST[ $mch__post ] ) )$_POST[ $mch__post ]='';
+							if( empty( $_POST[ $story__post ] ) )$_POST[ $story__post ]='';
 
 							// gestion du contenu en fonction du type
-							switch ( $mch__types[ $key ] ) {
+							switch ( $story__types[ $key ] ) {
 								case 'image':
-									$mch__newpost['post_content'] = $mch__images[ $key ];
+									$story__newpost['post_content'] = $story__images[ $key ];
 									break;
 
 								case 'editeur':
-									$mch__newpost['post_content'] = $_POST[ $mch__post ];
+									$story__newpost['post_content'] = $_POST[ $story__post ];
 									break;
 							}
 
-							// log_it($mch__ID[ $key ]);
+							// log_it($story__ID[ $key ]);
 
-							if( !empty( trim($mch__ID[ $key ]) ) ){
+							if( !empty( trim($story__ID[ $key ]) ) ){
 
-								$mch__newpost['ID'] = $mch__ID[ $key ];
+								$story__newpost['ID'] = $story__ID[ $key ];
 								$update__content = true;
 
 								// log_it('cest un update');
@@ -150,45 +147,36 @@ class MacroContentHammer__post
 							if( $update__content === false){
 
 								// log_it('nouveau');
-								$mch__id = wp_insert_post( $mch__newpost );
+								$story__id = wp_insert_post( $story__newpost );
 								$update__meta = true;
 
 							}else{
 
 								// log_it('update');
-								wp_update_post( $mch__newpost );
-								$mch__id = $mch__newpost['ID'];
+								wp_update_post( $story__newpost );
+								$story__id = $story__newpost['ID'];
 							
 							}
 
 
 							// les ID des post de la metabox
-							$template = $mch__templates[ $key ];
-							$container = $mch__metabox[ $key ];
+							$template = $story__templates[ $key ];
+							$container = $story__metabox[ $key ];
 
 							if( $i === 0 )$container__cache = $container;
 
 							if( (int) $container__cache != (int) $container ){
 
-								// log_it($container);
-								// log_it($container__cache);
+								$metas[] = array( 'template' => $template__cache, 'container' => $container__cache, 'content' => $story__content );
 
-								// log_it( $cont)
-								// on change de container donc on ajoute les metas precedent
-								// $i = 0;
-								$metas[] = array( 'template' => $template__cache, 'container' => $container__cache, 'content' => $mch__content );
-
-								// log_it($metas);
-								// on vide $types
-								unset($mch__content);
-
+								unset($story__content);
 
 							}
 
-							$mch__content[] = array(
-								'ID' => $mch__id,
-								'type' => $mch__types[ $key ],
-								'slug' => $mch__slugs[ $key ]
+							$story__content[] = array(
+								'ID' => $story__id,
+								'type' => $story__types[ $key ],
+								'slug' => $story__slugs[ $key ]
 							);
 							
 							$container__cache = $container;
@@ -201,16 +189,16 @@ class MacroContentHammer__post
 					}
 
 
-					$metas[] = array( 'template' => $template__cache, 'container' => $container__cache, 'content' => $mch__content );
-					unset($mch__content);
+					$metas[] = array( 'template' => $template__cache, 'container' => $container__cache, 'content' => $story__content );
+					unset($story__content);
 
 					// log_it($metas);
 
 					if( $update__meta === true ):
 						// il y a eu un nouvel enregistrement
-						update_post_meta( $post_id, '_mch_content', $metas );
+						update_post_meta( $post_id, '_story_content', $metas );
 					else:
-						add_post_meta( $post_id, '_mch_content', $metas, true );
+						add_post_meta( $post_id, '_story_content', $metas, true );
 					endif;
 
 				}

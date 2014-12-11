@@ -10,16 +10,15 @@ Version: 1.0
 Author: David Massiani
 Author URI: http://davidmassiani.com
 License: GPLv2 or later
-Text Domain: macrocontenthammer
+Text Domain: storytelling
 */
 
 // Folder name
-define ( 'MCH_VERSION', '1.0' );
-define ( 'MCH_OPTION',  'simple-taxonomy' );
-define ( 'MCH_FOLDER',  'wp-storytelling' );
+define ( 'STORY_VERSION', '1.0' );
+define ( 'STORY_FOLDER',  'storytelling' );
 
-define ( 'MCH_URL', plugins_url('', __FILE__) );
-define ( 'MCH_DIR', dirname(__FILE__) );
+define ( 'STORY_URL', plugins_url('', __FILE__) );
+define ( 'STORY_DIR', dirname(__FILE__) );
 
 
 
@@ -36,27 +35,27 @@ if(!function_exists('log_it')){
 }
 
 
-if( !class_exists('MacroContentHammer__kickstarter') ):
+if( !class_exists('Storytelling__kickstarter') ):
 
-class MacroContentHammer__kickstarter
+class Storytelling__kickstarter
 {
 
 	public $templates = [];
 	
-    public $mch__ajax;
-    public $mch__metabox;
-    public $mch__database;
-    public $mch__post;
-    public $mch__edit;
-    public $mch__structure;
-    public $mch__utility;
+    public $story__ajax;
+    public $story__metabox;
+    public $story__database;
+    public $story__post;
+    public $story__edit;
+    public $story__structure;
+    public $story__utility;
 
-	public $name = "MCH__content";
-	public $mch__templates;
+	public $name = "STORY__content";
+	public $story__templates;
 
 	public function __construct(){
 
-		load_textdomain('macrocontenthammmer', MCH_DIR . 'lang/mch-' . get_locale() . '.mo');
+		load_textdomain('storytelling', STORY_DIR . 'lang/story-' . get_locale() . '.mo');
 
 		add_action('init', array($this, 'init'), 1);
 
@@ -77,22 +76,20 @@ class MacroContentHammer__kickstarter
 		
 	    remove_post_type_support( $this->name, 'title' );
 
-    	// log_it('init');
 
-
-    	$this->MacroContentHammer__include__front__class();
+    	$this->Storytelling__include__front__class();
 
 
     	if ( !is_admin() ) {
 
 	        // init structure
-	        $get__templates = new MacroContentHammer__structure();
-	        $this->mch__structure = $get__templates->MacroContentHammer__realTemplates();
+	        $get__templates = new Storytelling__structure();
+	        $this->story__structure = $get__templates->Storytelling__realTemplates();
 	        // log_it($this->mch__structure);
 
     	}else{
 
-    		$this->MacroContentHammer__include__admin__class();
+    		$this->Storytelling__include__admin__class();
 
     	// ===================================================
     	// 
@@ -100,8 +97,8 @@ class MacroContentHammer__kickstarter
     	// 
     	// ===================================================
 
-    		$this->MacroContentHammer__register__plugins();
-    		$this->MacroContentHammer__register__styles();
+    		$this->Storytelling__register__plugins();
+    		$this->Storytelling__register__styles();
 
     	// =================================================
     	//
@@ -111,35 +108,35 @@ class MacroContentHammer__kickstarter
 
 
     		// init ajax
-        	$this->mch__ajax = new MacroContentHammer__ajax();
+        	$this->story__ajax = new Storytelling__ajax();
 	    	// init metabox selector
-	        $this->mch__metabox = new MacroContentHammer__metabox();
+	        $this->story__metabox = new Storytelling__metabox();
 	        // init database
-	        $this->mch__database = new MacroContentHammer__database();
+	        $this->story__database = new Storytelling__database();
 	        // init post
-	        $this->mch__post = new MacroContentHammer__post();
+	        $this->story__post = new Storytelling__post();
 	        // init edit
-	        $this->mch__edit = new MacroContentHammer__edit();
+	        $this->story__edit = new Storytelling__edit();
 
-	       	add_action( 'save_post', array( $this->mch__post, 'Macrocontenthammer__savedata' ) );
+	       	add_action( 'save_post', array( $this->story__post, 'Storytelling__savedata' ) );
 
 	    }
 
     }
 
-    public function MacroContentHammer__include__admin__class(){
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__database.php';
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__metabox.php';
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__editors.php';
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__ajax.php';
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__post.php';
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__edit.php';
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__remover.php';
+    public function Storytelling__include__admin__class(){
+		include_once plugin_dir_path(__FILE__). '/core/inc/story__database.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/story__metabox.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/story__editors.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/story__ajax.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/story__post.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/story__edit.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/story__remover.php';
     }
-    public function MacroContentHammer__include__front__class(){
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__content.php';
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__utility.php';
-		include_once plugin_dir_path(__FILE__). '/core/inc/mch__structure.php';
+    public function Storytelling__include__front__class(){
+		include_once plugin_dir_path(__FILE__). '/core/inc/story__content.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/story__utility.php';
+		include_once plugin_dir_path(__FILE__). '/core/inc/story__structure.php';
     }
 
 
@@ -147,13 +144,13 @@ class MacroContentHammer__kickstarter
     // Register JS plugins
     // ============================================================
 
-    public function MacroContentHammer__register__plugins(){
+    public function Storytelling__register__plugins(){
 		// register javascript 
 		$scripts = array();
 
 		$scripts[] = array(
-			'handle'	=> 'macroContentHammer',
-			'src'		=> MCH_URL . '/front/js/MacroContentHammer.js',
+			'handle'	=> 'Storytelling',
+			'src'		=> STORY_URL . '/front/js/storytelling.js',
 			'deps'		=> array('jquery')
 		);
 
@@ -167,13 +164,13 @@ class MacroContentHammer__kickstarter
     // Register CSS Styles
     // ============================================================
 
-    public function MacroContentHammer__register__styles(){
+    public function Storytelling__register__styles(){
 		// register styles
 		$styles = array();
 		
 		$styles[] = array(
-			'handle'	=> 'macroContentHammer',
-			'src'		=> MCH_URL . '/front/css/MacroContentHammer.css'
+			'handle'	=> 'storytelling',
+			'src'		=> STORY_URL . '/front/css/storytelling.css'
 		);
 		
 		foreach( $styles as $style )
@@ -183,21 +180,21 @@ class MacroContentHammer__kickstarter
     }
 
 }
-function macrocontenthammer()
+function storytelling()
 {
-	global $macrocontenthammer;
+	global $storytelling;
 	
-	if( !isset($macrocontenthammer) )
+	if( !isset($storytelling) )
 	{
-		$macrocontenthammer = new MacroContentHammer__kickstarter();
+		$storytelling = new Storytelling__kickstarter();
 	}
 	
-	return $macrocontenthammer;
+	return $storytelling;
 }
 
 
 // initialize
-macrocontenthammer();
+storytelling();
 
 
 endif; // class_exists check

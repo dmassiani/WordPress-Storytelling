@@ -10,10 +10,10 @@
 function get_illustration( $slug, $size ){
 
 	global $post;
-	global $mch__stories;
+	global $story__stories;
 
-	if( empty( $mch__stories ) ) define_stories();
-	if( empty( $mch__stories ) ) return;
+	if( empty( $story__stories ) ) define_stories();
+	if( empty( $story__stories ) ) return;
 
 
 	return;
@@ -22,17 +22,17 @@ function get_illustration( $slug, $size ){
 function the_illustration( $slug = false, $size = false ){
 
 	global $post;
-	global $mch__stories;
-	global $mch__current__story;
+	global $story__stories;
+	global $story__current__story;
 
-	if( empty( $mch__stories ) ) define_stories();
-	if( empty( $mch__stories ) ) return;
+	if( empty( $story__stories ) ) define_stories();
+	if( empty( $story__stories ) ) return;
 
 	if( $slug === false ) return;
 	if( $size === false ) $size = 'full';
 
 
-	foreach( $mch__current__story['contents'] as $key => $element ){
+	foreach( $story__current__story['contents'] as $key => $element ){
 
 		if( $element['slug'] === $slug ){
 
@@ -43,6 +43,7 @@ function the_illustration( $slug = false, $size = false ){
 	}
 
 	if( !empty( $the_chapter_ID ) ):
+		
 		$the__chapter = get_post( $the_chapter_ID );
 		echo wp_get_attachment_image( $the__chapter->post_content, $size );
 
@@ -53,10 +54,10 @@ function the_illustration( $slug = false, $size = false ){
 function get_chapter( $slug = false ){
 
 	global $post;
-	global $mch__stories;
+	global $story__stories;
 
-	if( empty( $mch__stories ) ) define_stories();
-	if( empty( $mch__stories ) ) return;
+	if( empty( $story__stories ) ) define_stories();
+	if( empty( $story__stories ) ) return;
 
 	if( $slug === false ) return;
 
@@ -66,15 +67,15 @@ function get_chapter( $slug = false ){
 function the_chapter( $slug = false ){
 
 	global $post;
-	global $mch__stories;
-	global $mch__current__story;
+	global $story__stories;
+	global $story__current__story;
 
-	if( empty( $mch__stories ) ) define_stories();
-	if( empty( $mch__stories ) ) return;
+	if( empty( $story__stories ) ) define_stories();
+	if( empty( $story__stories ) ) return;
 
 	if( $slug === false ) return;
 
-	foreach( $mch__current__story['contents'] as $key => $element ){
+	foreach( $story__current__story['contents'] as $key => $element ){
 
 		if( $element['slug'] === $slug ){
 
@@ -94,15 +95,15 @@ function the_chapter( $slug = false ){
 function define_stories(){
 
 	global $post;
-	global $mch__stories;
+	global $story__stories;
 
 	if( empty( $post ) || !is_numeric( $post->ID ) || is_admin() ) return;
 
-	$metas = get_post_meta( $post->ID, '_mch_content', true );
+	$metas = get_post_meta( $post->ID, '_story_content', true );
 
 	if( ! empty( $metas ) ):
 
-		$mch__stories = [];
+		$story__stories = [];
 
 		foreach ($metas as $key => $metabox):
 
@@ -111,7 +112,7 @@ function define_stories(){
 
 			$name = sanitize_title( $template );
 
-			$mch__stories[ $name ] = array(
+			$story__stories[ $name ] = array(
 				'template' => $name,
 				'contents' => $contents
 			);
@@ -127,20 +128,20 @@ function define_stories(){
 function the_story() {
 
 	global $post;
-	global $mch__stories;
-	global $mch__current__story;
+	global $story__stories;
+	global $story__current__story;
 
 
-	if( empty( $mch__stories ) ) define_stories();
+	if( empty( $story__stories ) ) define_stories();
 
 
-	if( empty( $mch__stories ) ) return;
+	if( empty( $story__stories ) ) return;
 
 
-	foreach ($mch__stories as $key => $story):
+	foreach ($story__stories as $key => $story):
 
 
-		$mch__current__story = $story;
+		$story__current__story = $story;
 
 		echo get_story_template( $story['template'] );
 
@@ -151,13 +152,13 @@ function the_story() {
 function get_story_template( $story__name ){
 
 	global $post;
-	global $mch__stories;
-	global $mch__current__story;
+	global $story__stories;
+	global $story__current__story;
 
-	if( empty( $mch__stories ) ) define_stories();
-	if( empty( $mch__stories ) ) return;
+	if( empty( $story__stories ) ) define_stories();
+	if( empty( $story__stories ) ) return;
 	if( empty( $story__name ) ) return;
 
-	return get_template_part( MCH_FOLDER . '/' . $story__name );
+	return get_template_part( STORY_FOLDER . '/' . $story__name );
 
 }

@@ -1,8 +1,8 @@
-#mch__selector ol{
+#story__selector ol{
 	padding: 0;
 	margin: 0;
 }
-#mch__selector ol li {
+#story__selector ol li {
 	float: left;
 	width: 31%;
 	border: 1px solid #ccc;
@@ -13,26 +13,26 @@
 	list-style: none;
 }
 
-#mch__selector ol li a{
+#story__selector ol li a{
 	padding: 20px;
 	color: #333;
 	text-decoration: none;	
 	display: block;
 }
-#mch__selector ol li a h4{
+#story__selector ol li a h4{
 	margin: 0;
 }
 
 /* delete handling move on sortable */
-.js .postbox.mch .hndle{
+.js .postbox.story .hndle{
 	cursor: auto;
 }
 
-.mch__element{
+.story__element{
 	padding: 10px 0;
 }
 
-.mch__element__image{
+.story__element__image{
 	width: 99%;
 	margin: 10px 0;
 	text-align: center;
@@ -41,31 +41,31 @@
 	border-radius: 9px;
 }
 
-.mch-first{
+.story-first{
 	margin-top: 20px;
 }
 
-.mch__element .mch__imageRemover{
+.story__element .story__imageRemover{
 	display: none;
 }
-.mch__element .mch__imageRemover.show{
+.story__element .story__imageRemover.show{
 	display: inline;
 }
-.mch__element .upload_image_button.hide{
+.story__element .upload_image_button.hide{
 	display: none;
 }
 
 /* Remove Element */
-.mch__remove__element{
+.story__remove__element{
 	float: right;
 }
-.mch__remove__element .remover a{
+.story__remove__element .remover a{
 	color: #a00;
 }
-.mch__remove__element .confirm{
+.story__remove__element .confirm{
 	display: none;
 }
-.mch__remove__element .confirm .delete{
+.story__remove__element .confirm .delete{
 	color: #a00;
 	padding: 0 10px;
 }

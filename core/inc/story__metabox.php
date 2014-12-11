@@ -1,12 +1,12 @@
 <?php
-class MacroContentHammer__metabox
+class Storytelling__metabox
 {
     public function __construct()
     {
-        add_action( 'add_meta_boxes', array($this, 'mch__addMetaBox__Sidebar') );
+        add_action( 'add_meta_boxes', array($this, 'story__addMetaBox__Sidebar') );
     }
 
-    public function mch__addMetaBox__Sidebar(){
+    public function story__addMetaBox__Sidebar(){
         $screens = array( 'post', 'page' );
 
         $args = array(
@@ -30,9 +30,9 @@ class MacroContentHammer__metabox
         foreach ( $screens as $screen ) {
 
             add_meta_box(
-                'mch__selector',
-                __( 'Ajouter un macro contenu', 'macrocontenthammer' ),
-                array($this, 'mch__addMetaBox__Sidebar__callback'),
+                'story__selector',
+                __( 'Ajouter un chapitre', 'storytelling' ),
+                array($this, 'story__addMetaBox__Sidebar__callback'),
                 $screen,
                 'side',
                 'core'
@@ -42,10 +42,10 @@ class MacroContentHammer__metabox
 
     }
 
-    public function mch__addMetaBox__Sidebar__callback(){
+    public function story__addMetaBox__Sidebar__callback(){
 
-        $mch_structure = new MacroContentHammer__structure();
-        $templates = $mch_structure->MacroContentHammer__register__templates();
+        $story_structure = new Storytelling__structure();
+        $templates = $story_structure->Storytelling__register__templates();
 
             // on parcourt les templates et on les affiche
 
@@ -79,10 +79,6 @@ class MacroContentHammer__metabox
 
         <?php
             }
-
-    }
-
-    public function mch__addMetaBox__Content__callback(){
 
     }
 

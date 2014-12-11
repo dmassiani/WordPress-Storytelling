@@ -6,7 +6,7 @@
 //
 // ******************************************************
 
-class MacroContentHammer__ajax
+class Storytelling__ajax
 {
 
 
@@ -15,11 +15,11 @@ class MacroContentHammer__ajax
 
     public function __construct(){
 
-        add_action("wp_ajax_MacroContentHammer__getNewMacro", array( $this, "MacroContentHammer__getNewMacro") );
-        add_action("wp_ajax_nopriv_MacroContentHammer__getNewMacro", array( $this, "MacroContentHammer__getNewMacro") );
+        add_action("wp_ajax_Storytelling__getNewMacro", array( $this, "Storytelling__getNewMacro") );
+        add_action("wp_ajax_nopriv_Storytelling__getNewMacro", array( $this, "Storytelling__getNewMacro") );
 
-        add_action("wp_ajax_MacroContentHammer__deleteElements", array( $this, "MacroContentHammer__deleteElements") );
-        add_action("wp_ajax_nopriv_MacroContentHammer__deleteElements", array( $this, "MacroContentHammer__deleteElements") );
+        add_action("wp_ajax_Storytelling__deleteElements", array( $this, "Storytelling__deleteElements") );
+        add_action("wp_ajax_nopriv_Storytelling__deleteElements", array( $this, "Storytelling__deleteElements") );
 
     }
 
@@ -28,12 +28,12 @@ class MacroContentHammer__ajax
     // fonction qui retourne le nombre de post mch__content
     // ===================================================================
 
-    public function MacroContentHammer__getTotalMchPost(){
+    public function Storytelling__getTotalStoryPost(){
 
     	// getNewContent( $editor__name, $tmpl__name );
-        $db = new MacroContentHammer__database();
+        $db = new Storytelling__database();
         // $editeur->getNewEditor( $editor__name );
-        echo $db->total__mch__content();
+        echo $db->total__story__content();
         die();
 
     }
@@ -43,9 +43,9 @@ class MacroContentHammer__ajax
     // fonction qui retourne l'editeur wordpress !
     // ===================================================================
 
-    public function MacroContentHammer__getNewMacro(){
+    public function Storytelling__getNewMacro(){
 
-        $editeur = new MacroContentHammer__editors();
+        $editeur = new Storytelling__editors();
 
         $editeur->template = $_POST['tmpl'];
         $editeur->structure = $_POST['structure'];
@@ -62,14 +62,14 @@ class MacroContentHammer__ajax
     // delete all element of metabox
     // ===================================================================
 
-    public function MacroContentHammer__deleteElements(){
+    public function Storytelling__deleteElements(){
 
-        $remover = new MacroContentHammer__remover();
+        $remover = new Storytelling__remover();
 
         $remover->elements = $_POST['elements'];
         $remover->parent = $_POST['parent'];
 
-        $remover->Macrocontenthammer__remove__elements();
+        $remover->Storytelling__remove__elements();
 
         die();
 

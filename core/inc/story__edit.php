@@ -8,17 +8,17 @@
 // ******************************************************
 
 
-class MacroContentHammer__edit
+class Storytelling__edit
 {
 
 	public function __construct(){
 		// edit_post is hook for edit
-		// add_action( 'edit_form_after_editor', array( $this, 'Macrocontenthammer__getdata' ) );
-		add_action( 'edit_form_after_editor', array( $this, 'Macrocontenthammer__getdata' ) );
-		// add_action( 'edit_page_form', array( $this, 'Macrocontenthammer__getdata' ) );
+		// add_action( 'edit_form_after_editor', array( $this, 'Storytelling__getdata' ) );
+		add_action( 'edit_form_after_editor', array( $this, 'Storytelling__getdata' ) );
+		// add_action( 'edit_page_form', array( $this, 'Storytelling__getdata' ) );
 	}
 
-	public function Macrocontenthammer__getdata( $post ) {
+	public function Storytelling__getdata( $post ) {
 
 
 		// metabox represente les metabox par groupe de template
@@ -36,17 +36,17 @@ class MacroContentHammer__edit
 		// on récupère les templates disponibles
 		//
 		// ====================================================================
-		// $mch_structure = new MacroContentHammer__structure();
-  //       $templates = $mch_structure->MacroContentHammer__register__templates();
+		// $story_structure = new MacroContentHammer__structure();
+  //       $templates = $story_structure->MacroContentHammer__register__templates();
 
         // log_it( $templates );
 
         // on instancie les editeurs et on le passe en mode update
-		$editeur = new MacroContentHammer__editors();
+		$editeur = new Storytelling__editors();
 		$editeur->update = true;
 
 		// on récupère les metas
-		$metas = get_post_meta( $post->ID, '_mch_content', true );
+		$metas = get_post_meta( $post->ID, '_story_content', true );
 
 		// log_it($metas);
 
@@ -71,20 +71,20 @@ class MacroContentHammer__edit
 					foreach ($contents as $i => $content):
 
 						// on retrouve le post
-						$mch__post = get_post( $content['ID'] );
-						// log_it($mch__post);
+						$story__post = get_post( $content['ID'] );
+						// log_it($story__post);
 
-						$metabox__structure[] = $mch__post->ID;
+						$metabox__structure[] = $story__post->ID;
 
-						$name__editor = "mch__editor__" . ( $container + $i +1);
+						$name__editor = "story__editor__" . ( $container + $i +1);
 						// log_it($name__editor);
 						
-						$editeur->ID = $mch__post->ID;
-						$editeur->content = $mch__post->post_content;
+						$editeur->ID = $story__post->ID;
+						$editeur->content = $story__post->post_content;
 						$editeur->name = $name__editor;
 						$editeur->slug = $content['slug'];
 
-						// log_it($mch__post->ID);
+						// log_it($story__post->ID);
 
 						switch ( $content['type'] ) {
 							case 'image':

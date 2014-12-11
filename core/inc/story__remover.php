@@ -6,7 +6,7 @@
 //
 // ******************************************************
 
-class MacroContentHammer__remover
+class Storytelling__remover
 {
 
 
@@ -14,7 +14,7 @@ class MacroContentHammer__remover
     public $parent;
     public $meta__elements;
 
-	public function Macrocontenthammer__remove__elements() {
+	public function Storytelling__remove__elements() {
 
 
 		if( !empty( $this->elements ) ){
@@ -28,7 +28,7 @@ class MacroContentHammer__remover
 
 			// !! il va falloir refaire le meta du post !!
 			$this->meta__elements;
-			$this->Macrocontenthammer__update__parentMeta();
+			$this->Storytelling__update__parentMeta();
 
 			echo 'done';
 
@@ -36,11 +36,11 @@ class MacroContentHammer__remover
 
 	}
 
-	public function Macrocontenthammer__update__parentMeta(){
+	public function Storytelling__update__parentMeta(){
 
 		$post__id = $this->parent;
 		// on retrouve la meta pour le post
-		$metas = get_post_meta( $post__id, '_mch_content', true );
+		$metas = get_post_meta( $post__id, '_story_content', true );
 		$elements = explode( ',', trim(urldecode($this->elements)) );
 
 		// log_it($metas);
@@ -84,7 +84,7 @@ class MacroContentHammer__remover
 		// pour chaque meta on reinitialise le code metabox
 
 		// on update les metas
-		update_post_meta( $post__id, '_mch_content', $metas );
+		update_post_meta( $post__id, '_story_content', $metas );
 
 		// log_it($metas);
 

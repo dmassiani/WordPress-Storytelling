@@ -1,7 +1,7 @@
 (function($){
 
-	$rapper 	= 'mch__rapper',
-	$selector 	= 'mch__selector';
+	$rapper 	= 'story__rapper',
+	$selector 	= 'story__selector';
 
 	var n__element 		= 0;
 	var n__post 		= 0;
@@ -12,36 +12,18 @@
 	var file_frame;
 
 	// ================================
-	// get total post of mch
+	// get total post of story
 	// ================================
 
-	function getTotalMCHPost(){
-		// MacroContentHammer__getTotalMchPost
-		var data = {
-			'action': 'MacroContentHammer__getTotalMchPost'
-		};
-
-		// nombre total d'element enregistrer an base
-
-	    jQuery.post('/wp-admin/admin-ajax.php', data, function(response) {
-	    	
-	    	// on insere le form juste avant le contenu
-	    	
-			n__post = parseInt(response) + 1;
-
-
-	    });
-	    
-	}
 
 	function getMetaboxs(){
 		// retourne le nombre d'elements disponibles dans la page
-		n__metabox = jQuery('.mch-container').length;
+		n__metabox = jQuery('.story-container').length;
 		console.log('bonjour, jai trouvé ' + n__metabox );
 	}
 	function getElements(){
 		// retourne le nombre d'elements disponibles dans la page
-		n__element = jQuery('.mch__element').length;
+		n__element = jQuery('.story__element').length;
 	}
 
 	// ================================
@@ -58,7 +40,7 @@
 		// console.log('jai recompté ' + n__metabox + ' metabox');
 
 		var data = {
-			'action': 'MacroContentHammer__getNewMacro',
+			'action': 'Storytelling__getNewMacro',
 			'tmpl' : tmpl,
 			'structure': encodeURIComponent(structure),
 			'slugs': encodeURIComponent(slugs),
@@ -74,13 +56,13 @@
 	    	window.setTimeout(function() {
 
 
-				if( n__element === 0 )$('.mch-container').first().addClass('mch-first');
+				if( n__element === 0 )$('.story-container').first().addClass('story-first');
 
 	    		// pour chaque structure de type content, on init un tinymce
 	    		for (index = 0; index < contentLength; ++index) {
 
 
-	    			var new__editor = "mch__editor__" + parseInt( parseInt( n__metabox * 1000 ) + parseInt( index + 1 ) );
+	    			var new__editor = "story__editor__" + parseInt( parseInt( n__metabox * 1000 ) + parseInt( index + 1 ) );
 	    			// console.log('je vais créer un nouvel éditeur n ommé ' + new__editor);
 
 					if( $.trim(structureArray[ index ]) === "editeur" ){
@@ -127,12 +109,12 @@
 	// ================================
 	var selectedButton, imageRemover;
 
-	$(document).on('click','.mch__element__image .upload_image_button', function(e) {
+	$(document).on('click','.story__element__image .upload_image_button', function(e) {
  
         e.preventDefault();
  
  		selectedButton = $(this);
- 		imageRemover = $(this).closest('.mch__element').find('.mch__imageRemover');
+ 		imageRemover = $(this).closest('.story__element').find('.story__imageRemover');
 
 
         //If the uploader object has already been created, reopen the dialog
@@ -164,8 +146,8 @@
 			selectedButton.hide();
 			imageRemover.show();
 
-			selectedButton.closest('.mch__element')
-			.find('.mch__image__id').attr('value', attachment.id );
+			selectedButton.closest('.story__element')
+			.find('.story__image__id').attr('value', attachment.id );
 
 
 	    });
@@ -177,23 +159,23 @@
 
 
 	// ================================
-	// Remove Mch Element
+	// Remove story Element
 	// ================================
 	// delete
-	$(document).on('click','.mch__remove__element .remover a', function(e) {
+	$(document).on('click','.story__remove__element .remover a', function(e) {
 		e.preventDefault();
-		$(this).closest('.mch__remove__element').find('.confirm').show();
+		$(this).closest('.story__remove__element').find('.confirm').show();
 		$(this).hide();
 	});
 	// confirm
-	$(document).on('click','.mch__remove__element .confirm .delete', function(e) {
+	$(document).on('click','.story__remove__element .confirm .delete', function(e) {
 		e.preventDefault();
 
 		var buttonRemove = $(this);
-		var elements = buttonRemove.closest('.mch__remove__element').data('elements')
+		var elements = buttonRemove.closest('.story__remove__element').data('elements')
 
 		var data = {
-			'action': 'MacroContentHammer__deleteElements',
+			'action': 'Storytellling__deleteElements',
 			'elements': encodeURIComponent(elements),
 			'parent': jQuery('#post_ID').val()
 		};
@@ -203,11 +185,11 @@
 			$.post('/wp-admin/admin-ajax.php', data, function(response) {
 
 
-					buttonRemove.closest('.mch-container').remove();
+					buttonRemove.closest('.story-container').remove();
 					// on supprimer aussi tout les editeurs tiny mce
-					$.each( buttonRemove.closest('.mch-container').find('input[name="mch__post__[]"]'), function(e){
+					$.each( buttonRemove.closest('.story-container').find('input[name="story__post__[]"]'), function(e){
 
-						console.log(' tinymce : suppression de lediteur ' + $(this).val());
+						// console.log(' tinymce : suppression de lediteur ' + $(this).val());
 
 						tinymce.EditorManager.execCommand('mceRemoveEditor',true, $(this).val() );
 			
@@ -218,17 +200,17 @@
 			});
 
 		}else{
-			buttonRemove.closest('.mch-container').remove();
+			buttonRemove.closest('.story-container').remove();
 			// n__metabox--;
 		}
 
 
 	});
 	// cancel
-	$(document).on('click','.mch__remove__element .confirm .cancel', function(e) {
+	$(document).on('click','.story__remove__element .confirm .cancel', function(e) {
 		e.preventDefault();
-		$(this).closest('.mch__remove__element').find('.confirm').hide();
-		$(this).closest('.mch__remove__element').find('.remover a').show();
+		$(this).closest('.story__remove__element').find('.confirm').hide();
+		$(this).closest('.story__remove__element').find('.remover a').show();
 	});
 
 
@@ -236,13 +218,13 @@
 	// instanciate image remover
 	// ================================
 
-	$(document).on('click','.mch__imageRemover', function(e) {
+	$(document).on('click','.story__imageRemover', function(e) {
 
 		e.preventDefault();
 
-		$(this).closest('.mch__element').find('img').remove();
-		$(this).closest('.mch__element').find('.upload_image_button').show();
-		$(this).closest('.mch__element').find('.mch__image__id').attr('value','');
+		$(this).closest('.story__element').find('img').remove();
+		$(this).closest('.story__element').find('.upload_image_button').show();
+		$(this).closest('.story__element').find('.story__image__id').attr('value','');
 		$(this).hide();
 
 	});
@@ -251,7 +233,7 @@
 	// selector click
 	// ================================
 
-	$(document).on('click', '#mch__selector a', function( e ){
+	$(document).on('click', '#story__selector a', function( e ){
 
 		e.preventDefault();
 
@@ -266,7 +248,7 @@
 	});
 
 
-	$(document).on('click', '.postbox .handlediv.mch', function(){
+	$(document).on('click', '.postbox .handlediv.story', function(){
 
 		var postbox = $(this).closest('.postbox');
 		
