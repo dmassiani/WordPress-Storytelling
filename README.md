@@ -75,6 +75,9 @@ You can define much element you want
 {"type": "editeur", "name": "center content", "slug": "center_content"}
 {"type": "editeur", "name": "right content", "slug": "right_content"}
 ```
+This is [an example][id] reference-style link.
+
+[id]: http://example.com/  "Optional Title Here"
 
 name is for admin **not available yet**
 
