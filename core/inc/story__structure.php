@@ -26,7 +26,6 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 		$defaultHeader = array(
 			'TemplateName' => 'Template Name', 
-			'Structure' => 'Structure', 
 			'Description' => 'Description'
 		);
 
@@ -90,8 +89,7 @@ class Storytelling__structure extends Storytelling__kickstarter
     public function Storytelling__get__template__structure( $name ){
     	$folder = get_template_directory() . '/' . STORY_FOLDER;
 		$defaultHeader = array(
-			'TemplateName' => 'Template Name', 
-			'Structure' => 'Structure', 
+			'TemplateName' => 'Template Name',  
 			'Description' => 'Description'
 		);
     	$default = get_file_data( $folder . '/' . $name  . '.php',  $defaultHeader );

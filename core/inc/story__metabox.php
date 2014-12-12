@@ -31,7 +31,7 @@ class Storytelling__metabox
 
             add_meta_box(
                 'story__selector',
-                __( 'Ajouter un chapitre', 'storytelling' ),
+                __( 'Add a chapter', 'storytelling' ),
                 array($this, 'story__addMetaBox__Sidebar__callback'),
                 $screen,
                 'side',

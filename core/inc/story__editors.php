@@ -47,7 +47,7 @@ class Storytelling__editors
 			
 	        <div id="story__container--template--<?=$this->metabox__id?>" class="meta-box-sortables">
 	            <div id="story__rapper--macro" class="postbox story closed">
-	                <div class="handlediv story" title="Cliquer pour inverser."><br></div>
+	                <div class="handlediv story" title="<?php _e('Clic for invert') ?>"><br></div>
 	                <h3 class="hndle">
 	                    <span>
 	                    	<?php _e('Story Telling') ?> : <?=$this->template?>
@@ -96,7 +96,7 @@ class Storytelling__editors
 			
 	        <div id="story__container--template--<?=$this->metabox__id?>" class="meta-box-sortables">
 	            <div id="story__rapper--macro" class="postbox story closed">
-	                <div class="handlediv" title="Cliquer pour inverser."><br></div>
+	                <div class="handlediv" title="<?php _e('Clic for invert') ?>"><br></div>
 	                <h3 class="hndle">
 	                    <span>
 	                    	<?php _e('Story Telling') ?> : <?=$this->template?>

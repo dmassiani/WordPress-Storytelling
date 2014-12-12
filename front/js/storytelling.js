@@ -19,7 +19,6 @@
 	function getMetaboxs(){
 		// retourne le nombre d'elements disponibles dans la page
 		n__metabox = jQuery('.story-container').length;
-		console.log('bonjour, jai trouvé ' + n__metabox );
 	}
 	function getElements(){
 		// retourne le nombre d'elements disponibles dans la page
@@ -36,8 +35,6 @@
 		structure.replace(/ /g,'');
 		var structureArray = structure.split(',');
 		var contentLength = structureArray.length;
-
-		// console.log('jai recompté ' + n__metabox + ' metabox');
 
 		var data = {
 			'action': 'Storytelling__getNewMacro',

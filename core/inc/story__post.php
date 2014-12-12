@@ -34,7 +34,7 @@ class Storytelling__post
 				$story__templates 	= $_POST['story__template__'];
 				$story__types 		= $_POST['story__type__'];
 				$story__slugs 		= $_POST['story__slug__'];
-				$story__metabox 		= $_POST['metabox__id'];
+				$story__metabox 	= $_POST['metabox__id'];
 				$story__images 		= $_POST['story__image__id'];
 				$story__ID 			= $_POST['story__ID'];
 
@@ -49,12 +49,12 @@ class Storytelling__post
 				        return;
 
 				// Check if our nonce is set.
-				if ( ! isset( $_POST['macrocontenthammer__nonce'] ) ) {
+				if ( ! isset( $_POST['storytelling__nonce'] ) ) {
 					return;
 				}
 
 				// Verify that the nonce is valid.
-				if ( ! wp_verify_nonce( $_POST['macrocontenthammer__nonce'], 'story__editor' ) ) {
+				if ( ! wp_verify_nonce( $_POST['storytelling__nonce'], 'story__editor' ) ) {
 					return;
 				}
 
