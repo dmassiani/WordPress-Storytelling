@@ -68,6 +68,14 @@ Available type : editeur and image
 
 **sorry about 'editeur', It is French, I change that in near futur**
 
+You can define much element you want
+
+```php
+{"type": "editeur", "name": "left content", "slug": "left_content"}
+{"type": "editeur", "name": "center content", "slug": "center_content"}
+{"type": "editeur", "name": "right content", "slug": "right_content"}
+```
+
 name is for admin **not available yet**
 
 slug is for extract right data in right place **see section the_chapter()**
