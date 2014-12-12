@@ -5,9 +5,9 @@ Template Name: powerfullmacro
 Description: 2 columns with 2 content and 2 images
 
 -----------------------------------------------------------------------------------
-{"type": "editeur", "name": "left content", "slug": "left_content"}
+{"type": "editor", "name": "left content", "slug": "left_content"}
 {"type": "image", "name": "left illustration", "slug": "left_illustration"}
-{"type": "editeur", "name": "right content", "slug": "right_content"}
+{"type": "editor", "name": "right content", "slug": "right_content"}
 {"type": "image", "name": "right illustration", "slug": "right_illustration"}
 -----------------------------------------------------------------------------------
 

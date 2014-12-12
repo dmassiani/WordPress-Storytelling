@@ -3,21 +3,21 @@
 	margin: 0;
 }
 #story__selector ol li {
-	float: left;
-	width: 31%;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	margin: 0;
-	margin-right: 2%;
-	margin-top: 10px;
 	list-style: none;
+}
+#story__selector ol li p{
+	display: none;
 }
 
 #story__selector ol li a{
-	padding: 20px;
 	color: #333;
 	text-decoration: none;	
 	display: block;
+	border: 1px solid #e5e5e5;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+	box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+	background: #fff;
+	padding: 1em;
 }
 #story__selector ol li a h4{
 	margin: 0;

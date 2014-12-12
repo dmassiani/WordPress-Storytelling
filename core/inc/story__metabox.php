@@ -48,7 +48,7 @@ class Storytelling__metabox
         $templates = $story_structure->Storytelling__register__templates();
 
             // on parcourt les templates et on les affiche
-
+        ?><ol><?php
 
             foreach ($templates as &$template) {
 
@@ -79,6 +79,8 @@ class Storytelling__metabox
 
         <?php
             }
+
+        ?></ol><?php
 
     }
 
