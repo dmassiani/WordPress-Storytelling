@@ -56,9 +56,11 @@ Capability available in a future release.
 
 You have content with macro-template linked? Don't touch macro template used.
 
-==========
+Settings an element like that :
 
-Elements use Json.
+```php
+{"type": "editeur", "name": "left content", "slug": "left_content"}
+```
 
 Elements need 3 data : type, name and slug
 
