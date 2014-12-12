@@ -62,7 +62,7 @@
 	    			var new__editor = "story__editor__" + parseInt( parseInt( n__metabox * 1000 ) + parseInt( index + 1 ) );
 	    			// console.log('je vais créer un nouvel éditeur n ommé ' + new__editor);
 
-					if( $.trim(structureArray[ index ]) === "editeur" ){
+					if( $.trim(structureArray[ index ]) === "editor" ){
 
 			    		// on test si l'editeur a déja été instancié
 			    		instance = false;

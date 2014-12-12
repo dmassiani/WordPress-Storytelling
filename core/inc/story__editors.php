@@ -66,7 +66,8 @@ class Storytelling__editors
 						$this->name = $new__editor;
 						$this->slug = $slugsArray[ $key ];
 
-						if( trim($element) === 'editeur' ){
+						if( trim($element) === 'editor' ){
+							// 
 
 							$this->getNewEditor();
 
@@ -160,7 +161,7 @@ class Storytelling__editors
 
     public function getNewEditor()
     {
-    	$this->type = 'editeur';
+    	$this->type = 'editor';
     	$this->openElement();
 
 		ob_start();

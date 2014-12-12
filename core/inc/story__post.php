@@ -124,7 +124,7 @@ class Storytelling__post
 									$story__newpost['post_content'] = $story__images[ $key ];
 									break;
 
-								case 'editeur':
+								case 'editor':
 									$story__newpost['post_content'] = $_POST[ $story__post ];
 									break;
 							}

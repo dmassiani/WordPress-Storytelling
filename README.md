@@ -59,21 +59,19 @@ You have content with macro-template linked? Don't touch macro template used.
 Settings an element like that :
 
 ```php
-{"type": "editeur", "name": "left content", "slug": "left_content"}
+{"type": "editor", "name": "left content", "slug": "left_content"}
 ```
 
 Elements need 3 data : type, name and slug
 
-Available type : editeur and image
-
-**sorry about 'editeur', It is French, I change that in near futur**
+Available type : editor and image
 
 You can define much element you want
 
 ```php
-{"type": "editeur", "name": "left content", "slug": "left_content"}
-{"type": "editeur", "name": "center content", "slug": "center_content"}
-{"type": "editeur", "name": "right content", "slug": "right_content"}
+{"type": "editor", "name": "left content", "slug": "left_content"}
+{"type": "editor", "name": "center content", "slug": "center_content"}
+{"type": "editor", "name": "right content", "slug": "right_content"}
 ```
 
 name is for admin **not available yet**
