@@ -28,19 +28,15 @@ Template Name - Description - Elements
 
 Storytelling use Wordpress reading data like :
 
-/*
-
+`/*
 Template: MacrocontentA
-
 Description: Description for your customers
-
 {**"type"**: "image", **"name"**: "Left Image", **"slug"**: "left_image"}
-
-*/
+*/`
 
 #### Template Name
 
-Please you need to use slugged name like powerfull_slug
+Please use slugged template name like powerfull_slug
 
 #### Description
 
@@ -50,11 +46,11 @@ Description is used by your customers (if needed)
 
 Element is the most important chapter you need to know.
 
-Is is really important your think about your structured macro-template.
+Is is really important your think about your structured macro-template before.
 
 Today, Storytelling don't have capability to manage content resulting to element removed or modified from macro-template.
 
-In a future release.
+Capability available in a future release.
 
 You have content with macro-template linked? Don't touch macro template used.
 
