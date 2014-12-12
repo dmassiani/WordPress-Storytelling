@@ -32,7 +32,7 @@ Storytelling use Wordpress reading data like :
 /*
 Template: MacrocontentA
 Description: Description for your customers
-{**"type"**: "image", **"name"**: "Left Image", **"slug"**: "left_image"}
+{"type": "image", "name": "Left Image", "slug": "left_image"}
 */
 ```
 
