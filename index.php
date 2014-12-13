@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Macro Content Hammer
+ * @package Story Telling
  */
 /*
 Plugin Name: Story Telling

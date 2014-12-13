@@ -1,4 +1,4 @@
-Story Telling for Wordpress
+Story Telling for WordPress
 ==========
 
 ## the_story()
@@ -26,7 +26,7 @@ In your macro-template, Storytelling must-read 3 important data.
 
 Template Name - Description - Elements
 
-Storytelling use Wordpress reading data like :
+Storytelling use WordPress reading data like :
 
 ```php
 /*
