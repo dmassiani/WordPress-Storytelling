@@ -1,8 +1,10 @@
 <?php
 class Storytelling__metabox
 {
+
     public function __construct()
     {
+        load_textdomain('storytelling', STORY_DIR . 'lang/story-' . get_locale() . '.mo');
         add_action( 'add_meta_boxes', array($this, 'story__addMetaBox__Sidebar') );
     }
 

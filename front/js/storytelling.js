@@ -234,11 +234,8 @@
 		e.preventDefault();
 
 		var file = $(this).data('file');
-		var structure = $(this).data('structure');
-
 		// structure permet de charger tout les tinyMCE
-
-		// var slugs = $(this).data('slugs');
+		var structure = $(this).data('structure');
 
 		getTemplate( file, structure );
 

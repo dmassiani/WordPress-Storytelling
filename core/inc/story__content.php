@@ -110,8 +110,6 @@ function define_stories(){
 			$file	  = $metas[ $key ]['file'];
 			$contents = $metas[ $key ]['content'];
 
-			$name = sanitize_title( $template );
-
 			$story__stories[ $name ] = array(
 				'file' 		=> $file,
 				'contents' 	=> $contents

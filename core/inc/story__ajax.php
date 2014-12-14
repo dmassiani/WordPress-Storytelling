@@ -15,10 +15,6 @@ class Storytelling__ajax
 
     public function __construct(){
 
-        add_action("wp_ajax_Storytelling__getNewMacro", array( $this, "Storytelling__getNewMacro") );
-        add_action("wp_ajax_nopriv_Storytelling__getNewMacro", array( $this, "Storytelling__getNewMacro") );
-
-        // new getnewmacro
         add_action("wp_ajax_Storytelling__getNewBox", array( $this, "Storytelling__getNewBox") );
         add_action("wp_ajax_nopriv_Storytelling__getNewBox", array( $this, "Storytelling__getNewBox") );
 
@@ -55,25 +51,6 @@ class Storytelling__ajax
         $editeur->n__metabox = $_POST['n__metabox'];
 
         $editeur->getNewBox();
-
-        die();
-
-    }
-
-    // ===================================================================
-    // fonction qui retourne l'editeur wordpress !
-    // ===================================================================
-
-    public function Storytelling__getNewMacro(){
-
-        $editeur = new Storytelling__editors();
-
-        $editeur->template = $_POST['tmpl'];
-        $editeur->structure = $_POST['structure'];
-        $editeur->slugs = $_POST['slugs'];
-        $editeur->n__metabox = $_POST['n__metabox'];
-
-        $editeur->getNewContent();
 
         die();
 

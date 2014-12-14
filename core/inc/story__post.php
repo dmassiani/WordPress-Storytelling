@@ -204,7 +204,7 @@ class Storytelling__post
 					$metas[] = array( 'file' => $file__cache, 'template' => $template__cache, 'container' => $container__cache, 'content' => $story__content );
 					unset($story__content);
 
-					log_it($metas);
+					// log_it($metas);
 
 					if( $update__meta === true ):
 						// il y a eu un nouvel enregistrement
