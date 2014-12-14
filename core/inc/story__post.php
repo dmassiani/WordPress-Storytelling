@@ -33,6 +33,7 @@ class Storytelling__post
 				$story__posts 		= $_POST['story__post__'];
 				$story__templates 	= $_POST['story__template__'];
 				$story__types 		= $_POST['story__type__'];
+				$story__files 		= $_POST['story__file__'];
 				$story__slugs 		= $_POST['story__slug__'];
 				$story__metabox 	= $_POST['metabox__id'];
 				$story__images 		= $_POST['story__image__id'];
@@ -90,10 +91,16 @@ class Storytelling__post
 					$update__content = false;
 					$update__meta = true;
 
-					$types = [];
+					
 					$container = '';
 					$container__cache = '';
+					$file = '';
+					$file__cache = '';
 					$template = '';
+					$template_cache = '';
+
+					$types = [];
+
 					$status = get_post_status( $post_id );
 					$i = 0;
 
@@ -102,6 +109,8 @@ class Storytelling__post
 					foreach ($story__posts as $key => $story__post) {
 
 							$update__content = false;
+
+							// log_it($story__post);
 
 							// on ajoute une entrée, son parent, son meta groupe
 
@@ -152,7 +161,8 @@ class Storytelling__post
 
 							}else{
 
-								// log_it('update');
+								// log_it($story__newpost);
+
 								wp_update_post( $story__newpost );
 								$story__id = $story__newpost['ID'];
 							
@@ -162,12 +172,13 @@ class Storytelling__post
 							// les ID des post de la metabox
 							$template = $story__templates[ $key ];
 							$container = $story__metabox[ $key ];
+							$file = $story__files[ $key ];
 
 							if( $i === 0 )$container__cache = $container;
 
 							if( (int) $container__cache != (int) $container ){
 
-								$metas[] = array( 'template' => $template__cache, 'container' => $container__cache, 'content' => $story__content );
+								$metas[] = array( 'file' => $file__cache, 'template' => $template__cache, 'container' => $container__cache, 'content' => $story__content );
 
 								unset($story__content);
 
@@ -181,6 +192,7 @@ class Storytelling__post
 							
 							$container__cache = $container;
 							$template__cache = $template;
+							$file__cache = $file;
 
 
 							$i++;
@@ -189,10 +201,10 @@ class Storytelling__post
 					}
 
 
-					$metas[] = array( 'template' => $template__cache, 'container' => $container__cache, 'content' => $story__content );
+					$metas[] = array( 'file' => $file__cache, 'template' => $template__cache, 'container' => $container__cache, 'content' => $story__content );
 					unset($story__content);
 
-					// log_it($metas);
+					log_it($metas);
 
 					if( $update__meta === true ):
 						// il y a eu un nouvel enregistrement

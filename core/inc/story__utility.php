@@ -12,7 +12,7 @@ class Storytelling__utility
     // Load Templates
     // ============================================================
 
-	public function get_file_data( $file, $default_headers, $context = '' ) {
+	public function get_file_data( $file ) {
 		// We don't need to write to the file, so just open for reading.
 		$fp = fopen( $file, 'r' );
 

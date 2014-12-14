@@ -18,6 +18,10 @@ class Storytelling__ajax
         add_action("wp_ajax_Storytelling__getNewMacro", array( $this, "Storytelling__getNewMacro") );
         add_action("wp_ajax_nopriv_Storytelling__getNewMacro", array( $this, "Storytelling__getNewMacro") );
 
+        // new getnewmacro
+        add_action("wp_ajax_Storytelling__getNewBox", array( $this, "Storytelling__getNewBox") );
+        add_action("wp_ajax_nopriv_Storytelling__getNewBox", array( $this, "Storytelling__getNewBox") );
+
         add_action("wp_ajax_Storytelling__deleteElements", array( $this, "Storytelling__deleteElements") );
         add_action("wp_ajax_nopriv_Storytelling__deleteElements", array( $this, "Storytelling__deleteElements") );
 
@@ -38,6 +42,23 @@ class Storytelling__ajax
 
     }
 
+
+    // ===================================================================
+    // fonction qui retourne l'editeur wordpress !
+    // ===================================================================
+
+    public function Storytelling__getNewBox(){
+
+        $editeur = new Storytelling__editors();
+
+        $editeur->file = $_POST['file'];
+        $editeur->n__metabox = $_POST['n__metabox'];
+
+        $editeur->getNewBox();
+
+        die();
+
+    }
 
     // ===================================================================
     // fonction qui retourne l'editeur wordpress !

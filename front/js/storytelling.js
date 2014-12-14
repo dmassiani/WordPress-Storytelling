@@ -30,17 +30,16 @@
 	// ================================
 
 
-	function getTemplate( tmpl, structure, slugs ){
+	function getTemplate( file, structure ){
 
 		structure.replace(/ /g,'');
 		var structureArray = structure.split(',');
 		var contentLength = structureArray.length;
 
 		var data = {
-			'action': 'Storytelling__getNewMacro',
-			'tmpl' : tmpl,
-			'structure': encodeURIComponent(structure),
-			'slugs': encodeURIComponent(slugs),
+			'action': 'Storytelling__getNewBox',
+			// 'action': 'Storytelling__getNewMacro',
+			'file' : file,
 			'n__metabox': n__metabox
 		};
 
@@ -234,11 +233,14 @@
 
 		e.preventDefault();
 
-		var tmpl = $(this).data('name');
+		var file = $(this).data('file');
 		var structure = $(this).data('structure');
-		var slugs = $(this).data('slugs');
 
-		getTemplate( tmpl, structure, slugs );
+		// structure permet de charger tout les tinyMCE
+
+		// var slugs = $(this).data('slugs');
+
+		getTemplate( file, structure );
 
 		return false;
 

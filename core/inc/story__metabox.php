@@ -69,7 +69,7 @@ class Storytelling__metabox
         ?>
 
                 <li>
-                    <a href="#" data-name="<?=$template->name?>" data-structure="<?=$structure?>" data-slugs="<?=$slugs?>">
+                    <a href="#" data-file="<?=$template->file?>" data-name="<?=$template->name?>" data-structure="<?=$structure?>" data-slugs="<?=$slugs?>">
                         <h4><?=$template->name?></h4>
                         <p>
                             <?=$template->description?>
