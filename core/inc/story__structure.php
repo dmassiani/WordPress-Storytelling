@@ -205,7 +205,6 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 			$jsons 	 = $this->utility->get_file_data( $this->folder . '/' . $file );
 
-			$structure = [];
 
 			foreach( $jsons as $key => $json ):
 
@@ -220,4 +219,61 @@ class Storytelling__structure extends Storytelling__kickstarter
 		}	
 
     }
+
+    public function Storytelling__slugExist( $file, $slug ){
+
+    	$file_parts = pathinfo( $file );
+
+    	$exist = false;
+
+
+			if( $file_parts['extension'] === "php" ){
+
+			$jsons 	 = $this->utility->get_file_data( $this->folder . '/' . $file );
+
+
+			foreach( $jsons as $key => $json ):
+
+					$element = json_decode($json);
+					if( $element->slug === $slug ){
+						$exist = true;
+					}
+
+			endforeach;
+
+
+		}
+
+		return $exist;
+
+    }
+
+    public function Storytelling__slugType( $file, $slug ){
+
+    	$file_parts = pathinfo( $file );
+
+    	$exist = false;
+
+
+			if( $file_parts['extension'] === "php" ){
+
+			$jsons 	 = $this->utility->get_file_data( $this->folder . '/' . $file );
+
+
+			foreach( $jsons as $key => $json ):
+
+					$element = json_decode($json);
+					if( $element->slug === $slug ){
+						return $element->type;
+					}
+
+			endforeach;
+
+
+		}
+
+		return false;
+
+    }
+
 }
