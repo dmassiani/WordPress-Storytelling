@@ -30,7 +30,7 @@ Storytelling use WordPress reading data like :
 
 ```php
 /*
-Template: MacrocontentA
+Template: Macrocontent A
 Description: Description for your customers
 {"type": "image", "name": "Left Image", "slug": "left_image"}
 */
@@ -38,7 +38,8 @@ Description: Description for your customers
 
 #### Template Name
 
-Please use slugged template name like powerfull_slug
+__Please use slugged template name like powerfull_slug__
+Now you can use name you want
 
 #### Description
 
@@ -59,7 +60,7 @@ You have content with macro-template linked? Don't touch macro template used.
 Settings an element like that :
 
 ```php
-{"type": "editor", "name": "left content", "slug": "left_content"}
+{"type": "editor", "name": "Left content", "slug": "left_content"}
 ```
 
 Elements need 3 data : type, name and slug
@@ -74,8 +75,16 @@ You can define much element you want
 {"type": "editor", "name": "right content", "slug": "right_content"}
 ```
 
-name is for admin **not available yet**
+Name is display in admin, before editor or image.
 
 slug is for extract right data in right place **see section the_chapter()**
 
 **you can found an example in story-telling/front/macro-template-example.php**
+
+## Roadmap
+#### 1.1 : New content : title
+#### 1.2 : Templates in storytelling plugins
+#### 1.3 : Selector between Storytelling Template or Custom Template (in theme)
+#### 1.4 : Settings page
+#### 1.5 : CSS Storytelling grid (responsive grid for Storyteeling templates)
+#### 1.6 : Options available since selctor metabox ( css : on/off, storytelling available : on/off )
