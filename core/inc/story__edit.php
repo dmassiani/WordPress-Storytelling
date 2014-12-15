@@ -71,35 +71,50 @@ class Storytelling__edit
 
 					foreach ($contents as $i => $content):
 
-						// on retrouve le post
-						$story__post = get_post( $content['ID'] );
-
-						$metabox__structure[] = $story__post->ID;
-
-						$name__editor = "story__editor__" . ( $container + $i +1);
-						// log_it($name__editor);
-						
-						$editeur->ID = $story__post->ID;
-						$editeur->content = $story__post->post_content;
-						$editeur->container__id = $name__editor;
 						$editeur->slug = $content['slug'];
-						$editeur->name = $story__structure->Storytelling__getNameFileSlug( $file, $editeur->slug );
+
+						$exist = $story__structure->Storytelling__slugExist( $editeur->file, $editeur->slug );
+
+						if( $exist === true ){
+
+							$existType = $story__structure->Storytelling__slugType( $editeur->file, $editeur->slug );
+
+							if( $existType === $content['type'] ){
+
+								// on retrouve le post
+								$story__post = get_post( $content['ID'] );
+								$name__editor = "story__editor__" . ( $container + $i +1 );// $i n'est égale à rien ...
+
+								$editeur->ID = $story__post->ID;
+								$editeur->content = $story__post->post_content;
+
+								$editeur->container__id = $name__editor;
+								$editeur->name = $story__structure->Storytelling__getNameFileSlug( $editeur->file, $editeur->slug );
+
+
+								$metabox__structure[] = $story__post->ID;
 
 
 
-						switch ( $content['type'] ) {
-							case 'image':
-								$editeur->images__id = $editeur->content;
-								$editeur->getNewImage();
-								break;
+								switch ( $content['type'] ) {
+									case 'image':
+										$editeur->images__id = $editeur->content;
+										$editeur->getNewImage();
+										break;
 
-							case 'editeur':
-								$editeur->getNewEditor();
-								break;
+									case 'editeur':
+										$editeur->getNewEditor();
+										break;
 
-							default:
-								$editeur->getNewEditor();
+									default:
+										$editeur->getNewEditor();
+								}
+
+							}
+
+
 						}
+
 
 					endforeach;
 
