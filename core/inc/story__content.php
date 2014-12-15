@@ -107,14 +107,12 @@ function define_stories(){
 
 		foreach ($metas as $key => $metabox):
 
-			$template = $metas[ $key ]['template'];
+			$file	  = $metas[ $key ]['file'];
 			$contents = $metas[ $key ]['content'];
 
-			$name = sanitize_title( $template );
-
 			$story__stories[ $name ] = array(
-				'template' => $name,
-				'contents' => $contents
+				'file' 		=> $file,
+				'contents' 	=> $contents
 			);
 
 		endforeach;
@@ -143,7 +141,12 @@ function the_story() {
 
 		$story__current__story = $story;
 
-		echo get_story_template( $story['template'] );
+		// remove php extension
+		$info = pathinfo( $story['file'] );
+		$name = $info['filename'];
+
+
+		echo get_story_template( $name );
 
 	endforeach;
 

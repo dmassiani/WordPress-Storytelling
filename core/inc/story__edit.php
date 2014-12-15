@@ -36,8 +36,7 @@ class Storytelling__edit
 		// on récupère les templates disponibles
 		//
 		// ====================================================================
-		// $story_structure = new MacroContentHammer__structure();
-  //       $templates = $story_structure->MacroContentHammer__register__templates();
+		$story__structure = new Storytelling__structure();
 
         // log_it( $templates );
 
@@ -58,12 +57,14 @@ class Storytelling__edit
 
 				// container management
 				$template = $metas[ $key ]['template'];
+				$file = $metas[ $key ]['file'];
 				$container = $metas[ $key ]['container'];
 				$contents = $metas[ $key ]['content'];
 
 
 				// metabox ouverture
 				$editeur->template = $template;
+				$editeur->file = $file;
 				$editeur->postID = $post->ID;
 				$editeur->openMetaBox( $key );
 				
@@ -72,7 +73,6 @@ class Storytelling__edit
 
 						// on retrouve le post
 						$story__post = get_post( $content['ID'] );
-						// log_it($story__post);
 
 						$metabox__structure[] = $story__post->ID;
 
@@ -81,10 +81,11 @@ class Storytelling__edit
 						
 						$editeur->ID = $story__post->ID;
 						$editeur->content = $story__post->post_content;
-						$editeur->name = $name__editor;
+						$editeur->container__id = $name__editor;
 						$editeur->slug = $content['slug'];
+						$editeur->name = $story__structure->Storytelling__getNameFileSlug( $file, $editeur->slug );
 
-						// log_it($story__post->ID);
+
 
 						switch ( $content['type'] ) {
 							case 'image':

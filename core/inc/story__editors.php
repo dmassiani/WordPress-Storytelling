@@ -22,15 +22,19 @@ class Storytelling__editors
     public $n__element;
     public $n__metabox;
     public $name;
+    public $container__id;
     public $content;
     public $type;
     public $slug;
+    public $file;
     public $update = false;
     public $images__id;
     public $elementsRemove;
     public $postID;
 
-	public function getNewContent(){
+	public function getNewBox(){
+
+		// on doit pouvoir générer une metabox à partir du nom du fichier
 
 		// on récupère la liste des contenus et on génére un nouveau story post
 
@@ -39,8 +43,16 @@ class Storytelling__editors
 
 		$this->metabox__id = $this->metabox__id * ( $this->n__metabox + 1 );
 
-		$structureArray = explode(',', urldecode($this->structure) );
-		$slugsArray = explode(',', urldecode($this->slugs) );
+		// ici on doit récupérer la structure et les slugs !
+
+		// CURRENT TODO : créer un récupérateur de structure et un récupérateur de slug à partir du nom du fichier
+		$story__structure = new Storytelling__Structure();
+
+
+		$structureArray = $story__structure->Storytelling__getFileStructure( $this->file );
+		$slugsArray = $story__structure->Storytelling__getFileSlugs( $this->file );
+		$this->template = $story__structure->Storytelling__getFileTemplate( $this->file );
+
 
 		?>
 		<div id="postbox-container-<?=$this->metabox__id?>" class="postbox-container story-container">
@@ -57,13 +69,13 @@ class Storytelling__editors
 
 					<?php
 					
-					wp_nonce_field( 'story__editor', 'macrocontenthammer__nonce' );
+					wp_nonce_field( 'story__editor', 'storytelling__nonce' );
 
 					foreach ($structureArray as $key => $element) {
 
 						$this->element__id = $this->metabox__id + ( $key + 1 );
 						$new__editor = "story__editor__" . $this->element__id;	
-						$this->name = $new__editor;
+						$this->container__id = $new__editor;
 						$this->slug = $slugsArray[ $key ];
 
 						if( trim($element) === 'editor' ){
@@ -105,7 +117,7 @@ class Storytelling__editors
 	                </h3>
 	                <div class="inside">
 					<?php
-					wp_nonce_field( 'story__editor', 'macrocontenthammer__nonce' );
+					wp_nonce_field( 'story__editor', 'storytelling__nonce' );
 	}
 
 
@@ -133,8 +145,12 @@ class Storytelling__editors
 	public function openElement(){
 		?>
     		<div class="story__element story__element__<?=$this->type?>">
-				<input type="hidden" name="story__post__[]" value="<?=$this->name?>">
+
+    			<h2><?=$this->name?></h2>
+
+				<input type="hidden" name="story__post__[]" value="<?=$this->container__id?>">
 				<input type="hidden" name="story__template__[]" value="<?=$this->template?>">
+				<input type="hidden" name="story__file__[]" value="<?=$this->file?>">
 				<input type="hidden" name="story__type__[]" value="<?=$this->type?>">
 				<input type="hidden" name="story__slug__[]" value="<?=$this->slug?>">
 	    		<input type="hidden" name="metabox__id[]" value="<?=$this->metabox__id?>">
@@ -165,7 +181,7 @@ class Storytelling__editors
     	$this->openElement();
 
 		ob_start();
-		wp_editor( $this->content, $this->name );
+		wp_editor( $this->content, $this->container__id );
         echo ob_get_clean();
 
         $this->closeElement();
@@ -179,17 +195,27 @@ class Storytelling__editors
     	$hideUploader = '';
     	$this->openElement();
 
-    	if( !empty( $this->content ) && is_numeric( $this->content ) ){
-    		$showRemover = ' show';
-    		$hideUploader = ' hide';
-    		echo wp_get_attachment_image( $this->content, 'medium' );
-    	}
-
     	?>
-		<input data-upload_image="<?=_e('Meta content Image')?>" data-upload_image_button="<?=_e('Select Image')?>" id="<?=$this->name?>" class="upload_image_button button<?=$hideUploader?>" type="button" value="Upload Image" />
-		<div>
-			<a href="#" class="story__imageRemover<?=$showRemover?>"><?php _e( 'Remove Image', 'macrocontenthammer' ) ?></a>
-		</div>
+    	<div class="wp-core-ui wp-image-wrap">
+    		<div class="inner">
+    		
+		    	<?php
+
+		    	if( !empty( $this->content ) && is_numeric( $this->content ) ){
+		    		$showRemover = ' show';
+		    		$hideUploader = ' hide';
+		    		echo wp_get_attachment_image( $this->content, 'medium' );
+		    	}
+
+		    	?>
+    		
+				<input data-upload_image="<?=_e('Meta content Image')?>" data-upload_image_button="<?=_e('Select Image')?>" id="<?=$this->container__id?>" class="upload_image_button button<?=$hideUploader?>" type="button" value="Upload Image" />
+				<div>
+					<a href="#" class="story__imageRemover<?=$showRemover?>"><?php _e( 'Remove Image', 'macrocontenthammer' ) ?></a>
+				</div>
+			</div>
+
+    	</div>
 		<?php
 		$this->closeElement();
  

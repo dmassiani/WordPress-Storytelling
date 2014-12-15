@@ -1,8 +1,10 @@
 <?php
 class Storytelling__metabox
 {
+
     public function __construct()
     {
+        load_textdomain('storytelling', STORY_DIR . 'lang/story-' . get_locale() . '.mo');
         add_action( 'add_meta_boxes', array($this, 'story__addMetaBox__Sidebar') );
     }
 
@@ -69,7 +71,7 @@ class Storytelling__metabox
         ?>
 
                 <li>
-                    <a href="#" data-name="<?=$template->name?>" data-structure="<?=$structure?>" data-slugs="<?=$slugs?>">
+                    <a href="#" data-file="<?=$template->file?>" data-name="<?=$template->name?>" data-structure="<?=$structure?>" data-slugs="<?=$slugs?>">
                         <h4><?=$template->name?></h4>
                         <p>
                             <?=$template->description?>
