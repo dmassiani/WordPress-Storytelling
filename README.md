@@ -38,8 +38,7 @@ Description: Description for your customers
 
 #### Template Name
 
-__Please use slugged template name like powerfull_slug__
-Now you can use name you want
+Used by sidebar metabox
 
 #### Description
 
