@@ -53,8 +53,6 @@ class Storytelling__editors
 		$slugsArray = $story__structure->Storytelling__getFileSlugs( $this->file );
 		$this->template = $story__structure->Storytelling__getFileTemplate( $this->file );
 
-		// $structureArray = explode(',', urldecode($this->structure) );
-		// $slugsArray = explode(',', urldecode($this->slugs) );
 
 		?>
 		<div id="postbox-container-<?=$this->metabox__id?>" class="postbox-container story-container">
@@ -148,7 +146,7 @@ class Storytelling__editors
 		?>
     		<div class="story__element story__element__<?=$this->type?>">
 
-    			<label><?=$this->name?></label>
+    			<h2><?=$this->name?></h2>
 
 				<input type="hidden" name="story__post__[]" value="<?=$this->container__id?>">
 				<input type="hidden" name="story__template__[]" value="<?=$this->template?>">
@@ -197,17 +195,27 @@ class Storytelling__editors
     	$hideUploader = '';
     	$this->openElement();
 
-    	if( !empty( $this->content ) && is_numeric( $this->content ) ){
-    		$showRemover = ' show';
-    		$hideUploader = ' hide';
-    		echo wp_get_attachment_image( $this->content, 'medium' );
-    	}
-
     	?>
-		<input data-upload_image="<?=_e('Meta content Image')?>" data-upload_image_button="<?=_e('Select Image')?>" id="<?=$this->container__id?>" class="upload_image_button button<?=$hideUploader?>" type="button" value="Upload Image" />
-		<div>
-			<a href="#" class="story__imageRemover<?=$showRemover?>"><?php _e( 'Remove Image', 'macrocontenthammer' ) ?></a>
-		</div>
+    	<div class="wp-core-ui wp-image-wrap">
+    		<div class="inner">
+    		
+		    	<?php
+
+		    	if( !empty( $this->content ) && is_numeric( $this->content ) ){
+		    		$showRemover = ' show';
+		    		$hideUploader = ' hide';
+		    		echo wp_get_attachment_image( $this->content, 'medium' );
+		    	}
+
+		    	?>
+    		
+				<input data-upload_image="<?=_e('Meta content Image')?>" data-upload_image_button="<?=_e('Select Image')?>" id="<?=$this->container__id?>" class="upload_image_button button<?=$hideUploader?>" type="button" value="Upload Image" />
+				<div>
+					<a href="#" class="story__imageRemover<?=$showRemover?>"><?php _e( 'Remove Image', 'macrocontenthammer' ) ?></a>
+				</div>
+			</div>
+
+    	</div>
 		<?php
 		$this->closeElement();
  

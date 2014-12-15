@@ -61,7 +61,6 @@ class Storytelling__edit
 				$container = $metas[ $key ]['container'];
 				$contents = $metas[ $key ]['content'];
 
-				// log_it($metas);
 
 				// metabox ouverture
 				$editeur->template = $template;
@@ -84,13 +83,7 @@ class Storytelling__edit
 						$editeur->content = $story__post->post_content;
 						$editeur->container__id = $name__editor;
 						$editeur->slug = $content['slug'];
-
-
-						// log_it($content);
-
-
-						// ici on doit tester si le template contient bien l'éditeur :
-						// log_it( $templates );
+						$editeur->name = $story__structure->Storytelling__getNameFileSlug( $file, $editeur->slug );
 
 
 

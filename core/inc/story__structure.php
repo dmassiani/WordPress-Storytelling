@@ -194,4 +194,30 @@ class Storytelling__structure extends Storytelling__kickstarter
 
     }
 
+    public function Storytelling__getNameFileSlug( $file, $slug ){
+
+    	// return array of slugs
+
+    	$file_parts = pathinfo( $file );
+
+
+			if( $file_parts['extension'] === "php" ){
+
+			$jsons 	 = $this->utility->get_file_data( $this->folder . '/' . $file );
+
+			$structure = [];
+
+			foreach( $jsons as $key => $json ):
+
+					$element = json_decode($json);
+					if( $element->slug === $slug ){
+						return $element->name;
+					}
+
+			endforeach;
+
+
+		}	
+
+    }
 }
