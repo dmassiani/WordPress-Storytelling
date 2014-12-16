@@ -100,8 +100,10 @@ class Storytelling__structure extends Storytelling__kickstarter
 
     public function Storytelling__get__template__structure( $name ){
 
-		foreach ($this->files as &$value) {
+		foreach ($this->files as $value) {
 			$file_parts = pathinfo( $value );
+			log_it('ici story structure');
+			log_it('je regarde le fichier ' . $value );
 
 
 			if( $file_parts['extension'] === "php" ){
@@ -122,6 +124,31 @@ class Storytelling__structure extends Storytelling__kickstarter
 			}
 
 		}
+
+		return $elements;
+    }
+
+    public function Storytelling__get__fileStructure( $file ){
+
+    	$file_parts = pathinfo( $file );
+
+
+   			if( $file_parts['extension'] === "php" ){
+
+				$jsons 	 = $this->utility->get_file_data( $this->folder . '/' . $file );
+
+				$element = [];
+
+				foreach( $jsons as $key => $json ):
+
+						$element[] = json_decode($json);
+
+				endforeach;
+
+
+			}	
+
+		return $element;
     }
 
     public function Storytelling__getFileStructure( $file ){
@@ -179,6 +206,33 @@ class Storytelling__structure extends Storytelling__kickstarter
 		return $structure;
     }
 
+    public function Storytelling__getFileNames( $file ){
+
+    	// return array of slugs
+
+    	$file_parts = pathinfo( $file );
+
+
+   			if( $file_parts['extension'] === "php" ){
+
+				$jsons 	 = $this->utility->get_file_data( $this->folder . '/' . $file );
+
+				$element = [];
+    			$structure = [];
+
+				foreach( $jsons as $key => $json ):
+
+						$element = json_decode($json);
+						$structure[] = $element->name;
+
+				endforeach;
+
+
+			}	
+
+		return $structure;
+    }
+
     public function Storytelling__getFileTemplate( $file ){
 
     	// return array of slugs
@@ -197,6 +251,8 @@ class Storytelling__structure extends Storytelling__kickstarter
     public function Storytelling__getNameFileSlug( $file, $slug ){
 
     	// return array of slugs
+
+    	// log_it( $slug );
 
     	$file_parts = pathinfo( $file );
 

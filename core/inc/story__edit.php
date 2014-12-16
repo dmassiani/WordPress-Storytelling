@@ -91,6 +91,7 @@ class Storytelling__edit
 								$editeur->container__id = $name__editor;
 								$editeur->name = $story__structure->Storytelling__getNameFileSlug( $editeur->file, $editeur->slug );
 
+								// log_it($editeur->name);
 
 								$metabox__structure[] = $story__post->ID;
 
@@ -104,6 +105,10 @@ class Storytelling__edit
 
 									case 'editeur':
 										$editeur->getNewEditor();
+										break;
+
+									case 'title':
+										$editeur->getNewTitle();
 										break;
 
 									default:
