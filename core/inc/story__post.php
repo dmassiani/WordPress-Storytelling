@@ -21,7 +21,7 @@ class Storytelling__post
 		// log_it('post init');
 	}
 
-	public function Storytelling__savedata( $post_id ) {
+	public function Storytelling__save( $post_id ) {
 
 
 			if( !empty( $_POST['story__post__'] )
@@ -38,9 +38,15 @@ class Storytelling__post
 				$story__metabox 	= $_POST['metabox__id'];
 				$story__images 		= $_POST['story__image__id'];
 				$story__ID 			= $_POST['story__ID'];
+				if( !empty( $_POST['story__title__'] ) ):
 
+				$story__titles 		= $_POST['story__title__'];
+
+				endif;
 
 				$user_ID 			= get_current_user_id();
+
+				// log_it($story__titles);
 
 
 				if ( false !== wp_is_post_revision( $post_id ) )
@@ -79,11 +85,13 @@ class Storytelling__post
 					}
 				}
 
-				if( isset( $story__posts ) && count( $story__posts ) != 0 ){
+				// if( isset( $story__posts ) && count( $story__posts ) != 0 ){
+				if( isset( $story__metabox ) && count( $story__metabox ) != 0 ){
 
-					// log_it($story__posts);
+					$story__structure = new Storytelling__structure();
 							
-					remove_action( 'save_post', array( $this, 'Storytelling__savedata' ) );
+					remove_action( 'save_post', array( $this, 'Storytelling__save' ) );
+					// remove_action( 'save_post', array( $this, 'Storytelling__savedata' ) );
 
 					// on a du post alors on y va :)
 					// on boucle sur les story__post
@@ -103,114 +111,123 @@ class Storytelling__post
 
 					$status = get_post_status( $post_id );
 					$i = 0;
+					$i__title = 0;
 
 					$metas = [];
 
-					foreach ($story__posts as $key => $story__post) {
+					// new
+					$key__element = 0;
 
-							$update__content = false;
+					foreach ($story__metabox as $key__meta => $metabox) {
 
-							// log_it($story__post);
+							$file 		= $story__files[ $key__meta ];
+							$template 	= $story__templates[ $key__meta ];
+							unset($meta__content);
 
-							// on ajoute une entrée, son parent, son meta groupe
+							// on récupère la structure de la metabox grace au nom du fichier
+							$metabox__structure = $story__structure->Storytelling__get__fileStructure( $file );
+							// log_it( $metabox__structure );
 
-							$story__newpost = array(
-							  	'post_status'    	=> $status
-							  	,'post_type'      	=> 'STORY__content'
-							  	,'ping_status'    	=> 'closed'
-							  	,'post_author'		=> $user_ID
-							  	,'comment_status' 	=> 'closed'
-							);
+							// pour chaque element de la structure on retrouve sa data
+							// les elements sont théoriquement dans l'ordre.
 
+							foreach( $metabox__structure as $key => $element ):
 
-							// Gestion du contenu en fonction du type
-							// s'il n'y a pas de contenu
-							if( empty( $_POST[ $story__post ] ) )$_POST[ $story__post ]='';
+								// $key__element représente le numéro de l'element dans la page
 
-							// gestion du contenu en fonction du type
-							switch ( $story__types[ $key ] ) {
-								case 'image':
-									$story__newpost['post_content'] = $story__images[ $key ];
-									break;
+								// on indique que par défaut ce n'est pas un update
+								$update__content = false;
 
-								case 'editor':
-									$story__newpost['post_content'] = $_POST[ $story__post ];
-									break;
-							}
+								// on regénere les data du post
+								$story__newpost = array(
+								  	'post_status'    	=> $status
+								  	,'post_type'      	=> 'STORY__content'
+								  	,'ping_status'    	=> 'closed'
+								  	,'post_author'		=> $user_ID
+								  	,'comment_status' 	=> 'closed'
+								);
 
-							// log_it($story__ID[ $key ]);
+								// s'il s'agit d'un update
+								if( !empty( trim($story__ID[ $key__element ]) ) ){
 
-							if( !empty( trim($story__ID[ $key ]) ) ){
+									// on indique à wordpress un ID pour signifier d'updater
+									$story__newpost['ID'] = $story__ID[ $key__element ];
+									$update__content = true;
 
-								$story__newpost['ID'] = $story__ID[ $key ];
-								$update__content = true;
+								}
 
-								// log_it('cest un update');
+								// log_it('key element = ' . $key__element);
+								// log_it($story__ID[ $key__element ]);
 
-							}else{
-								// log_it('ce nest pas un update');
-							}
-
+								// // // si story__post est vide
+								// // // if( empty( $_POST[ $story__post ] ) )$_POST[ $story__post ]='';
 
 
-							if( $update__content === false){
+								// gestion du contenu en fonction du type
+								switch ( $element->type ) {
+									case 'image':
+										$story__newpost['post_content'] = $story__images[ $key__element ];
+										break;
 
-								// log_it('nouveau');
-								$story__id = wp_insert_post( $story__newpost );
-								$update__meta = true;
+									case 'editor':
+										$story__newpost['post_content'] = $_POST[ $story__posts[ $key__element ] ];
+										break;
 
-							}else{
+									case 'title':
+										$story__newpost['post_content'] = $story__titles[ $i__title ];
+										$i__title++;
+										break;
+								}
 
 								// log_it($story__newpost);
 
-								wp_update_post( $story__newpost );
-								$story__id = $story__newpost['ID'];
-							
-							}
+								if( $update__content === false){
+
+									$story__id = wp_insert_post( $story__newpost );
+									$update__meta = true;
+
+								}else{
+
+									wp_update_post( $story__newpost );
+									$story__id = $story__newpost['ID'];
+								
+								}
+
+								// log_it($story__newpost);
+
+								$meta__content[] = array(
+									'ID' => $story__id,
+									'type' => $element->type,
+									'slug' => $element->slug
+								);
+
+								// log_it($meta__content);
+
+								$key__element++;
+
+							endforeach;
 
 
-							// les ID des post de la metabox
-							$template = $story__templates[ $key ];
-							$container = $story__metabox[ $key ];
-							$file = $story__files[ $key ];
-
-							if( $i === 0 )$container__cache = $container;
-
-							if( (int) $container__cache != (int) $container ){
-
-								$metas[] = array( 'file' => $file__cache, 'template' => $template__cache, 'container' => $container__cache, 'content' => $story__content );
-
-								unset($story__content);
-
-							}
-
-							$story__content[] = array(
-								'ID' => $story__id,
-								'type' => $story__types[ $key ],
-								'slug' => $story__slugs[ $key ]
+							$metas[] = array( 
+								'file' 			=> $file, 
+								'template' 		=> $template, 
+								'container' 	=> $metabox, 
+								'content' 		=> $meta__content
 							);
-							
-							$container__cache = $container;
-							$template__cache = $template;
-							$file__cache = $file;
 
-
-							$i++;
 
 
 					}
 
 
-					$metas[] = array( 'file' => $file__cache, 'template' => $template__cache, 'container' => $container__cache, 'content' => $story__content );
-					unset($story__content);
-
-					// log_it($metas);
 
 					if( $update__meta === true ):
 						// il y a eu un nouvel enregistrement
 						update_post_meta( $post_id, '_story_content', $metas );
+						// log_it('jupdate le meta');
 					else:
 						add_post_meta( $post_id, '_story_content', $metas, true );
+						// log_it('jajoute un meta');
 					endif;
 
 				}
