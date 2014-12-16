@@ -1,5 +1,6 @@
 Story Telling for WordPress
 ==========
+v 1.1
 
 ## the_story()
 Storytelling inject multi content where you need.
@@ -64,7 +65,7 @@ Settings an element like that :
 
 Elements need 3 data : type, name and slug
 
-Available type : editor and image
+Available type : title, editor and image
 
 You can define much element you want
 
@@ -81,7 +82,8 @@ slug is for extract right data in right place **see section the_chapter()**
 **you can found an example in story-telling/front/macro-template-example.php**
 
 ## Roadmap
-#### 1.1 : New content : title
+#### 1.1 : New content : title - done
+#### A : Storytelling Website
 #### 1.2 : Templates in storytelling plugins
 #### 1.3 : Selector between Storytelling Template or Custom Template (in theme)
 #### 1.4 : Settings page
