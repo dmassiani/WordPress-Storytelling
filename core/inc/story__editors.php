@@ -26,6 +26,7 @@ class Storytelling__editors
     public $content;
     public $type;
     public $slug;
+    public $ajax;
     public $file;
     public $update = false;
     public $images__id;
@@ -83,7 +84,9 @@ class Storytelling__editors
 
 	public function openMetabox( $n__metabox ){
 		$first = '';
+		$metaboxStory = '';
 		if( $n__metabox === 0 )$first = ' story-first';
+		if( $this->ajax === true )$metaboxStory = ' story';
 		$this->metabox__id = 1000 * ( $n__metabox + 1 );
 
 		?>
@@ -93,7 +96,7 @@ class Storytelling__editors
 			
 	        <div id="story__container--template--<?=$this->metabox__id?>" class="meta-box-sortables">
 	            <div id="story__rapper--macro" class="postbox story closed">
-	                <div class="handlediv" title="<?php _e('Clic for invert') ?>"><br></div>
+	                <div class="handlediv<?=$metaboxStory?>" title="<?php _e('Clic for invert') ?>"><br></div>
 	                <h3 class="hndle">
 	                    <span>
 	                    	<?php _e('Story Telling') ?> : <?=$this->template?>
