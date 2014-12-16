@@ -248,12 +248,15 @@ class Storytelling__post
 				$story__templates 	= $_POST['story__template__'];
 				$story__types 		= $_POST['story__type__'];
 				$story__files 		= $_POST['story__file__'];
-				$story__titles 		= $_POST['story__title__'];
 				$story__slugs 		= $_POST['story__slug__'];
 				$story__metabox 	= $_POST['metabox__id'];
 				$story__images 		= $_POST['story__image__id'];
 				$story__ID 			= $_POST['story__ID'];
+				if( !empty( $_POST['story__title__'] ) ):
 
+				$story__titles 		= $_POST['story__title__'];
+
+				endif;
 
 				$user_ID 			= get_current_user_id();
 
@@ -301,7 +304,8 @@ class Storytelling__post
 
 					$story__structure = new Storytelling__structure();
 							
-					remove_action( 'save_post', array( $this, 'Storytelling__savedata' ) );
+					remove_action( 'save_post', array( $this, 'Storytelling__save' ) );
+					// remove_action( 'save_post', array( $this, 'Storytelling__savedata' ) );
 
 					// on a du post alors on y va :)
 					// on boucle sur les story__post
@@ -346,75 +350,84 @@ class Storytelling__post
 								// $key__element représente le numéro de l'element dans la page
 
 								// on indique que par défaut ce n'est pas un update
-								// $update__content = false;
+								$update__content = false;
 
-								// // on regénere les data du post
-								// $story__newpost = array(
-								//   	'post_status'    	=> $status
-								//   	,'post_type'      	=> 'STORY__content'
-								//   	,'ping_status'    	=> 'closed'
-								//   	,'post_author'		=> $user_ID
-								//   	,'comment_status' 	=> 'closed'
-								// );
+								// on regénere les data du post
+								$story__newpost = array(
+								  	'post_status'    	=> $status
+								  	,'post_type'      	=> 'STORY__content'
+								  	,'ping_status'    	=> 'closed'
+								  	,'post_author'		=> $user_ID
+								  	,'comment_status' 	=> 'closed'
+								);
 
-								// // s'il s'agit d'un update
-								// if( !empty( trim($story__ID[ $key ]) ) ){
+								// s'il s'agit d'un update
+								if( !empty( trim($story__ID[ $key__element ]) ) ){
 
-								// 	// on indique à wordpress un ID pour signifier d'updater
-								// 	$story__newpost['ID'] = $story__ID[ $key ];
-								// 	$update__content = true;
+									// on indique à wordpress un ID pour signifier d'updater
+									$story__newpost['ID'] = $story__ID[ $key__element ];
+									$update__content = true;
 
-								// }
+								}
+
+								// log_it('key element = ' . $key__element);
+								// log_it($story__ID[ $key__element ]);
 
 								// // // si story__post est vide
 								// // // if( empty( $_POST[ $story__post ] ) )$_POST[ $story__post ]='';
 
 
-								// // gestion du contenu en fonction du type
-								// switch ( $element->type ) {
-								// 	case 'image':
-								// 		$story__newpost['post_content'] = $story__images[ $key__element ];
-								// 		break;
+								// gestion du contenu en fonction du type
+								switch ( $element->type ) {
+									case 'image':
+										$story__newpost['post_content'] = $story__images[ $key__element ];
+										break;
 
-								// 	case 'editor':
-								// 		$story__newpost['post_content'] = $_POST[ $story__posts[ $key__element ] ];
-								// 		break;
+									case 'editor':
+										$story__newpost['post_content'] = $_POST[ $story__posts[ $key__element ] ];
+										break;
 
-								// 	case 'title':
-								// 		$story__newpost['post_content'] = $story__titles[ $i__title ];
-								// 		$i__title++;
-								// 		break;
-								// }
+									case 'title':
+										$story__newpost['post_content'] = $story__titles[ $i__title ];
+										$i__title++;
+										break;
+								}
 
-								// if( $update__content === false){
+								log_it($story__newpost);
 
-								// 	$story__id = wp_insert_post( $story__newpost );
-								// 	$update__meta = true;
+								if( $update__content === false){
 
-								// }else{
+									$story__id = wp_insert_post( $story__newpost );
+									$update__meta = true;
 
-								// 	wp_update_post( $story__newpost );
-								// 	$story__id = $story__newpost['ID'];
+								}else{
+
+									wp_update_post( $story__newpost );
+									$story__id = $story__newpost['ID'];
 								
-								// }
+								}
 
-								// $meta__content[] = array(
-								// 	'ID' => $story__id,
-								// 	'type' => $story__types[ $key ],
-								// 	'slug' => $story__slugs[ $key ]
-								// );
+								// log_it($story__newpost);
+
+								$meta__content[] = array(
+									'ID' => $story__id,
+									'type' => $element->type,
+									'slug' => $element->slug
+								);
+
+								// log_it($meta__content);
 
 								$key__element++;
 
 							endforeach;
 
 
-							// $metas[] = array( 
-							// 	'file' 			=> $file, 
-							// 	'template' 		=> $template, 
-							// 	'container' 	=> $metabox, 
-							// 	'content' 		=> $meta__content
-							// );
+							$metas[] = array( 
+								'file' 			=> $file, 
+								'template' 		=> $template, 
+								'container' 	=> $metabox, 
+								'content' 		=> $meta__content
+							);
 
 
 
@@ -422,14 +435,14 @@ class Storytelling__post
 
 
 
-					// if( $update__meta === true ):
-					// 	// il y a eu un nouvel enregistrement
-					// 	update_post_meta( $post_id, '_story_content', $metas );
-					// 	log_it('jupdate le meta');
-					// else:
-					// 	add_post_meta( $post_id, '_story_content', $metas, true );
-					// 	log_it('jajoute un meta');
-					// endif;
+					if( $update__meta === true ):
+						// il y a eu un nouvel enregistrement
+						update_post_meta( $post_id, '_story_content', $metas );
+						log_it('jupdate le meta');
+					else:
+						add_post_meta( $post_id, '_story_content', $metas, true );
+						log_it('jajoute un meta');
+					endif;
 
 				}
 

@@ -107,7 +107,6 @@ class Storytelling__editors
 						<input type="hidden" name="story__template__[]" value="<?=$this->template?>">
 						<input type="hidden" name="story__file__[]" value="<?=$this->file?>">
 			    		<input type="hidden" name="metabox__id[]" value="<?=$this->metabox__id?>">
-						<input type="hidden" name="story__image__id[]" class="story__image__id" value="<?=$this->images__id?>" />
 
 					<?php
 					wp_nonce_field( 'story__editor', 'storytelling__nonce' );
@@ -144,6 +143,7 @@ class Storytelling__editors
 				<input type="hidden" name="story__type__[]" value="<?=$this->type?>">
 				<input type="hidden" name="story__slug__[]" value="<?=$this->slug?>">
 				<input type="hidden" name="story__post__[]" value="<?=$this->container__id?>">
+				<input type="hidden" name="story__image__id[]" class="story__image__id" value="<?=$this->images__id?>" />
 
 	    	<?php
 	    	// pour une mise à jour du champ
@@ -187,7 +187,7 @@ class Storytelling__editors
     	<div class="wp-core-ui wp-title-wrap">
     		<div class="inner">
 
-					<input type="text" id="<?=$this->container__id?>" name="story__title__[]" value="" class="text required">
+					<input type="text" id="<?=$this->container__id?>" name="story__title__[]" value="<?=$this->content?>" class="text required">
 
 			</div>
 		</div>
