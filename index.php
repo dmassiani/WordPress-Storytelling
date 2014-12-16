@@ -119,7 +119,6 @@ class Storytelling__kickstarter
 	        $this->story__edit = new Storytelling__edit();
 
 	       	add_action( 'save_post', array( $this->story__post, 'Storytelling__save' ) );
-	       	// add_action( 'save_post', array( $this->story__post, 'Storytelling__savedata' ) );
 	       	add_action( 'admin_footer', array( $this, 'Storytelling__removePageTemplate'), 10);
 
 	    }

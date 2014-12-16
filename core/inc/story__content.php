@@ -51,6 +51,12 @@ function the_illustration( $slug = false, $size = false ){
 
 }
 
+function the_marker( $slug = false ){
+
+	the_chapter( $slug );
+
+}
+
 function get_chapter( $slug = false ){
 
 	global $post;
@@ -110,7 +116,7 @@ function define_stories(){
 			$file	  = $metas[ $key ]['file'];
 			$contents = $metas[ $key ]['content'];
 
-			$story__stories[ $name ] = array(
+			$story__stories[] = array(
 				'file' 		=> $file,
 				'contents' 	=> $contents
 			);
@@ -135,6 +141,7 @@ function the_story() {
 
 	if( empty( $story__stories ) ) return;
 
+	log_it($story__stories);
 
 	foreach ($story__stories as $key => $story):
 
