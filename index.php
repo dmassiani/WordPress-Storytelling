@@ -55,7 +55,7 @@ class Storytelling__kickstarter
 
 	public function __construct(){
 
-		load_textdomain('storytelling', STORY_DIR . 'lang/story-' . get_locale() . '.mo');
+		load_textdomain('storytelling', STORY_DIR . 'core/lang/story-' . get_locale() . '.mo');
 
 		add_action('init', array($this, 'init'), 1);
 
@@ -85,7 +85,6 @@ class Storytelling__kickstarter
 	        // init structure
 	        $get__templates = new Storytelling__structure();
 	        $this->story__structure = $get__templates->Storytelling__realTemplates();
-	        // log_it($this->mch__structure);
 
     	}else{
 
@@ -106,7 +105,6 @@ class Storytelling__kickstarter
     	//
     	// =================================================
 
-
     		// init ajax
         	$this->story__ajax = new Storytelling__ajax();
 	    	// init metabox selector
@@ -118,8 +116,13 @@ class Storytelling__kickstarter
 	        // init edit
 	        $this->story__edit = new Storytelling__edit();
 
+	        // action quand on post du contenu
 	       	add_action( 'save_post', array( $this->story__post, 'Storytelling__save' ) );
+	       	// action qui ajoute le javascript
 	       	add_action( 'admin_footer', array( $this, 'Storytelling__removePageTemplate'), 10);
+	       	// fonction appellé après l'installation d'un thème
+	       	add_action( 'after_setup_theme', array( $this, 'Storytelling__afterThemeActivation' ) );
+	       	add_action( 'after_switch_theme', array( $this, 'Storytelling__afterThemeActivation' ) );
 
 	    }
 
@@ -156,6 +159,20 @@ class Storytelling__kickstarter
 		include_once plugin_dir_path(__FILE__). '/core/inc/story__structure.php';
     }
 
+    static function Storytelling__activation(){
+    	$story__folder = get_template_directory() . '/storytelling';
+    	if( ! file_exists( $story__folder ) ){
+    		mkdir( $story__folder , 775 );
+    	}
+
+    }
+
+    public function Storytelling__afterThemeActivation(){
+    	$story__folder = get_template_directory() . '/storytelling';
+    	if( ! file_exists( $story__folder ) ){
+    		mkdir( $story__folder , 775 );
+    	}
+    }
 
     // ============================================================
     // Register JS plugins
@@ -212,6 +229,10 @@ function storytelling()
 
 // initialize
 storytelling();
+
+// hook qui appelle la fonction à l'activation du theme
+// log_it('not admin');
+register_activation_hook( __FILE__, array( 'Storytelling__kickstarter' , 'Storytelling__activation' ) );
 
 
 endif; // class_exists check
