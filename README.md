@@ -87,8 +87,9 @@ slug is for extract right data in right place **see section the_chapter()**
 #### 1.2 : Templates in storytelling plugins
 #### 1.3 : Selector between Storytelling Template or Custom Template (in theme)
 #### 1.4 : Settings page
-#### 1.5 : CSS Storytelling grid (responsive grid for Storyteeling templates)
+#### 1.5 : CSS Storytelling grid (responsive grid for Storyteeling templates based on flexbox)
 #### 1.6 : Options available since selctor metabox ( css : on/off, storytelling available : on/off )
+#### 1.7 : Import / Export
 
 ## History
 #### 1.1 : add new content : title and the_marker for extract them
