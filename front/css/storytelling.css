@@ -122,3 +122,8 @@
 	height: 36px;
 	line-height: 36px;
 }
+
+/* no distraction mode */
+.focus-on .postbox-container.story-container > *{
+	opacity: 1;
+}
