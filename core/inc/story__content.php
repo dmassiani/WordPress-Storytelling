@@ -61,6 +61,11 @@ function the_chapter_title( $slug = false ){
 	the_chapter( $slug );
 
 }
+function once_upon_a_time( $slug = false ){
+
+	the_chapter( $slug );
+
+}
 
 function get_chapter( $slug = false ){
 
