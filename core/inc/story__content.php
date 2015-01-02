@@ -56,6 +56,11 @@ function the_marker( $slug = false ){
 	the_chapter( $slug );
 
 }
+function the_chapter_title( $slug = false ){
+
+	the_chapter( $slug );
+
+}
 
 function get_chapter( $slug = false ){
 
