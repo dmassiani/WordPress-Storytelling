@@ -89,3 +89,7 @@ slug is for extract right data in right place **see section the_chapter()**
 #### 1.4 : Settings page
 #### 1.5 : CSS Storytelling grid (responsive grid for Storyteeling templates)
 #### 1.6 : Options available since selctor metabox ( css : on/off, storytelling available : on/off )
+
+## History
+#### 1.1 : add new content : title and the_marker for extract them
+#### 1.11 : add the_chapter_title() and once_upon_a_time() for extract title
