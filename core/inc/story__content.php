@@ -53,17 +53,39 @@ function the_illustration( $slug = false, $size = false ){
 
 function the_marker( $slug = false ){
 
-	the_chapter( $slug );
+	global $post;
+	global $story__stories;
+	global $story__current__story;
+
+	if( empty( $story__stories ) ) define_stories();
+	if( empty( $story__stories ) ) return;
+
+	if( $slug === false ) return;
+
+	foreach( $story__current__story['contents'] as $key => $element ){
+
+		if( $element['slug'] === $slug ){
+
+			$the_chapter_ID = $element['ID'];
+
+		}
+
+	}
+
+	if( !empty( $the_chapter_ID ) ):
+		$the__chapter = get_post( $the_chapter_ID );
+		echo $the__chapter->post_content;
+	endif;
 
 }
 function the_chapter_title( $slug = false ){
 
-	the_chapter( $slug );
+	the_marker( $slug );
 
 }
 function once_upon_a_time( $slug = false ){
 
-	the_chapter( $slug );
+	the_marker( $slug );
 
 }
 
@@ -103,7 +125,7 @@ function the_chapter( $slug = false ){
 
 	if( !empty( $the_chapter_ID ) ):
 		$the__chapter = get_post( $the_chapter_ID );
-		echo $the__chapter->post_content;
+		echo apply_filters('the_content', $the__chapter->post_content );
 	endif;
 
 }
