@@ -1,6 +1,6 @@
 Story Telling for WordPress
 ==========
-v 1.1
+v 0.1
 
 ## the_story()
 Storytelling inject multi content where you need.
@@ -82,15 +82,15 @@ slug is for extract right data in right place **see section the_chapter()**
 **you can found an example in story-telling/front/macro-template-example.php**
 
 ## Roadmap
-#### 1.1 : New content : title - done
-#### A : Storytelling Website
-#### 1.2 : Templates in storytelling plugins
-#### 1.3 : Selector between Storytelling Template or Custom Template (in theme)
-#### 1.4 : Settings page
-#### 1.5 : CSS Storytelling grid (responsive grid for Storyteeling templates based on flexbox)
-#### 1.6 : Options available since selctor metabox ( css : on/off, storytelling available : on/off )
-#### 1.7 : Import / Export
+#### 0.1 : New content : title - done
+#### 0.2 : Diff between macro template used and modified
+#### 0.3 : Templates in storytelling plugins
+#### 0.4 : CSS Storytelling grid (responsive grid for Storyteeling templates based on flexbox)
+#### 0.5 : Selector between Storytelling Template or Custom Template (in theme)
+#### 0.6 : Settings page
+#### 0.7 : Options available since selector metabox ( css : on/off, storytelling available : on/off )
+#### 0.8 : Import / Export
 
 ## History
-#### 1.1 : add new content : title and the_marker for extract them
-#### 1.11 : add the_chapter_title() and once_upon_a_time() for extract title
+#### 0.1 : add new content : title and the_marker for extract them
+#### 0.1.1 : add the_chapter_title() and once_upon_a_time() for extract title

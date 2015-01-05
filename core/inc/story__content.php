@@ -173,7 +173,7 @@ function the_story() {
 
 	if( empty( $story__stories ) ) return;
 
-	log_it($story__stories);
+	// log_it($story__stories);
 
 	foreach ($story__stories as $key => $story):
 
