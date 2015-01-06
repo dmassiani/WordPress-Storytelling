@@ -24,8 +24,7 @@ class Storytelling__structure extends Storytelling__kickstarter
 		$this->folder = get_template_directory() . '/' . STORY_FOLDER;
 		$this->files = scandir( $this->folder );
 		$this->utility = new Storytelling__utility();
-		// log_it($this->files);
-
+		
 	}
 
     // ============================================================

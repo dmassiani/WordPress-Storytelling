@@ -12,10 +12,7 @@ class Storytelling__edit
 {
 
 	public function __construct(){
-		// edit_post is hook for edit
-		// add_action( 'edit_form_after_editor', array( $this, 'Storytelling__getdata' ) );
 		add_action( 'edit_form_after_editor', array( $this, 'Storytelling__getdata' ) );
-		// add_action( 'edit_page_form', array( $this, 'Storytelling__getdata' ) );
 	}
 
 	public function Storytelling__getdata( $post ) {
@@ -25,10 +22,6 @@ class Storytelling__edit
 		$metabox = [];
 		$metabox_contenu = [];
 		$metabox__structure = []; // structure ID des elements pour la suppression
-
-		$n__element = 0;
-		$start__box = 1000;
-		$n__element__box = 1 + $start__box;
 
 
 		// ====================================================================
@@ -47,91 +40,125 @@ class Storytelling__edit
 		// on récupère les metas
 		$metas = get_post_meta( $post->ID, '_story_content', true );
 
-		// log_it($metas);
+// ===================================================================
+// V 0.2 - refactorisation
+// ===================================================================
 
 		if( ! empty( $metas ) ):
 
-			// for each metas
+
 			foreach ($metas as $key => $metabox):
 
+				$metaSlugs = [];
 
-				// container management
-				$template = $metas[ $key ]['template'];
-				$file = $metas[ $key ]['file'];
-				$container = $metas[ $key ]['container'];
-				$contents = $metas[ $key ]['content'];
+				$template = $metabox['template'];
+				$file = $metabox['file'];
+				$container = $metabox['container'];
+				$contents = $metabox['content'];
+				
+				$fileSlugs = $story__structure->Storytelling__getFileSlugs( $file ); 
+				$structure = $story__structure->Storytelling__getFileStructure( $file );
 
-
-				// metabox ouverture
+				// variable pour la metabox
 				$editeur->template = $template;
 				$editeur->file = $file;
 				$editeur->postID = $post->ID;
-				$editeur->openMetaBox( $key );
+
+
+					$editeur->openMetaBox( $key );
+					
+						// on parcours tout les slug de la structure
+						foreach( $fileSlugs as $keyS => $slug ):
+
+							$name__editor = "story__editor__" . ( $container + $keyS +1 );
+
+							$editeur->slug = $slug;
+							$editeur->container__id = $name__editor;
+							$editeur->name = $story__structure->Storytelling__getNameFileSlug( $editeur->file, $editeur->slug );
+
+							// log_it('je regarde le slug N' . $keyS . ' de la structure ' . $key);
+
+							// on récupère la data correspondant au slug :
+							// on parcours les datas à la recherche du slug :
+							$dataID = false;
+							$dataType = false;
+							$dataI = false;
+
+							// log_it($contents);
+
+							foreach ($contents as $i => $content):
+								$currentSlug = $content['slug'];
+								if( $currentSlug === $slug ):
+									$dataID = $content['ID'];
+									$dataType = $content['type'];
+									$dataI = $i;
+								endif;
+							endforeach;
+
+							if( is_numeric( $dataID ) ):
+								
+								$diffType = $story__structure->Storytelling__slugType( $editeur->file, $editeur->slug );
+								if( $diffType === $dataType ):
+
+									$story__post = get_post( $dataID );
+
+									$editeur->ID = $story__post->ID;
+									$editeur->content = $story__post->post_content;
+
+									$metabox__structure[] = $story__post->ID;
+
+
+								else:
+
+									$editeur->ID = '';
+									$editeur->content = '';
 				
 
-					foreach ($contents as $i => $content):
+								endif;
+							
+							else:
 
-						$editeur->slug = $content['slug'];
-
-						$exist = $story__structure->Storytelling__slugExist( $editeur->file, $editeur->slug );
-
-						if( $exist === true ){
-
-							$existType = $story__structure->Storytelling__slugType( $editeur->file, $editeur->slug );
-
-							if( $existType === $content['type'] ){
-
-								// on retrouve le post
-								$story__post = get_post( $content['ID'] );
-								$name__editor = "story__editor__" . ( $container + $i +1 );// $i n'est égale à rien ...
-
-								$editeur->ID = $story__post->ID;
-								$editeur->content = $story__post->post_content;
-
-								$editeur->container__id = $name__editor;
-								$editeur->name = $story__structure->Storytelling__getNameFileSlug( $editeur->file, $editeur->slug );
-
-								// log_it($editeur->name);
-
-								$metabox__structure[] = $story__post->ID;
+									$editeur->ID = '';
+									$editeur->content = '';
 
 
+							endif;
 
-								switch ( $content['type'] ) {
-									case 'image':
-										$editeur->images__id = $editeur->content;
-										$editeur->getNewImage();
-										break;
+							switch ( $dataType ) {
+								case 'image':
+									$editeur->images__id = $editeur->content;
+									$editeur->getNewImage();
+									break;
 
-									case 'editeur':
-										$editeur->getNewEditor();
-										break;
+								case 'editeur':
+									$editeur->getNewEditor();
+									break;
 
-									case 'title':
-										$editeur->getNewTitle();
-										break;
+								case 'title':
+									$editeur->getNewTitle();
+									break;
 
-									default:
-										$editeur->getNewEditor();
-								}
-
+								default:
+									$editeur->getNewEditor();
 							}
 
+						endforeach;
 
-						}
+					$editeur->elementsRemove = implode(',', $metabox__structure);
+					$metabox__structure = [];
+					$editeur->closeMetaBox();
+					
+				// endif;
 
 
-					endforeach;
-
-
-				$editeur->elementsRemove = implode(',', $metabox__structure);
-				$metabox__structure = [];
-
-				$editeur->closeMetaBox();
 
 			endforeach;
 
 		endif;
+
+// ===================================================================
+// V 0.2 - refactorisation
+// ===================================================================
 
 	}
 
