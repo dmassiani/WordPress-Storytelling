@@ -1,6 +1,6 @@
 Story Telling for WordPress
 ==========
-v 0.1
+v 0.2
 
 ## the_story()
 Storytelling inject multi content where you need.
@@ -82,7 +82,7 @@ slug is for extract right data in right place **see section the_chapter()**
 **you can found an example in story-telling/front/macro-template-example.php**
 
 ## Roadmap
-#### 0.1 : New content : title - done
+#### 0.1 : New content : title
 #### 0.2 : Diff between macro template used and modified
 #### 0.3 : Templates in storytelling plugins
 #### 0.4 : CSS Storytelling grid (responsive grid for Storyteeling templates based on flexbox)
@@ -94,3 +94,4 @@ slug is for extract right data in right place **see section the_chapter()**
 ## History
 #### 0.1 : add new content : title and the_marker for extract them
 #### 0.1.1 : add the_chapter_title() and once_upon_a_time() for extract title
+#### 0.2 : Diff between modified or removed element in macro template and Element in admin
