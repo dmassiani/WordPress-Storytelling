@@ -49,12 +49,6 @@ Description is used by your customers (if needed)
 
 Element is the most important chapter you need to know.
 
-Is is really important your think about your structured macro-template before.
-
-Today, Storytelling don't have capability to manage content resulting to element removed or modified from macro-template.
-
-Capability available in a future release.
-
 You have content with macro-template linked? Don't touch macro template used.
 
 Settings an element like that :
