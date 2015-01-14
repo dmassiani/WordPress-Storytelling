@@ -148,7 +148,8 @@ class Storytelling__post
 								);
 
 								// s'il s'agit d'un update
-								if( !empty( trim($story__ID[ $key__element ]) ) ){
+								$keyTrimed = trim($story__ID[ $key__element ]);
+								if( !empty( $keyTrimed ) ){
 
 									// on indique à wordpress un ID pour signifier d'updater
 									$story__newpost['ID'] = $story__ID[ $key__element ];
