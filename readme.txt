@@ -55,6 +55,9 @@ More feature in futur.
 
 == Changelog ==
 
+= 0.2.1 =
+* fix tinymce cumulative height
+
 = 0.2 =
 * Enable Title content
 * Enable image content

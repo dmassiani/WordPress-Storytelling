@@ -1,5 +1,6 @@
 (function($){
 
+
 	$rapper 	= 'story__rapper',
 	$selector 	= 'story__selector';
 
@@ -38,7 +39,6 @@
 
 		var data = {
 			'action': 'Storytelling__getNewBox',
-			// 'action': 'Storytelling__getNewMacro',
 			'file' : file,
 			'n__metabox': n__metabox
 		};
@@ -59,7 +59,6 @@
 
 
 	    			var new__editor = "story__editor__" + parseInt( parseInt( n__metabox * 1000 ) + parseInt( index + 1 ) );
-	    			// console.log('je vais créer un nouvel éditeur n ommé ' + new__editor);
 
 					if( $.trim(structureArray[ index ]) === "editor" ){
 
@@ -74,10 +73,8 @@
 			    		});
 
 			    		if( instance === true ){
-			    			// console.log('instance exist ' + new__editor);
 			    			tinymce.EditorManager.execCommand('mceAddEditor',true, new__editor);
 			    		}else{		    			
-			    			// console.log('instance exist pas init ' + new__editor);
 							tinyMCEPreInit.mceInit[ 'content' ].selector = '#' + new__editor;
 							tinyMCEPreInit.qtInit[ 'content' ].id = new__editor;
 							tinymce.init(tinyMCEPreInit.mceInit[ 'content' ]);
@@ -185,8 +182,6 @@
 					// on supprimer aussi tout les editeurs tiny mce
 					$.each( buttonRemove.closest('.story-container').find('input[name="story__post__[]"]'), function(e){
 
-						// console.log(' tinymce : suppression de lediteur ' + $(this).val());
-
 						tinymce.EditorManager.execCommand('mceRemoveEditor',true, $(this).val() );
 			
 					});
@@ -197,7 +192,6 @@
 
 		}else{
 			buttonRemove.closest('.story-container').remove();
-			// n__metabox--;
 		}
 
 
@@ -234,7 +228,6 @@
 		e.preventDefault();
 
 		var file = $(this).data('file');
-		// structure permet de charger tout les tinyMCE
 		var structure = $(this).data('structure');
 
 		getTemplate( file, structure );
@@ -258,8 +251,24 @@
 		}
 		
 	});
-    
-    $(document).ready(function(){
+
+
+	// fix iframe height
+	$(document).on('click', '.postbox-container .postbox .handlediv', function(){
+
+		var postbox = $(this).closest('.postbox');
+		
+		if( !postbox.hasClass('closed') )
+		{
+			jQuery.each( tinyMCE.editors , function(i,e){
+				$newHeight = jQuery(e.contentDocument.activeElement).outerHeight()
+				tinyMCE.editors[i].theme.resizeTo('100%', $newHeight);
+			});
+		}
+
+	});
+   
+    jQuery(window).load(function($){
 		getMetaboxs();
 		getElements();
     });

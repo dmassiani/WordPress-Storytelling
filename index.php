@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Story Telling
+ * @package Storytelling
  */
 /*
-Plugin Name: Story Telling
+Plugin Name: Storytelling
 Plugin URI: http://storytelling.io/
 Description: Storytelling enable macro template for developers.
 Version: 1.1
