@@ -19,4 +19,5 @@ Description: Section with 2 titles, 2 contents and 2 illustrations
 	<div class="entry-content">
 		<?php the_chapter( 'left_content' ) ?>
 	</div>
+
 </article>

@@ -55,14 +55,18 @@ More feature in futur.
 
 == Changelog ==
 
-= 0.2.1 =
+= 1.3 =
+* introducing structured folder's selector
+* Add default macro-template in plugins
+
+= 1.2.1 =
 * fix tinymce cumulative height
 
-= 0.2 =
+= 1.2 =
 * Enable Title content
 * Enable image content
 * Enable sortable reorder
 * Fix remodeling macro-template structure
 
-= 0.1 =
+= 1.1 =
 * First version of plugin. Enable Editor content.
