@@ -19,6 +19,8 @@ define ( 'STORY_FOLDER',  'storytelling' );
 
 define ( 'STORY_URL', plugins_url('', __FILE__) );
 define ( 'STORY_DIR', dirname(__FILE__) );
+define ( 'STORY_DEFAULT_TEMPLATE', STORY_DIR .'/templates' );
+
 
 
 
@@ -84,7 +86,7 @@ class Storytelling__kickstarter
 
 	        // init structure
 	        $get__templates = new Storytelling__structure();
-	        $this->story__structure = $get__templates->Storytelling__realTemplates();
+	        // $this->story__structure = $get__templates->Storytelling__realTemplates(); // !
 
     	}else{
 

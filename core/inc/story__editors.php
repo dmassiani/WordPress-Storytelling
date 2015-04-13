@@ -25,6 +25,8 @@ class Storytelling__editors
     public $container__id;
     public $content;
     public $type;
+    public $folder_type;
+    public $folder;
     public $slug;
     public $ajax;
     public $file;
@@ -40,10 +42,12 @@ class Storytelling__editors
 
 
 		$story__structure = new Storytelling__Structure();
-		$structureArray = $story__structure->Storytelling__getFileStructure( $this->file );
-		$slugsArray = $story__structure->Storytelling__getFileSlugs( $this->file );
-		$namesArray = $story__structure->Storytelling__getFileNames( $this->file );
-		$this->template = $story__structure->Storytelling__getFileTemplate( $this->file );
+
+		$structureArray = $story__structure->Storytelling__getFileStructure( $this->folder_type, $this->folder, $this->file );
+		$slugsArray = $story__structure->Storytelling__getFileSlugs( $this->folder_type, $this->folder, $this->file );
+		$namesArray = $story__structure->Storytelling__getFileNames( $this->folder_type, $this->folder, $this->file );
+		$this->template = $story__structure->Storytelling__getFileTemplate( $this->folder_type, $this->folder, $this->file );
+
 
 
 		$this->openMetabox( $this->n__metabox );
@@ -105,6 +109,8 @@ class Storytelling__editors
 	                <div class="inside">
 
 						<input type="hidden" name="story__template__[]" value="<?=$this->template?>">
+						<input type="hidden" name="story__folder_type__[]" value="<?=$this->folder_type?>">
+						<input type="hidden" name="story__folder__[]" value="<?=$this->folder?>">
 						<input type="hidden" name="story__file__[]" value="<?=$this->file?>">
 			    		<input type="hidden" name="metabox__id[]" value="<?=$this->metabox__id?>">
 

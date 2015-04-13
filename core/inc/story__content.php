@@ -6,7 +6,6 @@
 // ******************************************************
 
 
-
 function get_illustration( $slug, $size ){
 
 	global $post;
@@ -145,12 +144,16 @@ function define_stories(){
 
 		foreach ($metas as $key => $metabox):
 
-			$file	  = $metas[ $key ]['file'];
-			$contents = $metas[ $key ]['content'];
+			$file	  		= $metas[ $key ]['file'];
+			$folder_type	= $metas[ $key ]['folder_type'];
+			$folder	  		= $metas[ $key ]['folder'];
+			$contents 		= $metas[ $key ]['content'];
 
 			$story__stories[] = array(
-				'file' 		=> $file,
-				'contents' 	=> $contents
+				'folder_type' 		=> $folder_type,
+				'folder' 			=> $folder,
+				'file' 				=> $file,
+				'contents' 			=> $contents
 			);
 
 		endforeach;
@@ -180,18 +183,30 @@ function the_story() {
 
 		$story__current__story = $story;
 
+    	if( $story['folder_type'] === 'plugin' ){
+    		$folder = STORY_DEFAULT_TEMPLATE .'/'. $story['folder'];
+    	}else{
+    		$folder = get_template_directory() . '/' . STORY_FOLDER .'/'. $story['folder'];
+    	}
+
+    	// $file_parts = pathinfo( $this->currentFolder .'/'. $folder .'/'. $file );
+
 		// remove php extension
-		$info = pathinfo( $story['file'] );
+		$info = pathinfo( $folder .'/'. $story['file'] );
 		$name = $info['filename'];
+		$folder = $story['folder'];
+		$folder_type = $story['folder_type'];
 
+		// log_it($info);
 
-		echo get_story_template( $name );
+		// log_it(get_story_template( $name, $folder, $folder_type ));
+		echo get_story_template( $name, $folder, $folder_type );
 
 	endforeach;
 
 }
 
-function get_story_template( $story__name ){
+function get_story_template( $story__name, $folder, $folder_type ){
 
 	global $post;
 	global $story__stories;
@@ -201,6 +216,65 @@ function get_story_template( $story__name ){
 	if( empty( $story__stories ) ) return;
 	if( empty( $story__name ) ) return;
 
-	return get_template_part( STORY_FOLDER . '/' . $story__name );
+	// log_it( $folder . '/' . $story__name );
 
+	// log_it($folder);
+
+	if( $folder_type === 'theme' ){
+		// log_it('storytelling/' . $folder .'/'. $story__name);
+		return get_template_part(  'storytelling/' . $folder .'/'. $story__name );
+	}else{
+		// log_it('plugin');
+		return storytelling__locate__template( $story__name, STORY_DIR . '/templates/' . $folder .'/' );
+	}
+
+}
+
+// extra function to load template in plugin folder
+/**
+*Extend WP Core get_template_part() function to load files from the within Plugin directory defined by PLUGIN_DIR_PATH constant
+* * Load the page to be displayed 
+* from within plugin files directory only 
+* * @uses storytelling__load__template() function 
+* * @param $slug * @param null $name 
+*/ 
+
+function storytelling__locate__template($slug, $location,  $name = null) {
+
+	// log_it($slug);
+
+	do_action("storytelling__locate__template_{$slug}", $slug, $name);
+
+	$templates = array();
+	if (isset($name))
+	    $templates[] = "{$slug}-{$name}.php";
+
+	$templates[] = "{$slug}.php";
+
+	storytelling__load__template($templates, $location, true, false);
+
+}
+
+/* Extend locate_template from WP Core 
+* Define a location of your plugin file dir to a constant in this case = PLUGIN_DIR_PATH 
+* Note: PLUGIN_DIR_PATH - can be any folder/subdirectory within your plugin files 
+*/ 
+
+function storytelling__load__template($template_names, $location, $load = false, $require_once = true ) 
+{ 
+	$located = ''; 
+	foreach ( (array) $template_names as $template_name ) { 
+		if ( !$template_name ) continue; 
+
+		/* search file within the PLUGIN_DIR_PATH only */ 
+		if ( file_exists( $location . $template_name)) { 
+			$located = $location . $template_name; 
+			break; 
+		} 
+	}
+
+	if ( $load && '' != $located )
+	    load_template( $located, $require_once );
+
+	return $located;
 }

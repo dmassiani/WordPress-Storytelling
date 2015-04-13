@@ -31,7 +31,7 @@
 	// ================================
 
 
-	function getTemplate( file, structure ){
+	function getTemplate( type, folder, file, structure ){
 
 		structure.replace(/ /g,'');
 		var structureArray = structure.split(',');
@@ -39,10 +39,11 @@
 
 		var data = {
 			'action': 'Storytelling__getNewBox',
+			'type': type,
+			'folder': folder,
 			'file' : file,
 			'n__metabox': n__metabox
 		};
-
 
 	    $.post('/wp-admin/admin-ajax.php', data, function(response) {
 
@@ -96,6 +97,17 @@
 	    });
 
 	}
+
+	// ================================
+	// Choix du dossier
+	// ================================
+	$(document).on('change','#storytelling__folder__selector', function(e){
+
+		$('#story__selector .inside ol').hide();
+		$('#story__selector .inside ol#' + $(this).val()).show();
+
+	});
+
 
 	// ================================
 	// instanciate image uploader
@@ -227,10 +239,12 @@
 
 		e.preventDefault();
 
+		var type = $(this).data('type');
+		var folder = $(this).data('folder');
 		var file = $(this).data('file');
 		var structure = $(this).data('structure');
 
-		getTemplate( file, structure );
+		getTemplate( type, folder, file, structure );
 
 		return false;
 

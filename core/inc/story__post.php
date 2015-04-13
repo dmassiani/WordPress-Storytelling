@@ -27,11 +27,15 @@ class Storytelling__post
 			if( !empty( $_POST['story__post__'] )
 			&& !empty( $_POST['story__template__'] )
 			&& !empty( $_POST['story__type__'] )
+			&& !empty( $_POST['story__folder_type__'] )
+			&& !empty( $_POST['story__folder__'] )
 			&& !empty( $_POST['story__slug__'] )
 			&& !empty( $_POST['metabox__id'] )){
 
 				$story__posts 		= $_POST['story__post__'];
 				$story__templates 	= $_POST['story__template__'];
+				$story__folder_types= $_POST['story__folder_type__'];
+				$story__folder 		= $_POST['story__folder__'];
 				$story__types 		= $_POST['story__type__'];
 				$story__files 		= $_POST['story__file__'];
 				$story__slugs 		= $_POST['story__slug__'];
@@ -120,12 +124,14 @@ class Storytelling__post
 
 					foreach ($story__metabox as $key__meta => $metabox) {
 
+							$folder_type= $story__folder_types[ $key__meta ];
+							$folder 	= $story__folder[ $key__meta ];
 							$file 		= $story__files[ $key__meta ];
 							$template 	= $story__templates[ $key__meta ];
 							unset($meta__content);
 
 							// on récupère la structure de la metabox grace au nom du fichier
-							$metabox__structure = $story__structure->Storytelling__get__fileStructure( $file );
+							$metabox__structure = $story__structure->Storytelling__get__fileStructure( $folder_type, $folder, $file );
 							// log_it( $metabox__structure );
 
 							// pour chaque element de la structure on retrouve sa data
@@ -211,6 +217,8 @@ class Storytelling__post
 
 							$metas[] = array( 
 								'file' 			=> $file, 
+								'folder_type' 	=> $folder_type, 
+								'folder' 		=> $folder, 
 								'template' 		=> $template, 
 								'container' 	=> $metabox, 
 								'content' 		=> $meta__content
