@@ -52,15 +52,19 @@ class Storytelling__edit
 				$metaSlugs = [];
 
 				$template = $metabox['template'];
+				$folder_type = $metabox['folder_type'];
+				$folder = $metabox['folder'];
 				$file = $metabox['file'];
 				$container = $metabox['container'];
 				$contents = $metabox['content'];
 				
-				$fileSlugs = $story__structure->Storytelling__getFileSlugs( $file ); 
-				$structure = $story__structure->Storytelling__getFileStructure( $file );
+				$fileSlugs = $story__structure->Storytelling__getFileSlugs( $folder_type, $folder, $file ); 
+				$structure = $story__structure->Storytelling__getFileStructure( $folder_type, $folder, $file );
 
 				// variable pour la metabox
 				$editeur->template = $template;
+				$editeur->folder_type = $folder_type;
+				$editeur->folder = $folder;
 				$editeur->file = $file;
 				$editeur->postID = $post->ID;
 
@@ -74,7 +78,7 @@ class Storytelling__edit
 
 							$editeur->slug = $slug;
 							$editeur->container__id = $name__editor;
-							$editeur->name = $story__structure->Storytelling__getNameFileSlug( $editeur->file, $editeur->slug );
+							$editeur->name = $story__structure->Storytelling__getNameFileSlug( $editeur->folder_type, $editeur->folder, $editeur->file, $editeur->slug );
 
 							// log_it('je regarde le slug N' . $keyS . ' de la structure ' . $key);
 
@@ -97,7 +101,7 @@ class Storytelling__edit
 
 							if( is_numeric( $dataID ) ):
 								
-								$diffType = $story__structure->Storytelling__slugType( $editeur->file, $editeur->slug );
+								$diffType = $story__structure->Storytelling__slugType( $editeur->folder_type, $editeur->folder, $editeur->file, $editeur->slug );
 								if( $diffType === $dataType ):
 
 									$story__post = get_post( $dataID );

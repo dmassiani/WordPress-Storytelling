@@ -47,6 +47,8 @@ class Storytelling__ajax
 
         $editeur = new Storytelling__editors();
 
+        $editeur->folder_type = $_POST['type'];
+        $editeur->folder = $_POST['folder'];
         $editeur->file = $_POST['file'];
         $editeur->ajax = true;
         $editeur->n__metabox = $_POST['n__metabox'];

@@ -46,43 +46,182 @@ class Storytelling__metabox
 
     public function story__addMetaBox__Sidebar__callback(){
 
+        // --------------------------------------------------------------------
+        // fonction qui affiche la meta dans la sidebar
+        // --------------------------------------------------------------------
+
+        // note : 
+        // structure des folders :
+        // plugin : templates/**nom**
+        // themes : storytelling/**nom**
+
+        // les templates à la racine du dossier ne seront pas lus
+
         $story_structure = new Storytelling__structure();
-        $templates = $story_structure->Storytelling__register__templates();
+        $theme_template = $story_structure->Storytelling__register__Theme__folder();
+        $plugin_template = $story_structure->Storytelling__register__Plugin__folder();
+
+        // log_it($theme_template);
+        // log_it($plugin_template);
+
+        // ici on pourra aller chercher tout les templates inclut dans le dossier default du plugin
 
             // on parcourt les templates et on les affiche
-        ?><ol><?php
+        ?>
+        <select id="storytelling__folder__selector">
+            <?php
 
-            foreach ($templates as &$template) {
+                // on lit en premier les dossiers du thème
+                // puis les folders du plugins
+                    // dans les folders il y a aura toujours le dossier default
 
-                $template = json_decode($template);
+                foreach ($plugin_template as $key => $value) {
 
-                $elements = [];
-                foreach( $template->elements as $key => $element ):
-                    $elements[] = $element->type;
-                endforeach;
-                $structure = implode(',', $elements);
+                    if( gettype($value) === "array" ){
 
-                $elements = [];
-                foreach( $template->elements as $key => $element ):
-                    $elements[] = $element->slug;
-                endforeach;
-                $slugs = implode(',', $elements);
+            ?>
+            <option value="storytelling-plugin-<?=$key?>">Plugin <?=$key?></option>
+            <?php
+
+                    }
+
+                }
+
+            ?>
+            <?php
+
+                // on lit en premier les dossiers du thème
+                // puis les folders du plugins
+                    // dans les folders il y a aura toujours le dossier default
+
+                foreach ($theme_template as $key => $value) {
+
+                    if( gettype($value) === "array" ){
+
+            ?>
+            <option value="storytelling-theme-<?=$key?>">Theme <?=$key?></option>
+            <?php
+
+                    }
+
+                }
+
+            ?>
+        </select>
+
+        <?php
+
+                foreach ($plugin_template as $key_parent => $value) {
+
+                    if( gettype($value) === "array" ){
+
+                        ?>                
+        <ol id="storytelling-plugin-<?=$key_parent?>">
+                        <?php
+
+                        foreach ($value as $template) {
+
+                            $template = json_decode($template);
+
+                            $elements = [];
+                            foreach( $template->elements as $key => $element ):
+                                $elements[] = $element->type;
+                            endforeach;
+                            $structure = implode(',', $elements);
+
+                            $elements = [];
+                            foreach( $template->elements as $key => $element ):
+                                $elements[] = $element->slug;
+                            endforeach;
+                            $slugs = implode(',', $elements);
+
+                    ?>
+
+                            <li>
+                                <a href="#" 
+                                data-type="plugin"
+                                data-folder="<?=$key_parent?>"
+                                data-file="<?=$template->file?>" 
+                                data-name="<?=$template->name?>" 
+                                data-structure="<?=$structure?>" 
+                                data-slugs="<?=$slugs?>">
+                                    <h4><?=$template->name?></h4>
+                                    <p>
+                                        <?=$template->description?>
+                                    </p>
+                                </a>
+                            </li>
+
+                    <?php
+                        }
+
+                    ?>
+        </ol>
+                    <?php
+
+                    }
+
+                }
 
         ?>
 
-                <li>
-                    <a href="#" data-file="<?=$template->file?>" data-name="<?=$template->name?>" data-structure="<?=$structure?>" data-slugs="<?=$slugs?>">
-                        <h4><?=$template->name?></h4>
-                        <p>
-                            <?=$template->description?>
-                        </p>
-                    </a>
-                </li>
+        <?php
+
+                foreach ($theme_template as $key_parent => $value) {
+
+                    if( gettype($value) === "array" ){
+
+                        ?>                
+        <ol id="storytelling-theme-<?=$key_parent?>">
+                        <?php
+
+                        foreach ($value as $template) {
+
+                            $template = json_decode($template);
+
+                            $elements = [];
+                            foreach( $template->elements as $key => $element ):
+                                $elements[] = $element->type;
+                            endforeach;
+                            $structure = implode(',', $elements);
+
+                            $elements = [];
+                            foreach( $template->elements as $key => $element ):
+                                $elements[] = $element->slug;
+                            endforeach;
+                            $slugs = implode(',', $elements);
+
+                    ?>
+
+                            <li>
+                                <a href="#" 
+                                data-type="theme"
+                                data-folder="<?=$key_parent?>"
+                                data-file="<?=$template->file?>" 
+                                data-name="<?=$template->name?>" 
+                                data-structure="<?=$structure?>" 
+                                data-slugs="<?=$slugs?>">
+                                    <h4><?=$template->name?></h4>
+                                    <p>
+                                        <?=$template->description?>
+                                    </p>
+                                </a>
+                            </li>
+
+                    <?php
+                        }
+
+                    ?>
+        </ol>
+                    <?php
+
+                    }
+
+                }
+
+        ?>
 
         <?php
-            }
-
-        ?></ol><?php
 
     }
 

@@ -127,3 +127,17 @@
 .focus-on .postbox-container.story-container > *{
 	opacity: 1;
 }
+
+/* tout ce qui concerne la metabox de selection dans l'admin user */
+
+#story__selector .inside ol{
+	display: none;
+}
+#story__selector .inside ol#storytelling-plugin-default{
+	display: block;
+}
+
+#storytelling__folder__selector{
+	margin-bottom: 10px;
+	margin-top: 5px;
+}
