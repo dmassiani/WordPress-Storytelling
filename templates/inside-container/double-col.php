@@ -1,12 +1,16 @@
 <?php
 /*
-Template Name: Example default template
+Template Name: Double col
 Description: Section with 2 titles, 2 contents and 2 illustrations
 ---------------------------------------------------------------------
 {"type": "title", "name": "Left title", "slug": "left_title"}
 {"type": "editor", "name": "Left content", "slug": "left_content"}
 ---------------------------------------------------------------------
 */
+
+
+// load css flexbox grid bootstrap compatible
+wp_enqueue_style( 'flexboxgrid', '//cdn.jsdelivr.net/flexboxgrid/6.1.1/flexboxgrid.min.css' );
 ?>
 <article class="hentry">
 
