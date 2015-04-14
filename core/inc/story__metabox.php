@@ -111,12 +111,17 @@ class Storytelling__metabox
 
         <?php
 
+            $i=0;
+
                 foreach ($plugin_template as $key_parent => $value) {
 
                     if( gettype($value) === "array" ){
 
+                        if($i === 0)$class=' class="first"';
+                        else $class='';
+
                         ?>                
-        <ol id="storytelling-plugin-<?=$key_parent?>">
+        <ol id="storytelling-plugin-<?=$key_parent?>"<?=$class?>>
                         <?php
 
                         foreach ($value as $template) {
@@ -158,7 +163,7 @@ class Storytelling__metabox
                     ?>
         </ol>
                     <?php
-
+                    $i++;
                     }
 
                 }

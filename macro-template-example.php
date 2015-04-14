@@ -11,6 +11,14 @@ Description: Section with 2 titles, 2 contents and 2 illustrations
 {"type": "image", "name": "Right illustration", "slug": "right_illustration"}
 ---------------------------------------------------------------------
 */
+/*
+==============================================================================
+
+	Place this file into --yourtheme--/storytelling/macro-template-name.php 
+	and go to admin to see your new content management
+	
+==============================================================================
+*/
 ?>
 <section> 
 	<h1>		<?php the_chapter_title( 'left_title' ) ?></h1>

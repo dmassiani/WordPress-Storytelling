@@ -133,7 +133,7 @@
 #story__selector .inside ol{
 	display: none;
 }
-#story__selector .inside ol#storytelling-plugin-default{
+#story__selector .inside ol.first{
 	display: block;
 }
 

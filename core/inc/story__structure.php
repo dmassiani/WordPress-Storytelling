@@ -151,7 +151,7 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 	public function Storytelling__register__Theme__folder(){
 
-		log_it($this->currentFolder);
+		// log_it($this->currentFolder);
 
 		// log_it($this->themeFolder);
 		// on prend on dossier et on le transforme en tableau de contenance dossier -> fichier

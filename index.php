@@ -166,7 +166,6 @@ class Storytelling__kickstarter
     	if( ! file_exists( $story__folder ) ){
     		mkdir( $story__folder , 775 );
     	}
-
     }
 
     public function Storytelling__afterThemeActivation(){
