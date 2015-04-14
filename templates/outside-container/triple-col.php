@@ -16,7 +16,7 @@ wp_enqueue_style( 'flexboxgrid', '//cdn.jsdelivr.net/flexboxgrid/6.1.1/flexboxgr
 ?>
 <div class="row">
     <div class="col-xs-12
-                col-sm-8
+                col-sm-6
                 col-md-6">
         <div class="box">
         	<h2><?php the_chapter_title( 'left_title' ) ?></h2>

@@ -103,7 +103,7 @@ class Storytelling__editors
 	                <div class="handlediv<?=$metaboxStory?>" title="<?php _e('Clic for invert') ?>"><br></div>
 	                <h3 class="hndle">
 	                    <span>
-	                    	<?php _e('Story Telling') ?> : <?=$this->template?>
+	                    	<?php _e('Storytelling') ?> : <?=$this->template?>
 	                    </span>
 	                </h3>
 	                <div class="inside">
