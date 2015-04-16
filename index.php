@@ -162,17 +162,17 @@ class Storytelling__kickstarter
     }
 
     static function Storytelling__activation(){
-    	$story__folder = get_template_directory() . '/storytelling';
-    	if( ! file_exists( $story__folder ) ){
-    		mkdir( $story__folder , 775 );
-    	}
+    	// $story__folder = get_template_directory() . '/storytelling';
+    	// if( ! file_exists( $story__folder ) ){
+    	// 	mkdir( $story__folder , 775 );
+    	// }
     }
 
     public function Storytelling__afterThemeActivation(){
-    	$story__folder = get_template_directory() . '/storytelling';
-    	if( ! file_exists( $story__folder ) ){
-    		mkdir( $story__folder , 775 );
-    	}
+    	// $story__folder = get_template_directory() . '/storytelling';
+    	// if( ! file_exists( $story__folder ) ){
+    	// 	mkdir( $story__folder , 775 );
+    	// }
     }
 
     // ============================================================
