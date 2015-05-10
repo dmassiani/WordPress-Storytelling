@@ -18,7 +18,7 @@ class Storytelling__post
 
 
 	function __construct(){
-		// log_it('post init');
+
 	}
 
 	public function Storytelling__save( $post_id ) {
@@ -49,8 +49,6 @@ class Storytelling__post
 				endif;
 
 				$user_ID 			= get_current_user_id();
-
-				// log_it($story__titles);
 
 
 				if ( false !== wp_is_post_revision( $post_id ) )
@@ -132,7 +130,6 @@ class Storytelling__post
 
 							// on récupère la structure de la metabox grace au nom du fichier
 							$metabox__structure = $story__structure->Storytelling__get__fileStructure( $folder_type, $folder, $file );
-							// log_it( $metabox__structure );
 
 							// pour chaque element de la structure on retrouve sa data
 							// les elements sont théoriquement dans l'ordre.
@@ -163,12 +160,6 @@ class Storytelling__post
 
 								}
 
-								// log_it('key element = ' . $key__element);
-								// log_it($story__ID[ $key__element ]);
-
-								// // // si story__post est vide
-								// // // if( empty( $_POST[ $story__post ] ) )$_POST[ $story__post ]='';
-
 
 								// gestion du contenu en fonction du type
 								switch ( $element->type ) {
@@ -186,8 +177,6 @@ class Storytelling__post
 										break;
 								}
 
-								// log_it($story__newpost);
-
 								if( $update__content === false){
 
 									$story__id = wp_insert_post( $story__newpost );
@@ -200,15 +189,11 @@ class Storytelling__post
 								
 								}
 
-								// log_it($story__newpost);
-
 								$meta__content[] = array(
 									'ID' => $story__id,
 									'type' => $element->type,
 									'slug' => $element->slug
 								);
-
-								// log_it($meta__content);
 
 								$key__element++;
 
@@ -233,16 +218,15 @@ class Storytelling__post
 					if( $update__meta === true ):
 						// il y a eu un nouvel enregistrement
 						update_post_meta( $post_id, '_story_content', $metas );
-						// log_it('jupdate le meta');
+
 					else:
 						add_post_meta( $post_id, '_story_content', $metas, true );
-						// log_it('jajoute un meta');
+
 					endif;
 
 				}
 
 			}// fin d'empty
-	// }
 
 	}
 

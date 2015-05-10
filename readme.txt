@@ -58,6 +58,7 @@ More feature in futur.
 = 1.3 =
 * introducing structured folder's selector
 * Add default macro-template in plugins
+* Fix editor cumulative height
 
 = 1.2.1 =
 * fix tinymce cumulative height

@@ -176,8 +176,6 @@ function the_story() {
 
 	if( empty( $story__stories ) ) return;
 
-	// log_it($story__stories);
-
 	foreach ($story__stories as $key => $story):
 
 
@@ -189,17 +187,12 @@ function the_story() {
     		$folder = get_template_directory() . '/' . STORY_FOLDER .'/'. $story['folder'];
     	}
 
-    	// $file_parts = pathinfo( $this->currentFolder .'/'. $folder .'/'. $file );
-
 		// remove php extension
 		$info = pathinfo( $folder .'/'. $story['file'] );
 		$name = $info['filename'];
 		$folder = $story['folder'];
 		$folder_type = $story['folder_type'];
 
-		// log_it($info);
-
-		// log_it(get_story_template( $name, $folder, $folder_type ));
 		echo get_story_template( $name, $folder, $folder_type );
 
 	endforeach;
@@ -216,15 +209,12 @@ function get_story_template( $story__name, $folder, $folder_type ){
 	if( empty( $story__stories ) ) return;
 	if( empty( $story__name ) ) return;
 
-	// log_it( $folder . '/' . $story__name );
-
-	// log_it($folder);
 
 	if( $folder_type === 'theme' ){
-		// log_it('storytelling/' . $folder .'/'. $story__name);
+
 		return get_template_part(  'storytelling/' . $folder .'/'. $story__name );
 	}else{
-		// log_it('plugin');
+
 		return storytelling__locate__template( $story__name, STORY_DIR . '/templates/' . $folder .'/' );
 	}
 
@@ -240,8 +230,6 @@ function get_story_template( $story__name, $folder, $folder_type ){
 */ 
 
 function storytelling__locate__template($slug, $location,  $name = null) {
-
-	// log_it($slug);
 
 	do_action("storytelling__locate__template_{$slug}", $slug, $name);
 

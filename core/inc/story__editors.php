@@ -40,15 +40,12 @@ class Storytelling__editors
 		if( $this->n__metabox != 0 )$this->update = true;
 		$this->metabox__id = $this->metabox__id * ( $this->n__metabox + 1 );
 
-
 		$story__structure = new Storytelling__Structure();
 
 		$structureArray = $story__structure->Storytelling__getFileStructure( $this->folder_type, $this->folder, $this->file );
 		$slugsArray = $story__structure->Storytelling__getFileSlugs( $this->folder_type, $this->folder, $this->file );
 		$namesArray = $story__structure->Storytelling__getFileNames( $this->folder_type, $this->folder, $this->file );
 		$this->template = $story__structure->Storytelling__getFileTemplate( $this->folder_type, $this->folder, $this->file );
-
-
 
 		$this->openMetabox( $this->n__metabox );
 
@@ -141,6 +138,7 @@ class Storytelling__editors
 	}
 
 	public function openElement(){
+
 		?>
     		<div class="story__element story__element__<?=$this->type?>">
 

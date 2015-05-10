@@ -20,9 +20,6 @@ class Storytelling__metabox
 
         $post_types = get_post_types( $args, $output );
 
-        // print_r($post_types);
-
-
         foreach ( $post_types  as $post_type ) {
 
             $screens[] = $post_type->name;
@@ -61,9 +58,6 @@ class Storytelling__metabox
         $theme_template = $story_structure->Storytelling__register__Theme__folder();
         $plugin_template = $story_structure->Storytelling__register__Plugin__folder();
 
-        // log_it($theme_template);
-        // log_it($plugin_template);
-
         // ici on pourra aller chercher tout les templates inclut dans le dossier default du plugin
 
             // on parcourt les templates et on les affiche
@@ -75,12 +69,12 @@ class Storytelling__metabox
                 // puis les folders du plugins
                     // dans les folders il y a aura toujours le dossier default
 
-                foreach ($plugin_template as $key => $value) {
+                foreach ($theme_template as $key => $value) {
 
                     if( gettype($value) === "array" ){
 
             ?>
-            <option value="storytelling-plugin-<?=$key?>">Plugin <?=$key?></option>
+            <option value="storytelling-theme-<?=$key?>">Theme <?=$key?></option>
             <?php
 
                     }
@@ -94,12 +88,12 @@ class Storytelling__metabox
                 // puis les folders du plugins
                     // dans les folders il y a aura toujours le dossier default
 
-                foreach ($theme_template as $key => $value) {
+                foreach ($plugin_template as $key => $value) {
 
                     if( gettype($value) === "array" ){
 
             ?>
-            <option value="storytelling-theme-<?=$key?>">Theme <?=$key?></option>
+            <option value="storytelling-plugin-<?=$key?>">Plugin <?=$key?></option>
             <?php
 
                     }
@@ -172,6 +166,8 @@ class Storytelling__metabox
 
         <?php
 
+            if( is_array($theme_template) ){
+
                 foreach ($theme_template as $key_parent => $value) {
 
                     if( gettype($value) === "array" ){
@@ -223,6 +219,8 @@ class Storytelling__metabox
                     }
 
                 }
+
+            }
 
         ?>
 

@@ -15,6 +15,7 @@ class Storytelling__structure extends Storytelling__kickstarter
 		'Name' => 'Template Name', 
 		'Description' => 'Description'
 	);
+	public $folder_exist = false;
 
 	// class access
 	public $utility;
@@ -23,7 +24,15 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 		$this->themeFolder = get_template_directory() . '/' . STORY_FOLDER;
 		$this->pluginFolder = STORY_DEFAULT_TEMPLATE;
-		$this->files = scandir( $this->themeFolder );
+
+		if( is_dir( $this->themeFolder ) ){
+			$this->files = scandir( $this->themeFolder );
+			$this->folder_exist = true;
+		}else{
+			$this->files = array();
+			$this->folder_exist = false;
+		}
+
 		$this->utility = new Storytelling__utility();
 		$this->currentFolder = $this->themeFolder;
 		
@@ -35,25 +44,29 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 	public function dir__to__array($dir) { 
    
-	   $result = array(); 
+	   	$result = array(); 
 
-	   $cdir = scandir($dir); 
-	   foreach ($cdir as $key => $value) 
-	   { 
-	      if (!in_array($value,array(".",".."))) 
-	      { 
-	         if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) 
-	         { 
-	            $result[$value] = $this->dir__to__array($dir . DIRECTORY_SEPARATOR . $value); 
-	         } 
-	         else 
-	         { 
-	            $result[] = $value; 
-	         } 
-	      } 
-	   } 
-	   
-	   return $result; 
+		if( !is_dir($dir) ){
+			return false;
+		}
+
+		$cdir = scandir($dir); 
+		foreach ($cdir as $key => $value) 
+		{ 
+		  if (!in_array($value,array(".",".."))) 
+		  { 
+		     if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) 
+		     { 
+		        $result[$value] = $this->dir__to__array($dir . DIRECTORY_SEPARATOR . $value); 
+		     } 
+		     else 
+		     { 
+		        $result[] = $value; 
+		     } 
+		  } 
+		} 
+
+		return $result; 
 	} 
 
 
@@ -69,30 +82,33 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 			$file_parts = pathinfo( $this->currentFolder .'/'. $folder .'/'. $value );
 
-			// log_it($file_parts);
 
 			if( isset($file_parts['extension']) && $file_parts['extension'] === "php" ){
 
 				$default = get_file_data( $this->currentFolder .'/'. $folder .'/'. $value,  $this->fileHeader );
 				$jsons 	 = $this->utility->get_file_data( $this->currentFolder .'/'. $folder .'/'. $value );
 
-				$elements = [];
-				foreach( $jsons as $key => $json ):
+				if( is_array($jsons) ):
 
-						$elements[] = json_decode($json);
+					$elements = [];
+					foreach( $jsons as $key => $json ):
 
-				endforeach;
+							$elements[] = json_decode($json);
 
-
-				$tJson = array(					
-					'name'			=> 		$default[ 'Name' ], 
-					'description'	=> 		$default[ 'Description' ],
-					'file' 			=>		$file_parts['basename'],
-					'elements' 		=> 		$elements
-				);
+					endforeach;
 
 
-				$filesFounded[] = json_encode( $tJson );
+					$tJson = array(					
+						'name'			=> 		$default[ 'Name' ], 
+						'description'	=> 		$default[ 'Description' ],
+						'file' 			=>		$file_parts['basename'],
+						'elements' 		=> 		$elements
+					);
+
+
+					$filesFounded[] = json_encode( $tJson );
+
+				endif;
 
 			}
 
@@ -109,26 +125,13 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 	public function Storytelling__register__Plugin__folder(){
 
-		// log_it($this->pluginFolder);
 
 		// on prend on dossier et on le transforme en tableau de contenance dossier -> fichier
     	$pluginFolder = $this->dir__to__array($this->pluginFolder);
 
-    	// log_it('-----------------------------------------');
-    	// log_it('je créé un tableau des fichiers et dossiers');
-    	// log_it($test);
-    	// log_it('-----------------------------------------');
-    	// $this->files = scandir( $this->folder );
-
 		foreach ($pluginFolder as $key => $value) {
 
 			if( gettype($value) === "array" ){
-				// log_it("J'ai trouvé un dossier contenant des fichiers");
-				// // j'ai trouvé un dossier contenant des fichiers
-				// log_it('nommé '.$key);
-				// log_it('contenant');
-				// log_it($value);
-				// // je le scanne donc
 
 				// si dans le dossier scanner des dossiers enfant on retrouve les fichiers
 				// et on les transforme en json contenant les informations du fichier
@@ -140,8 +143,6 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 		}
 
-		// log_it($pluginFolder);
-
 		return $pluginFolder;	
 	}
 
@@ -151,27 +152,17 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 	public function Storytelling__register__Theme__folder(){
 
-		// log_it($this->currentFolder);
+    	if( $this->folder_exist === false ){
+    		return false;
+    	}
 
-		// log_it($this->themeFolder);
 		// on prend on dossier et on le transforme en tableau de contenance dossier -> fichier
     	$themesFolder = $this->dir__to__array($this->themeFolder);
 
-    	// log_it('-----------------------------------------');
-    	// log_it('je créé un tableau des fichiers et dossiers');
-    	// log_it($test);
-    	// log_it('-----------------------------------------');
-    	// $this->files = scandir( $this->folder );
 
 		foreach ($themesFolder as $key => $value) {
 
 			if( gettype($value) === "array" ){
-				// log_it("J'ai trouvé un dossier contenant des fichiers");
-				// // j'ai trouvé un dossier contenant des fichiers
-				// log_it('nommé '.$key);
-				// log_it('contenant');
-				// log_it($value);
-				// // je le scanne donc
 
 				// si dans le dossier scanner des dossiers enfant on retrouve les fichiers
 				// et on les transforme en json contenant les informations du fichier
@@ -184,8 +175,6 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 		}
 
-		// log_it($themesFolder);
-
 		return $themesFolder;	
 	}
 
@@ -195,23 +184,9 @@ class Storytelling__structure extends Storytelling__kickstarter
 		// on prend on dossier et on le transforme en tableau de contenance dossier -> fichier
     	$themesFolder = $this->dir__to__array($this->themeFolder);
 
-
-
-    	// log_it('-----------------------------------------');
-    	// log_it('je créé un tableau des fichiers et dossiers');
-    	// log_it($test);
-    	// log_it('-----------------------------------------');
-    	// $this->files = scandir( $this->folder );
-
 		foreach ($themesFolder as $key => $value) {
 
 			if( gettype($value) === "array" ){
-				// log_it("J'ai trouvé un dossier contenant des fichiers");
-				// // j'ai trouvé un dossier contenant des fichiers
-				// log_it('nommé '.$key);
-				// log_it('contenant');
-				// log_it($value);
-				// // je le scanne donc
 
 				// si dans le dossier scanner des dossiers enfant on retrouve les fichiers
 				// et on les transforme en json contenant les informations du fichier
@@ -223,8 +198,6 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 		}
 
-		// log_it($themesFolder);
-
 		return $themesFolder;
 
     }
@@ -232,8 +205,6 @@ class Storytelling__structure extends Storytelling__kickstarter
     public function Storytelling__realTemplates(){
 
     	$templates = $this->Storytelling__register__templates();
-        
-    	// log_it($templates);
 
         $elements = [];
 
@@ -257,19 +228,18 @@ class Storytelling__structure extends Storytelling__kickstarter
 
         endforeach;
 
-        // log_it($elements);
-
         return $elements;
 
     }
 
     public function Storytelling__get__template__structure( $name ){
 
+    	if( $this->folder_exist === false ){
+    		return false;
+    	}
+
 		foreach ($this->files as $value) {
 			$file_parts = pathinfo( $value );
-			// log_it('ici story structure');
-			// log_it('je regarde le fichier ' . $value );
-
 
 			if( $file_parts['extension'] === "php" ){
 
@@ -281,10 +251,6 @@ class Storytelling__structure extends Storytelling__kickstarter
 						$elements[] = json_decode($json);
 
 				endforeach;
-
-				// $elements
-
-				// log_it( $elements );
 
 			}
 
@@ -330,10 +296,6 @@ class Storytelling__structure extends Storytelling__kickstarter
     	// file est le nom du fichier/template
 
     	// return array of structure
-
-    	// log_it($type);
-    	// log_it($folder);
-    	// log_it($file);
 
     	if( $type === 'theme' ){
     		$this->currentFolder = $this->themeFolder;
@@ -459,8 +421,6 @@ class Storytelling__structure extends Storytelling__kickstarter
 
     	// return array of slugs
 
-    	// log_it( $slug );
-
     	if( $type === 'theme' ){
     		$this->currentFolder = $this->themeFolder;
     	}else{
@@ -488,34 +448,6 @@ class Storytelling__structure extends Storytelling__kickstarter
 		}	
 
     }
-
-  //   public function Storytelling__slugExist( $file, $slug ){
-
-  //   	$file_parts = pathinfo( $file );
-
-  //   	$exist = false;
-
-
-		// 	if( $file_parts['extension'] === "php" ){
-
-		// 	$jsons 	 = $this->utility->get_file_data( $this->folder . '/' . $file );
-
-
-		// 	foreach( $jsons as $key => $json ):
-
-		// 			$element = json_decode($json);
-		// 			if( $element->slug === $slug ){
-		// 				$exist = true;
-		// 			}
-
-		// 	endforeach;
-
-
-		// }
-
-		// return $exist;
-
-  //   }
 
     public function Storytelling__slugType( $type, $folder, $file, $slug ){
 

@@ -31,8 +31,6 @@ class Storytelling__edit
 		// ====================================================================
 		$story__structure = new Storytelling__structure();
 
-        // log_it( $templates );
-
         // on instancie les editeurs et on le passe en mode update
 		$editeur = new Storytelling__editors();
 		$editeur->update = true;
@@ -40,9 +38,6 @@ class Storytelling__edit
 		// on récupère les metas
 		$metas = get_post_meta( $post->ID, '_story_content', true );
 
-// ===================================================================
-// V 0.2 - refactorisation
-// ===================================================================
 
 		if( ! empty( $metas ) ):
 
@@ -68,6 +63,8 @@ class Storytelling__edit
 				$editeur->file = $file;
 				$editeur->postID = $post->ID;
 
+				$container = 1000 * ( $key + 1 );
+
 
 					$editeur->openMetaBox( $key );
 					
@@ -76,19 +73,17 @@ class Storytelling__edit
 
 							$name__editor = "story__editor__" . ( $container + $keyS +1 );
 
+
 							$editeur->slug = $slug;
 							$editeur->container__id = $name__editor;
 							$editeur->name = $story__structure->Storytelling__getNameFileSlug( $editeur->folder_type, $editeur->folder, $editeur->file, $editeur->slug );
 
-							// log_it('je regarde le slug N' . $keyS . ' de la structure ' . $key);
 
 							// on récupère la data correspondant au slug :
 							// on parcours les datas à la recherche du slug :
 							$dataID = false;
 							$dataType = false;
 							$dataI = false;
-
-							// log_it($contents);
 
 							foreach ($contents as $i => $content):
 								$currentSlug = $content['slug'];
@@ -152,17 +147,11 @@ class Storytelling__edit
 					$metabox__structure = [];
 					$editeur->closeMetaBox();
 					
-				// endif;
-
-
 
 			endforeach;
 
 		endif;
 
-// ===================================================================
-// V 0.2 - refactorisation
-// ===================================================================
 
 	}
 

@@ -10,9 +10,6 @@ class Storytelling__ajax
 {
 
 
-    // best tricks ever : die()
-
-
     public function __construct(){
 
         add_action("wp_ajax_Storytelling__getNewBox", array( $this, "Storytelling__getNewBox") );
@@ -30,9 +27,7 @@ class Storytelling__ajax
 
     public function Storytelling__getTotalStoryPost(){
 
-    	// getNewContent( $editor__name, $tmpl__name );
         $db = new Storytelling__database();
-        // $editeur->getNewEditor( $editor__name );
         echo $db->total__story__content();
         die();
 

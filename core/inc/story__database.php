@@ -17,9 +17,6 @@ class Storytelling__database
 
 		echo $story_query->found_posts;
 
-		// return total content for attributing new editor ID
-		// var_dump( wp_count_posts( $this->name ) );
-
 	}
 
 
