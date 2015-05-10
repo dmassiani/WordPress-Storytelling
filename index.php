@@ -6,7 +6,7 @@
 Plugin Name: Storytelling
 Plugin URI: http://storytelling.io/
 Description: Storytelling enable macro template for developers.
-Version: 1.1
+Version: 1.3.1
 Author: David Massiani
 Author URI: http://davidmassiani.com
 License: GPLv2 or later
@@ -14,7 +14,7 @@ Text Domain: storytelling
 */
 
 // Folder name
-define ( 'STORY_VERSION', '1.0' );
+define ( 'STORY_VERSION', '1.3.1' );
 define ( 'STORY_FOLDER',  'storytelling' );
 
 define ( 'STORY_URL', plugins_url('', __FILE__) );
@@ -86,7 +86,6 @@ class Storytelling__kickstarter
 
 	        // init structure
 	        $get__templates = new Storytelling__structure();
-	        // $this->story__structure = $get__templates->Storytelling__realTemplates(); // !
 
     	}else{
 
@@ -162,17 +161,11 @@ class Storytelling__kickstarter
     }
 
     static function Storytelling__activation(){
-    	// $story__folder = get_template_directory() . '/storytelling';
-    	// if( ! file_exists( $story__folder ) ){
-    	// 	mkdir( $story__folder , 775 );
-    	// }
+
     }
 
     public function Storytelling__afterThemeActivation(){
-    	// $story__folder = get_template_directory() . '/storytelling';
-    	// if( ! file_exists( $story__folder ) ){
-    	// 	mkdir( $story__folder , 775 );
-    	// }
+
     }
 
     // ============================================================
@@ -232,7 +225,6 @@ function storytelling()
 storytelling();
 
 // hook qui appelle la fonction à l'activation du theme
-// log_it('not admin');
 register_activation_hook( __FILE__, array( 'Storytelling__kickstarter' , 'Storytelling__activation' ) );
 
 

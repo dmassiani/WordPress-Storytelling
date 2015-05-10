@@ -55,6 +55,11 @@ More feature in futur.
 
 == Changelog ==
 
+= 1.3.1 =
+* fix metabox id when delete previous content
+* fix empty folder bug
+* fix empty json
+
 = 1.3 =
 * introducing structured folder's selector
 * Add default macro-template in plugins
