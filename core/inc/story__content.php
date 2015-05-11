@@ -6,7 +6,7 @@
 // ******************************************************
 
 
-function get_illustration( $slug, $size ){
+function get_illustration( $slug = false, $size = false ){
 
 	global $post;
 	global $story__stories;

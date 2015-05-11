@@ -251,9 +251,7 @@ class Storytelling__structure extends Storytelling__kickstarter
 				$elements = [];
 				foreach( $jsons as $key => $json ):
 
-					if( $this->utility->isJSON($json)):
 						$elements[] = json_decode($json);
-					endif;
 
 				endforeach;
 
@@ -284,9 +282,7 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 				foreach( $jsons as $key => $json ):
 
-					if( $this->utility->isJSON($json)):
-						$elements[] = json_decode($json);
-					endif;
+						$element[] = json_decode($json);
 
 				endforeach;
 
@@ -322,8 +318,8 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 				foreach( $jsons as $key => $json ):
 
-						if( $this->utility->isJSON($json)):
-							$element = json_decode($json);
+						$element = json_decode($json);
+						if( is_object($element) ):
 							$structure[] = $element->type;
 						endif;
 
@@ -358,11 +354,11 @@ class Storytelling__structure extends Storytelling__kickstarter
     			$structure = [];
 
 				foreach( $jsons as $key => $json ):
-					
-					if( $this->utility->isJSON($json)):
+
 						$element = json_decode($json);
-						$structure[] = $element->type;
-					endif;
+						if( is_object($element) ):
+							$structure[] = $element->slug;
+						endif;
 
 				endforeach;
 
@@ -395,10 +391,10 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 				foreach( $jsons as $key => $json ):
 
-					if( $this->utility->isJSON($json)):
 						$element = json_decode($json);
-						$structure[] = $element->type;
-					endif;
+						if( is_object($element) ):
+							$structure[] = $element->name;
+						endif;
 
 				endforeach;
 
