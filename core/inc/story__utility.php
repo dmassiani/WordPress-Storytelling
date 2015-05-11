@@ -34,7 +34,9 @@ class Storytelling__utility
 		if( !empty($matches[0]) ){
 
 			foreach ($matches[0] as $key => $res){
-				$jsons[] = $res;
+				if( $this->isJSON($res) ):
+					$jsons[] = $res;
+				endif;
 			}
 
 			return $jsons;
