@@ -90,10 +90,13 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 				if( is_array($jsons) ):
 
+
 					$elements = [];
 					foreach( $jsons as $key => $json ):
 
-							$elements[] = json_decode($json);
+							if( $this->utility->isJSON($json)):
+								$elements[] = json_decode($json);
+							endif;
 
 					endforeach;
 
@@ -104,7 +107,6 @@ class Storytelling__structure extends Storytelling__kickstarter
 						'file' 			=>		$file_parts['basename'],
 						'elements' 		=> 		$elements
 					);
-
 
 					$filesFounded[] = json_encode( $tJson );
 
@@ -158,6 +160,7 @@ class Storytelling__structure extends Storytelling__kickstarter
 
 		// on prend on dossier et on le transforme en tableau de contenance dossier -> fichier
     	$themesFolder = $this->dir__to__array($this->themeFolder);
+
 
 
 		foreach ($themesFolder as $key => $value) {
