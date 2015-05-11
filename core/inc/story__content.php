@@ -10,12 +10,34 @@ function get_illustration( $slug, $size ){
 
 	global $post;
 	global $story__stories;
+	global $story__current__story;
 
 	if( empty( $story__stories ) ) define_stories();
 	if( empty( $story__stories ) ) return;
 
+	if( $slug === false ) return;
+	if( $size === false ) $size = 'full';
 
-	return;
+
+	foreach( $story__current__story['contents'] as $key => $element ){
+
+	    if( $element['slug'] === $slug ){
+
+	        $the_chapter_ID = $element['ID'];
+
+	    }
+
+	}
+
+	if( !empty( $the_chapter_ID ) ):
+
+	    $the__chapter = get_post( $the_chapter_ID );
+	    $image = wp_get_attachment_image_src( $the__chapter->post_content, $size );
+	    if( $image ) {
+	        echo $image[0];
+	    }
+	endif;
+	
 }
 
 function the_illustration( $slug = false, $size = false ){
