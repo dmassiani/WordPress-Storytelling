@@ -102,12 +102,11 @@ class Storytelling__metabox
 
             ?>
         </select>
-
         <?php
-
             $i=0;
+            if( is_array($theme_template) ){
 
-                foreach ($plugin_template as $key_parent => $value) {
+                foreach ($theme_template as $key_parent => $value) {
 
                     if( gettype($value) === "array" ){
 
@@ -115,65 +114,7 @@ class Storytelling__metabox
                         else $class='';
 
                         ?>                
-        <ol id="storytelling-plugin-<?=$key_parent?>"<?=$class?>>
-                        <?php
-
-                        foreach ($value as $template) {
-
-                            $template = json_decode($template);
-
-                            $elements = [];
-                            foreach( $template->elements as $key => $element ):
-                                $elements[] = $element->type;
-                            endforeach;
-                            $structure = implode(',', $elements);
-
-                            $elements = [];
-                            foreach( $template->elements as $key => $element ):
-                                $elements[] = $element->slug;
-                            endforeach;
-                            $slugs = implode(',', $elements);
-
-                    ?>
-
-                            <li>
-                                <a href="#" 
-                                data-type="plugin"
-                                data-folder="<?=$key_parent?>"
-                                data-file="<?=$template->file?>" 
-                                data-name="<?=$template->name?>" 
-                                data-structure="<?=$structure?>" 
-                                data-slugs="<?=$slugs?>">
-                                    <h4><?=$template->name?></h4>
-                                    <p>
-                                        <?=$template->description?>
-                                    </p>
-                                </a>
-                            </li>
-
-                    <?php
-                        }
-
-                    ?>
-        </ol>
-                    <?php
-                    $i++;
-                    }
-
-                }
-
-        ?>
-
-        <?php
-
-            if( is_array($theme_template) ){
-
-                foreach ($theme_template as $key_parent => $value) {
-
-                    if( gettype($value) === "array" ){
-
-                        ?>                
-        <ol id="storytelling-theme-<?=$key_parent?>">
+        <ol id="storytelling-theme-<?=$key_parent?>"<?=$class?>>
                         <?php
 
                         foreach ($value as $template) {
@@ -215,12 +156,66 @@ class Storytelling__metabox
                     ?>
         </ol>
                     <?php
-
+                    $i++;
                     }
 
                 }
 
             }
+
+        ?>
+        <?php
+
+                foreach ($plugin_template as $key_parent => $value) {
+
+                    if( gettype($value) === "array" ){
+
+                        ?>                
+        <ol id="storytelling-plugin-<?=$key_parent?>">
+                        <?php
+
+                        foreach ($value as $template) {
+
+                            $template = json_decode($template);
+
+                            $elements = [];
+                            foreach( $template->elements as $key => $element ):
+                                $elements[] = $element->type;
+                            endforeach;
+                            $structure = implode(',', $elements);
+
+                            $elements = [];
+                            foreach( $template->elements as $key => $element ):
+                                $elements[] = $element->slug;
+                            endforeach;
+                            $slugs = implode(',', $elements);
+
+                    ?>
+
+                            <li>
+                                <a href="#" 
+                                data-type="plugin"
+                                data-folder="<?=$key_parent?>"
+                                data-file="<?=$template->file?>" 
+                                data-name="<?=$template->name?>" 
+                                data-structure="<?=$structure?>" 
+                                data-slugs="<?=$slugs?>">
+                                    <h4><?=$template->name?></h4>
+                                    <p>
+                                        <?=$template->description?>
+                                    </p>
+                                </a>
+                            </li>
+
+                    <?php
+                        }
+
+                    ?>
+        </ol>
+                    <?php
+                    }
+
+                }
 
         ?>
 
