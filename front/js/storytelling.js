@@ -180,7 +180,7 @@
 		var elements = buttonRemove.closest('.story__remove__element').data('elements')
 
 		var data = {
-			'action': 'Storytellling__deleteElements',
+			'action': 'Storytelling__deleteElements',
 			'elements': encodeURIComponent(elements),
 			'parent': jQuery('#post_ID').val()
 		};
