@@ -42,10 +42,9 @@ class Storytelling__post
 				$story__metabox 	= $_POST['metabox__id'];
 				$story__images 		= $_POST['story__image__id'];
 				$story__ID 			= $_POST['story__ID'];
+
 				if( !empty( $_POST['story__title__'] ) ):
-
-				$story__titles 		= $_POST['story__title__'];
-
+					$story__titles 		= $_POST['story__title__'];
 				endif;
 
 				$user_ID 			= get_current_user_id();
@@ -189,6 +188,8 @@ class Storytelling__post
 								
 								}
 
+
+
 								$meta__content[] = array(
 									'ID' => $story__id,
 									'type' => $element->type,
@@ -214,12 +215,13 @@ class Storytelling__post
 					}
 
 
-
 					if( $update__meta === true ):
 						// il y a eu un nouvel enregistrement
+
 						update_post_meta( $post_id, '_story_content', $metas );
 
 					else:
+
 						add_post_meta( $post_id, '_story_content', $metas, true );
 
 					endif;
