@@ -55,6 +55,10 @@ More feature in futur.
 
 == Changelog ==
 
+= 1.3.2 =
+* fix removed JSON element bug
+* fix bad naming cause various bug
+
 = 1.3.1 =
 * fix metabox id when delete previous content
 * fix empty folder bug
@@ -63,7 +67,7 @@ More feature in futur.
 = 1.3 =
 * introducing structured folder's selector
 * Add default macro-template in plugins
-* Fix editor cumulative height
+* fix editor cumulative height
 
 = 1.2.1 =
 * fix tinymce cumulative height
