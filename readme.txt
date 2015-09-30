@@ -2,8 +2,8 @@
 Contributors: dmassiani
 Tags: template, storytelling, custom fields, macro-template, landing-page, template, theme builder, composer, visual composer
 Requires at least: 4.1
-Tested up to: 4.2.2
-Stable tag: 4.1
+Tested up to: 4.3.1
+Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,6 +54,12 @@ More feature in futur.
 5. Final result - [Storytelling Website](http://storytelling.io/ "Storytelling for WordPress")
 
 == Changelog ==
+
+= 1.3.4 =
+* fix call ajax when multisite with subdirectory
+
+= 1.3.3 =
+* fix removed template/example folder error
 
 = 1.3.2 =
 * fix removed JSON element bug

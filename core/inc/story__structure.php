@@ -131,21 +131,27 @@ class Storytelling__structure extends Storytelling__kickstarter
 		// on prend on dossier et on le transforme en tableau de contenance dossier -> fichier
     	$pluginFolder = $this->dir__to__array($this->pluginFolder);
 
-		foreach ($pluginFolder as $key => $value) {
+    	if( is_array( $pluginFolder ) ) {
 
-			if( gettype($value) === "array" ){
+			foreach ($pluginFolder as $key => $value) {
 
-				// si dans le dossier scanner des dossiers enfant on retrouve les fichiers
-				// et on les transforme en json contenant les informations du fichier
-				// json utilisable ensuite pour générer les metabox de content
-				$this->currentFolder = $this->pluginFolder;
-				$pluginFolder[$key] = $this->Storytelling__scan__folder( $value, $key );
+				if( gettype($value) === "array" ){
+
+					// si dans le dossier scanner des dossiers enfant on retrouve les fichiers
+					// et on les transforme en json contenant les informations du fichier
+					// json utilisable ensuite pour générer les metabox de content
+					$this->currentFolder = $this->pluginFolder;
+					$pluginFolder[$key] = $this->Storytelling__scan__folder( $value, $key );
+
+				}
 
 			}
 
-		}
-
-		return $pluginFolder;	
+			return $pluginFolder;	
+    		
+    	}else{
+    		return false;
+    	}
 	}
 
     // ============================================================

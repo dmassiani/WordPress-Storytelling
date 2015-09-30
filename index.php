@@ -6,7 +6,7 @@
 Plugin Name: Storytelling
 Plugin URI: http://storytelling.io/
 Description: Storytelling enable macro template for developers.
-Version: 1.3.1
+Version: 1.3.3
 Author: David Massiani
 Author URI: http://davidmassiani.com
 License: GPLv2 or later
@@ -14,14 +14,12 @@ Text Domain: storytelling
 */
 
 // Folder name
-define ( 'STORY_VERSION', '1.3.1' );
+define ( 'STORY_VERSION', '1.3.4' );
 define ( 'STORY_FOLDER',  'storytelling' );
 
 define ( 'STORY_URL', plugins_url('', __FILE__) );
 define ( 'STORY_DIR', dirname(__FILE__) );
 define ( 'STORY_DEFAULT_TEMPLATE', STORY_DIR .'/templates' );
-
-
 
 
 if(!function_exists('log_it')){
@@ -184,6 +182,7 @@ class Storytelling__kickstarter
 
 		foreach( $scripts as $script )
 		{
+			wp_localize_script($script['handle'], 'WPURLS', array( 'siteurl' => get_option('siteurl') ));
 			wp_enqueue_script( $script['handle'], $script['src'], $script['deps'] );
 		}
     }

@@ -163,8 +163,8 @@ class Storytelling__metabox
 
             }
 
-        ?>
-        <?php
+
+            if( is_array( $plugin_template ) ){
 
                 foreach ($plugin_template as $key_parent => $value) {
 
@@ -216,6 +216,8 @@ class Storytelling__metabox
                     }
 
                 }
+                
+            }
 
         ?>
 

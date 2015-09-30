@@ -1,10 +1,8 @@
-(function($){
 
+(function($, ajaxurl){
 
 	$rapper 	= 'story__rapper',
 	$selector 	= 'story__selector';
-
-	var n__element 		= 0;
 	var n__post 		= 0;
 
 	var n__metabox 		= 0;
@@ -12,11 +10,17 @@
 
 	var file_frame;
 
+	// ajaxurl est fourni par WP grâce à wp_localize_script()
+	if( typeof ajaxurl != 'string'){
+		var ajaxUrl = '/wp-admin/admin-ajax.php';
+	}else{
+		var ajaxUrl = ajaxurl;
+	}
+
+
 	// ================================
 	// get total post of story
 	// ================================
-
-
 	function getMetaboxs(){
 		// retourne le nombre d'elements disponibles dans la page
 		n__metabox = jQuery('.story-container').length;
@@ -37,6 +41,7 @@
 		var structureArray = structure.split(',');
 		var contentLength = structureArray.length;
 
+
 		var data = {
 			'action': 'Storytelling__getNewBox',
 			'type': type,
@@ -45,8 +50,7 @@
 			'n__metabox': n__metabox
 		};
 
-	    $.post('/wp-admin/admin-ajax.php', data, function(response) {
-
+	    $.post( ajaxurl, data, function(response) {
 
 	    	$( '#post-body-content' ).append( response );
 
@@ -287,4 +291,4 @@
 		getElements();
     });
 
-})(jQuery);
+})(jQuery, ajaxurl);
