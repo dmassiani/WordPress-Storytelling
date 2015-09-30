@@ -6,7 +6,7 @@
 Plugin Name: Storytelling
 Plugin URI: http://storytelling.io/
 Description: Storytelling enable macro template for developers.
-Version: 1.3.3
+Version: 1.3.4
 Author: David Massiani
 Author URI: http://davidmassiani.com
 License: GPLv2 or later
